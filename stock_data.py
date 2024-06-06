@@ -25,7 +25,7 @@ with open(path, 'r') as f, open(output_file, 'w', newline='') as csvfile:
         ticker = line.strip("\n")
         print(f'Processing {ticker}...')
         try:
-            df = yf.download(ticker, start='1985-06-01', end='2024-05-31')
+            df = yf.download(ticker, start='1984-06-01', end='2024-05-31')
             df_len = len(df)
             if df.empty:
                 print(f'{ticker} has no data available.')
