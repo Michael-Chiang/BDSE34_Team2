@@ -29,8 +29,8 @@ with open(path, 'r') as f, open(output_file, 'w', newline='') as csvfile:
                 writer.writerow([ticker, 'No data available', '', ''])
                 continue
             df.to_csv(os.path.join(data_dir, ticker + '.csv'))
-            first_date = df.index[0].strftime('%Y-%m-%d') if not df.empty else ''
-            last_date = df.index[-1].strftime('%Y-%m-%d') if not df.empty else ''
+            first_date = df.index[0].strftime('%Y-%m-%d') 
+            last_date = df.index[-1].strftime('%Y-%m-%d') 
             writer.writerow([ticker, df_len, first_date, last_date])
             print(f'Data for {ticker} saved successfully.')
             print(df_len)
