@@ -1,31 +1,27 @@
-#import package
 import yfinance as yf
 import os
 import csv
 
-#path of stock tickers 
+# Path of stock tickers
 path = 'stock_tickers.txt'
-
-#path of data
+# Path of data
 data_dir = 'stock_data'
-
 # File to store ticker and df_len
 output_file = 'ticker_lengths.csv'
 
-#make a directory
+# Make a directory
 os.makedirs(data_dir, exist_ok=True)
 
-
-#download data
+# Download data
 with open(path, 'r') as f, open(output_file, 'w', newline='') as csvfile:
     lines = f.readlines()
     writer = csv.writer(csvfile)
     writer.writerow(['Ticker', 'Data Length'])  # Write header
-   for line in lines:
+    for line in lines:
         ticker = line.strip("\n")
         print(f'Processing {ticker}...')
         try:
-            df = yf.download(ticker, start='1984-06-01', end='2024-05-31')
+            df = yf.download(ticker, start='1985-06-01', end='2024-05-31')
             df_len = len(df)
             if df.empty:
                 print(f'{ticker} has no data available.')
