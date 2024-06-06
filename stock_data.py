@@ -1,3 +1,4 @@
+#import package
 import yfinance as yf
 import os
 import csv
@@ -16,7 +17,7 @@ os.makedirs(data_dir, exist_ok=True)
 with open(path, 'r') as f, open(output_file, 'w', newline='') as csvfile:
     lines = f.readlines()
     writer = csv.writer(csvfile)
-    writer.writerow(['Ticker', 'Data Length'])  # Write header
+    writer.writerow(['Ticker', 'Data Length', 'First Date', 'Last Date'])  # Write header
     for line in lines:
         ticker = line.strip("\n")
         print(f'Processing {ticker}...')
@@ -25,13 +26,15 @@ with open(path, 'r') as f, open(output_file, 'w', newline='') as csvfile:
             df_len = len(df)
             if df.empty:
                 print(f'{ticker} has no data available.')
-                writer.writerow([ticker, 'No data available'])
+                writer.writerow([ticker, 'No data available', '', ''])
                 continue
             df.to_csv(os.path.join(data_dir, ticker + '.csv'))
+            first_date = df.index[0].strftime('%Y-%m-%d') if not df.empty else ''
+            last_date = df.index[-1].strftime('%Y-%m-%d') if not df.empty else ''
+            writer.writerow([ticker, df_len, first_date, last_date])
             print(f'Data for {ticker} saved successfully.')
             print(df_len)
-            writer.writerow([ticker, df_len])
         except Exception as e:
             print(f'Error processing {ticker}: {e}')
-            writer.writerow([ticker, f'Error: {e}'])
+            writer.writerow([ticker, f'Error: {e}', '' , ''])
             continue
