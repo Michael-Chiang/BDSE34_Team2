@@ -2,9 +2,9 @@
 import yfinance as yf
 import os
 #path of stock tickers 
-path = '6000.txt'
+path = 'stock_tickers.txt'
 #path of data
-data_dir = '500'
+data_dir = 'stock_data'
 #make a directory
 os.makedirs(data_dir, exist_ok=True)
 
