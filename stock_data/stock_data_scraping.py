@@ -3,11 +3,11 @@ import yfinance as yf
 import os
 import csv
 
-# Path of stock tickers
+# Path of stock symbols
 path = 'stock_tickers.txt'
 # Path of data
 data_dir = 'stock_data'
-# File to store ticker and df_len
+# File to stock symbol and df_len
 output_file = 'ticker_lengths.csv'
 
 # Make a directory
@@ -26,15 +26,15 @@ with open(path, 'r') as f, open(output_file, 'w', newline='') as csvfile:
             df_len = len(df)
             if df.empty:
                 print(f'{ticker} has no data available.')
-                writer.writerow([ticker, 'No data available', '', ''])
+                writer.writerow([Symbol, 'No data available', '', ''])
                 continue
             df.to_csv(os.path.join(data_dir, ticker + '.csv'))
             first_date = df.index[0].strftime('%Y-%m-%d') 
             last_date = df.index[-1].strftime('%Y-%m-%d') 
-            writer.writerow([ticker, df_len, first_date, last_date])
+            writer.writerow([Symbol, df_len, first_date, last_date])
             print(f'Data for {ticker} saved successfully.')
             print(df_len)
         except Exception as e:
             print(f'Error processing {ticker}: {e}')
-            writer.writerow([ticker, f'Error: {e}', '' , ''])
+            writer.writerow([Symbol, f'Error: {e}', '' , ''])
             continue
