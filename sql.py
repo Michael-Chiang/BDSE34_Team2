@@ -28,16 +28,6 @@ CREATE TABLE Inflation_CP (
   Inflation_CP DOUBLE)
 """)
 
-# Assuming the CSV file is accessible on the server (not recommended)
-# Replace 'C:/path/to/your/file.csv' with the actual server-side path
-# Alternatively, use Python to read the CSV file and insert data row by row.
-# cursor.execute("""
-# LOAD DATA LOCAL INFILE 'C:/path/to/your/file.csv'
-# INTO TABLE VIX
-# FIELDS TERMINATED BY '  '
-# LINES TERMINATED BY '\n'
-# (Date, Price, Open, High, Low, Change %_)
-# """)
 
 # Open the CSV file
 with open('C:/Share/期末專題/FRED/Inflation, consumer_prices_for_us.csv', 'r') as csvfile:
