@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</head>
+
+<body>
+    <h1>篩選</h1>
+    <h2>Select Sector</h2>
+    <div>
+        {% for sector in sectors %}
+        <button class="sector-button" data-sector="{{ sector }}" onclick="toggleSectorAndFilter(this)">{{ sector
+            }}</button>
+        {% endfor %}
+    </div>
+    <hr>
+    <h2>Select Industry</h2>
+    <div id="industry-buttons"></div>
+
+    <hr>
+    <h2>Results</h2>
+
+    <div id="results"></div>
+
+</body>
+
+</html>

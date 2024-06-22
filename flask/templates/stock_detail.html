@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ symbol }}的詳細資訊</title>
+</head>
+
+<body>
+    <h1>{{ symbol }}的詳細資訊</h1>
+    <h2>{{ symbol }}的 Grafana 儀表板</h2>
+    {% if grafana_dashboard_url %}
+    <iframe src="{{ grafana_dashboard_url }}" width="100%" height="800" frameborder="0">
+    </iframe>
+    {% else %}
+    <p>无法加载 Grafana 儀表板。</p>
+    {% endif %}
+    <br>
+    <table border="1">
+        <thead>
+            <tr>
+                {% for column in columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in results %}
+            <tr>
+                {% for column in columns %}
+                <td>{{ row[column] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/">返回選擇行業別</a>
+
+</body>
+
+</html>
