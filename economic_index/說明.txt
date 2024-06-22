@@ -1,0 +1,7 @@
+PCE：個人消費支出物價指數
+FEDFUNDS：聯邦基金利率
+UNRATE：失業率
+CPIAUCSL(CPI)：消費者物價指數
+PAYEMS：非農就業指數(/1000人)
+SOX：費城半導體
+
