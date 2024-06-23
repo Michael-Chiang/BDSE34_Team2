@@ -30,23 +30,100 @@ def download_stock_data(ticker, data_dir, start_date):
         ADX(Average directional movement index)
         DMI(Directional Movement Index)
         """
-        df["SMA5"] = ta.SMA(df["Close"], timeperiod=5)
-        df["SMA30"] = ta.SMA(df["Close"], timeperiod=30)
-        df["SMA60"] = ta.SMA(df["Close"], timeperiod=60)
-        df["SMA180"] = ta.SMA(df["Close"], timeperiod=180)
+        df["Close_SMA5"] = ta.SMA(df["Close"], timeperiod=5)
+        df["Close_SMA20"] = ta.SMA(df["Close"], timeperiod=20)
+        df["Close_SMA60"] = ta.SMA(df["Close"], timeperiod=60)
+        df["Close_SMA120"] = ta.SMA(df["Close"], timeperiod=120)
+        df["Close_SMA180"] = ta.SMA(df["Close"], timeperiod=180)
 
-        df["EMA5"] = ta.EMA(df["Close"], timeperiod=5)
-        df["EMA30"] = ta.EMA(df["Close"], timeperiod=30)
-        df["EMA60"] = ta.EMA(df["Close"], timeperiod=60)
-        df["EMA180"] = ta.EMA(df["Close"], timeperiod=180)
+        df["Open_SMA5"] = ta.SMA(df["Open"], timeperiod=5)
+        df["Open_SMA20"] = ta.SMA(df["Open"], timeperiod=20)
+        df["Open_SMA60"] = ta.SMA(df["Open"], timeperiod=60)
+        df["Open_SMA120"] = ta.SMA(df["Open"], timeperiod=120)
+        df["Open_SMA180"] = ta.SMA(df["Open"], timeperiod=180)
 
-        df["WMA5"] = ta.WMA(df["Close"], timeperiod=5)
-        df["WMA30"] = ta.WMA(df["Close"], timeperiod=30)
-        df["WMA60"] = ta.WMA(df["Close"], timeperiod=60)
-        df["WMA180"] = ta.WMA(df["Close"], timeperiod=180)
+        df["High_SMA5"] = ta.SMA(df["High"], timeperiod=5)
+        df["High_SMA20"] = ta.SMA(df["High"], timeperiod=20)
+        df["High_SMA60"] = ta.SMA(df["High"], timeperiod=60)
+        df["High_SMA120"] = ta.SMA(df["High"], timeperiod=120)
+        df["High_SMA180"] = ta.SMA(df["High"], timeperiod=180)
+
+        df["Low_SMA5"] = ta.SMA(df["Low"], timeperiod=5)
+        df["Low_SMA20"] = ta.SMA(df["Low"], timeperiod=20)
+        df["Low_SMA60"] = ta.SMA(df["Low"], timeperiod=60)
+        df["Low_SMA120"] = ta.SMA(df["Low"], timeperiod=120)
+        df["Low_SMA180"] = ta.SMA(df["Low"], timeperiod=180)
+
+        df["Adj Close_SMA5"] = ta.SMA(df["Adj Close"], timeperiod=5)
+        df["Adj Close_SMA20"] = ta.SMA(df["Adj Close"], timeperiod=20)
+        df["Adj Close_SMA60"] = ta.SMA(df["Adj Close"], timeperiod=60)
+        df["Adj Close_SMA120"] = ta.SMA(df["Adj Close"], timeperiod=120)
+        df["Adj Close_SMA180"] = ta.SMA(df["Adj Close"], timeperiod=180)
+
+        df["Close_EMA5"] = ta.EMA(df["Close"], timeperiod=5)
+        df["Close_EMA20"] = ta.EMA(df["Close"], timeperiod=20)
+        df["Close_EMA60"] = ta.EMA(df["Close"], timeperiod=60)
+        df["Close_EMA120"] = ta.EMA(df["Close"], timeperiod=120)
+        df["Close_EMA180"] = ta.EMA(df["Close"], timeperiod=180)
+
+        df["Open_EMA5"] = ta.EMA(df["Open"], timeperiod=5)
+        df["Open_EMA20"] = ta.EMA(df["Open"], timeperiod=20)
+        df["Open_EMA60"] = ta.EMA(df["Open"], timeperiod=60)
+        df["Open_EMA120"] = ta.EMA(df["Open"], timeperiod=120)
+        df["Open_EMA180"] = ta.EMA(df["Open"], timeperiod=180)
+
+        df["High_EMA5"] = ta.EMA(df["High"], timeperiod=5)
+        df["High_EMA20"] = ta.EMA(df["High"], timeperiod=20)
+        df["High_EMA60"] = ta.EMA(df["High"], timeperiod=60)
+        df["High_EMA120"] = ta.EMA(df["High"], timeperiod=120)
+        df["High_EMA180"] = ta.EMA(df["High"], timeperiod=180)
+
+        df["Low_EMA5"] = ta.EMA(df["Low"], timeperiod=5)
+        df["Low_EMA20"] = ta.EMA(df["Low"], timeperiod=20)
+        df["Low_EMA60"] = ta.EMA(df["Low"], timeperiod=60)
+        df["Low_EMA120"] = ta.EMA(df["Low"], timeperiod=120)
+        df["Low_EMA180"] = ta.EMA(df["Low"], timeperiod=180)
+
+        df["Adj Close_EMA5"] = ta.EMA(df["Adj Close"], timeperiod=5)
+        df["Adj Close_EMA20"] = ta.EMA(df["Adj Close"], timeperiod=20)
+        df["Adj Close_EMA60"] = ta.EMA(df["Adj Close"], timeperiod=60)
+        df["Adj Close_EMA120"] = ta.EMA(df["Adj Close"], timeperiod=120)
+        df["Adj Close_EMA180"] = ta.EMA(df["Adj Close"], timeperiod=180)
+
+        df["Close_WMA5"] = ta.WMA(df["Close"], timeperiod=5)
+        df["Close_WMA20"] = ta.WMA(df["Close"], timeperiod=20)
+        df["Close_WMA60"] = ta.WMA(df["Close"], timeperiod=60)
+        df["Close_WMA120"] = ta.WMA(df["Close"], timeperiod=120)
+        df["Close_WMA180"] = ta.WMA(df["Close"], timeperiod=180)
+
+        df["Open_WMA5"] = ta.WMA(df["Open"], timeperiod=5)
+        df["Open_WMA20"] = ta.WMA(df["Open"], timeperiod=20)
+        df["Open_WMA60"] = ta.WMA(df["Open"], timeperiod=60)
+        df["Open_WMA120"] = ta.WMA(df["Open"], timeperiod=120)
+        df["Open_WMA180"] = ta.WMA(df["Open"], timeperiod=180)
+
+        df["High_WMA5"] = ta.WMA(df["High"], timeperiod=5)
+        df["High_WMA20"] = ta.WMA(df["High"], timeperiod=20)
+        df["High_WMA60"] = ta.WMA(df["High"], timeperiod=60)
+        df["High_WMA120"] = ta.WMA(df["High"], timeperiod=120)
+        df["High_WMA180"] = ta.WMA(df["High"], timeperiod=180)
+
+        df["Low_WMA5"] = ta.WMA(df["Low"], timeperiod=5)
+        df["Low_WMA20"] = ta.WMA(df["Low"], timeperiod=20)
+        df["Low_WMA60"] = ta.WMA(df["Low"], timeperiod=60)
+        df["Low_WMA120"] = ta.WMA(df["Low"], timeperiod=120)
+        df["Low_WMA180"] = ta.WMA(df["Low"], timeperiod=180)
+
+        df["Adj Close_WMA5"] = ta.WMA(df["Adj Close"], timeperiod=5)
+        df["Adj Close_WMA20"] = ta.WMA(df["Adj Close"], timeperiod=20)
+        df["Adj Close_WMA60"] = ta.WMA(df["Adj Close"], timeperiod=60)
+        df["Adj Close_WMA120"] = ta.WMA(df["Adj Close"], timeperiod=120)
+        df["Adj Close_WMA180"] = ta.WMA(df["Adj Close"], timeperiod=180)
+
+
 
         df["RSI"] = ta.RSI(df["Close"], timeperiod=180)
-        df["MACD"], df["MACD_Signal"], df["MACD_Hist"] = ta.MACD(
+        df["MACD"], df["DIF"], df["OSC_Hist"] = ta.MACD(
             df["Close"], fastperiod=12, slowperiod=26, signalperiod=9
         )
         df["Upper_Band"], df["Middle_Band"], df["Lower_Band"] = ta.BBANDS(
@@ -71,6 +148,7 @@ def download_stock_data(ticker, data_dir, start_date):
         df["ADX"] = ta.ADX(df["High"], df["Low"], df["Close"], timeperiod=14)
         df["PLUS_DMI"] = ta.PLUS_DI(df["High"], df["Low"], df["Close"], timeperiod=14)
         df["MINUS_DMI"] = ta.MINUS_DI(df["High"], df["Low"], df["Close"], timeperiod=14)
+        # df["symbol"] = ticker
 
         # Drop rows with any NaN values
         df.dropna(inplace=True)
@@ -89,10 +167,10 @@ def download_stock_data(ticker, data_dir, start_date):
 
 
 # Main code to read tickers and call the function
-ticker_list_path = "stock_stock.txt"
+ticker_list_path = "stock_tickers.txt"
 data_dir = "stock_data_model"
 output_file = "stock_data_lengths_model.csv"
-start_date = "1980-06-01"
+start_date = "1993-11-06"
 
 # Make a directory
 if __name__ == "__main__":
