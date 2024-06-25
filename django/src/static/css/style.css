@@ -1,0 +1,17 @@
+/* 隱藏不必要的元素，只顯示時間選擇器 */
+.navbar,
+.sidemenu,
+.submenu,
+.page-toolbar,
+.dashboard-row,
+.panel-container,
+.panel-title,
+.panel-menu,
+.panel-content {
+    display: none !important;
+}
+
+/* 顯示時間選擇器 */
+.timepicker-container {
+    display: block !important;
+}
