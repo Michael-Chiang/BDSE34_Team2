@@ -69,12 +69,12 @@ if %RE%==1 (
 
 ::更新github pull
 ::檢查是否含有Django項目文件夾
-if exist django (
-  cd /d "%~dp0django"
+if exist DjangoProject (
+  cd /d "%~dp0DjangoProject"
 ) else (
-  git clone -b bdse34/team2/joanna8799/django --single-branch https://github.com/dennisNism/BDSE34_Team2_20.git django --recursive
-  if exist django (
-    cd /d "%~dp0django"
+  git clone -b bdse34/team2/joanna8799/django --single-branch https://github.com/dennisNism/BDSE34_Team2_20.git DjangoProject --recursive
+  if exist DjangoProject (
+    cd /d "%~dp0DjangoProject"
   ) else (
     echo github 连接失败，请再次尝试
     pause
@@ -83,7 +83,7 @@ if exist django (
 )
 echo.
 echo 正在從remote端更新
-echo %~dp0django
+echo %~dp0DjangoProject
 git fetch origin
 git checkout bdse34/team2/joanna8799/django
 git pull origin bdse34/team2/joanna8799/django --recurse-submodules
@@ -115,6 +115,8 @@ pip install -r requirements.txt
 
 echo.
 echo pip 環境包更新完成
+
+cd django/src
 
 ::遷移資料庫
 echo.
