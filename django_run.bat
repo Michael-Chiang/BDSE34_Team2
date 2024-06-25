@@ -43,14 +43,14 @@ if %errorlevel%==0 (echo Python %PYTHON_V% 運行正常！) else (
 ::檢查是否安裝了git
 git --version >nul 2>nul
 if %errorlevel%==0 (echo %GIT_FULL_VERSION% 運行正常！) else (
-  echo %GIT_FULL_VERSION% 运行异常！开始下载 %GIT_FULL_VERSION%......請耐心等待 
+  echo %GIT_FULL_VERSION% 運行異常！開始下載 %GIT_FULL_VERSION%......請耐心等待 
   ::-----安装git
   :: 如果已存在則删除
   if exist %GIT_FILE% del %GIT_FILE%
-  :: 下载 git
+  :: 下載 git
   powershell -c "invoke-webrequest -uri %GIT_DOWNLOAD_URL% -outfile %GIT_FILE%"
-  :: 判断是否下载完成
-  if not exist %GIT_FILE% cls&color 0c&echo [Error]:下载git失败!...&pause>nul&exit
+  :: 判斷是否下載完成
+  if not exist %GIT_FILE% cls&color 0c&echo [Error]:下載git失敗!...&pause>nul&exit
   echo.
   echo 下載完成，正在後台安裝 %GIT_FULL_VERSION%
 
@@ -68,15 +68,15 @@ if %RE%==1 (
 )
 
 ::更新github pull
-::檢查是否含有Django项目文件夹
+::檢查是否含有Django項目文件夾
 if exist django (
   cd /d "%~dp0django"
 ) else (
-  git clone https://github.com/yourusername/MyDjangoProject.git --recursive
+  git clone -b bdse34/team2/joanna8799/django --single-branch https://github.com/dennisNism/BDSE34_Team2_20.git django --recursive
   if exist django (
     cd /d "%~dp0django"
   ) else (
-    echo github 連接失敗，請再次嘗試
+    echo github 连接失败，请再次尝试
     pause
     exit
   )
@@ -85,8 +85,8 @@ echo.
 echo 正在從remote端更新
 echo %~dp0django
 git fetch origin
-git checkout bdse34/team2/joanna8799/flask
-git pull origin bdse34/team2/joanna8799/flask --recurse-submodules
+git checkout bdse34/team2/joanna8799/django
+git pull origin bdse34/team2/joanna8799/django --recurse-submodules
 echo.
 echo 更新完成！
 
