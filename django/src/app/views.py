@@ -10,7 +10,7 @@ import datetime
 
 
 # Grafana 配置
-grafana_url = "http://192.168.21.85:3000"
+grafana_url = "http://192.168.32.176:3000"
 grafana_api_key = "glsa_cNzq1IPXgKS1RqTl1vNPrpcvPAnoOXlt_e278fd0c"
 
 
@@ -101,10 +101,20 @@ def stock_detail(request, symbol):
         cursor.execute(query)
         results = cursor.fetchall()
         columns = [col[0] for col in cursor.description]
+    # 将结果转换为适合模板使用的格式，并处理日期字段
+    results_dict = []
+    for row in results:
+        row_data = {}
+        for column, value in zip(columns, row):
+            if isinstance(value, datetime.date):
+                row_data[column] = value.strftime('%Y-%m-%d')
+            else:
+                row_data[column] = value
+        results_dict.append(row_data)
     
     grafana_dashboard_url = generate_grafana_dashboard_url(symbol)
     
-    return render(request, 'stock_detail.html', {'results': results, 'columns': columns, 'symbol': symbol, 'grafana_dashboard_url': grafana_dashboard_url})
+    return render(request, 'stock_detail.html', {'results': results_dict, 'columns': columns, 'symbol': symbol, 'grafana_dashboard_url': grafana_dashboard_url})
 
 def generate_grafana_dashboard_url(symbol):
     """
@@ -117,4 +127,4 @@ def generate_grafana_dashboard_url(symbol):
     from_timestamp = int(one_month_ago.timestamp() * 1000)
     to_timestamp = int(today.timestamp() * 1000)
     
-    return f"http://192.168.21.85:3000/d/adompizn6fm68d/a-k-chart?orgId={org_id}&var-StockID={symbol}&from={from_timestamp}&to={to_timestamp}&kiosk"
+    return f"http://192.168.32.176:3000/d/adompizn6fm68d/a-k-chart?orgId={org_id}&var-StockID={symbol}&from={from_timestamp}&to={to_timestamp}&kiosk"
