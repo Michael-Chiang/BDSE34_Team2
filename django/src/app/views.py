@@ -10,7 +10,7 @@ import datetime
 
 
 # Grafana 配置
-grafana_url = "http://192.168.21.85:3000"
+grafana_url = "http://192.168.32.176:3000"
 grafana_api_key = "glsa_cNzq1IPXgKS1RqTl1vNPrpcvPAnoOXlt_e278fd0c"
 
 
@@ -78,6 +78,7 @@ def filter_results(request):
         columns = [col[0] for col in cursor.description]
 
     results_dict = [dict(zip(columns, row)) for row in results]
+    
 
     # 定義想要保留的欄位名稱
     desired_columns = ['Symbol', 'CorName', 'Sector', 'Industry']  
@@ -101,10 +102,15 @@ def stock_detail(request, symbol):
         cursor.execute(query)
         results = cursor.fetchall()
         columns = [col[0] for col in cursor.description]
+
+    results_dict = [dict(zip(columns, row)) for row in results]
+    # 将结果转换为列表格式，便于模板解析
+    results_list = [list(row) for row in results]
+    
     
     grafana_dashboard_url = generate_grafana_dashboard_url(symbol)
     
-    return render(request, 'stock_detail.html', {'results': results, 'columns': columns, 'symbol': symbol, 'grafana_dashboard_url': grafana_dashboard_url})
+    return render(request, 'stock_detail.html', {'results': results_list, 'columns': columns, 'symbol': symbol, 'grafana_dashboard_url': grafana_dashboard_url})
 
 def generate_grafana_dashboard_url(symbol):
     """
@@ -117,4 +123,4 @@ def generate_grafana_dashboard_url(symbol):
     from_timestamp = int(one_month_ago.timestamp() * 1000)
     to_timestamp = int(today.timestamp() * 1000)
     
-    return f"http://192.168.21.85:3000/d/adompizn6fm68d/a-k-chart?orgId={org_id}&var-StockID={symbol}&from={from_timestamp}&to={to_timestamp}&kiosk"
+    return f"http://192.168.32.176:3000/d/adompizn6fm68d/a-k-chart?orgId={org_id}&var-StockID={symbol}&from={from_timestamp}&to={to_timestamp}&kiosk"

@@ -8,14 +8,15 @@
     <title>{{ symbol }}的詳細資訊</title>
 </head>
 
-<body>
+<body
+    style="background-color: rgb(19, 19, 19); color: white; font-family: Arial, sans-serif; margin: 20px; padding: 20px;">
     <h1>{{ symbol }}的詳細資訊</h1>
     <h2>{{ symbol }}的 Grafana 儀表板</h2>
     {% if grafana_dashboard_url %}
-    <iframe src="{{ grafana_dashboard_url }}" width="100%" height="800" frameborder="0">
+    <iframe src="{{ grafana_dashboard_url }}" width="100%" height="1600" frameborder="0">
     </iframe>
     {% else %}
-    <p>无法加载 Grafana 儀表板。</p>
+    <p>無法加載 Grafana 儀表板。</p>
     {% endif %}
     <br>
     <table border="1">
@@ -29,14 +30,14 @@
         <tbody>
             {% for row in results %}
             <tr>
-                {% for column in columns %}
-                <td>{{ row[column] }}</td>
+                {% for value in row %}
+                <td>{{ value }}</td>
                 {% endfor %}
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="/">返回選擇行業別</a>
+    <a href="/filter" style="color: aliceblue;">返回選擇行業別</a>
 
 </body>
 
