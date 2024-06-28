@@ -14,7 +14,7 @@ db_config = {
 }
 
 # Grafana 配置
-grafana_url = "http://192.168.21.85:3000"
+grafana_url = "http://192.168.32.176:3000"
 grafana_api_key = "glsa_cNzq1IPXgKS1RqTl1vNPrpcvPAnoOXlt_e278fd0c"
 
 @app.route('/', methods=['GET'])
