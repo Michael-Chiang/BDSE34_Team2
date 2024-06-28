@@ -1,54 +1,27 @@
 Symbol,Sector
-AADI,Health Care
 AAMC,Finance
 AAME,Finance
 AAOI,Technology
 AAPL,Technology
 AB,Finance
-ABBV,Health Care
 ABCB,Finance
-ABCL,Health Care
-ABEO,Health Care
-ABIO,Health Care
-ABOS,Health Care
-ABSI,Health Care
-ABT,Health Care
-ABUS,Health Care
-ABVC,Health Care
 AC,Finance
-ACAD,Health Care
-ACB,Health Care
 ACCD,Technology
-ACET,Health Care
-ACHC,Health Care
-ACHV,Health Care
 ACIW,Technology
 ACLS,Technology
-ACLX,Health Care
 ACMR,Technology
 ACNB,Finance
 ACON,Technology
 ACP,Finance
-ACRS,Health Care
-ACRV,Health Care
-ACST,Health Care
 ACT,Finance
 ACV,Finance
-ACXP,Health Care
 ADBE,Technology
 ADEA,Technology
 ADI,Technology
-ADIL,Health Care
-ADMA,Health Care
-ADPT,Health Care
 ADSK,Technology
-ADTX,Health Care
-ADUS,Health Care
-ADVM,Health Care
 ADX,Finance
 AEF,Finance
 AEYE,Technology
-AEZS,Health Care
 AFB,Finance
 AFBI,Finance
 AFG,Finance
@@ -56,193 +29,102 @@ AFGB,Finance
 AFGC,Finance
 AFGD,Finance
 AFGE,Finance
-AFIB,Health Care
 AFL,Finance
 AFRM,Technology
 AGD,Finance
-AGEN,Health Care
-AGIO,Health Care
 AGM,Finance
-AGRX,Health Care
 AGYS,Technology
-AHCO,Health Care
 AIB,Finance
 AIG,Finance
-AIM,Health Care
 AIMAU,Finance
-AIMD,Health Care
 AINC,Finance
 AIP,Technology
 AIRG,Technology
-AIRS,Health Care
 AIZ,Finance
 AIZN,Finance
 AJG,Finance
-AKBA,Health Care
 AKLI,Technology
-AKRO,Health Care
-ALDX,Health Care
-ALEC,Health Care
 ALGM,Technology
-ALGN,Health Care
-ALGS,Health Care
-ALHC,Health Care
-ALIM,Health Care
 ALKT,Technology
 ALL,Finance
-ALLK,Health Care
-ALLO,Health Care
-ALLR,Health Care
 ALLY,Finance
-ALNY,Health Care
 ALOT,Technology
 ALRM,Technology
-ALRN,Health Care
 ALRS,Finance
 ALSA,Finance
-ALT,Health Care
 ALTI,Finance
 ALTR,Technology
-ALVR,Health Care
-ALXO,Health Care
-ALZN,Health Care
 AMAL,Finance
 AMAT,Technology
 AMBA,Technology
 AMBC,Finance
 AMD,Technology
-AMED,Health Care
 AMG,Finance
-AMGN,Health Care
 AMK,Finance
 AMKR,Technology
-AMLX,Health Care
-AMN,Health Care
 AMP,Finance
-AMPE,Health Care
 AMPG,Technology
 AMPGW,Technology
-AMPH,Health Care
 AMPL,Technology
 AMRK,Finance
-AMS,Health Care
 AMSF,Finance
 AMST,Technology
 AMSWA,Technology
 AMTB,Finance
 AMWL,Technology
-ANAB,Health Care
-ANEB,Health Care
 ANGI,Technology
-ANGO,Health Care
-ANIK,Health Care
-ANIP,Health Care
-ANIX,Health Care
-ANNX,Health Care
 ANSS,Technology
-ANTX,Health Care
-ANVS,Health Care
 AOD,Finance
 AON,Finance
-AORT,Health Care
 APAM,Finance
 APCX,Technology
-APDN,Health Care
 APH,Technology
 APLD,Finance
-APLS,Health Care
-APLT,Health Care
 APP,Technology
 APPF,Technology
 APPN,Technology
 APPS,Technology
-APRE,Health Care
-APTO,Health Care
-APVO,Health Care
 APXI,Finance
 APXIU,Finance
-APYX,Health Care
-AQST,Health Care
-ARAY,Health Care
 ARCC,Finance
 ARDC,Finance
-ARDS,Health Care
-ARDX,Health Care
 ARLO,Technology
-ARMP,Health Care
 AROW,Finance
-ARQT,Health Care
 ARRY,Technology
-ARTL,Health Care
-ARVN,Health Care
 ARW,Technology
-ARWR,Health Care
-ARYD,Health Care
 ASB,Finance
 ASBA,Finance
 ASG,Finance
 ASGN,Technology
-ASMB,Health Care
-ASRT,Health Care
 ASRV,Finance
 ASTI,Technology
 ASUR,Technology
-ASXC,Health Care
 ASYS,Technology
-ATEC,Health Care
-ATHA,Health Care
 ATKR,Technology
 ATLC,Finance
 ATLCL,Finance
 ATLCP,Finance
 ATLO,Finance
-ATNF,Health Care
-ATNM,Health Care
 ATOM,Technology
-ATOS,Health Care
-ATR,Health Care
-ATRA,Health Care
-ATRC,Health Care
-ATRI,Health Care
-ATXI,Health Care
-ATXS,Health Care
 AUB,Finance
 AUBN,Finance
 AUGX,Technology
 AUID,Technology
-AUPH,Health Care
 AUR,Technology
-AURA,Health Care
 AUUD,Technology
-AVAH,Health Care
 AVDX,Technology
 AVGO,Technology
-AVGR,Health Care
-AVIR,Health Care
 AVK,Finance
-AVNS,Health Care
 AVPT,Technology
-AVRO,Health Care
 AVT,Technology
-AVTE,Health Care
-AVTX,Health Care
-AVXL,Health Care
 AWF,Finance
-AWH,Health Care
 AWP,Finance
 AWRE,Technology
 AX,Finance
-AXDX,Health Care
-AXGN,Health Care
-AXNX,Health Care
 AXP,Finance
-AXSM,Health Care
 AXTI,Technology
-AYTU,Health Care
 AZPN,Technology
-AZTA,Health Care
 BAC,Finance
-BACK,Health Care
 BAFN,Finance
 BANC,Finance
 BAND,Technology
@@ -251,35 +133,21 @@ BANFP,Finance
 BANR,Finance
 BANX,Finance
 BASE,Technology
-BAX,Health Care
 BBAR,Finance
 BBD,Finance
 BBDC,Finance
 BBDO,Finance
-BBIO,Health Care
-BBLG,Health Care
-BBLGW,Health Care
 BBN,Finance
-BCAB,Health Care
 BCAT,Finance
 BCBP,Finance
-BCDA,Health Care
-BCEL,Health Care
-BCLI,Health Care
 BCML,Finance
 BCO,Technology
 BCOV,Technology
 BCOW,Finance
-BCRX,Health Care
 BCSF,Finance
-BCTX,Health Care
 BCV,Finance
 BCX,Finance
 BDJ,Finance
-BDSX,Health Care
-BDTX,Health Care
-BDX,Health Care
-BEAM,Health Care
 BEAT,Technology
 BEEM,Technology
 BEN,Finance
@@ -288,16 +156,13 @@ BFH,Finance
 BFIN,Finance
 BFK,Finance
 BFRG,Technology
-BFRI,Health Care
 BFST,Finance
 BFZ,Finance
 BGH,Finance
 BGR,Finance
 BGT,Finance
-BGXX,Health Care
 BGY,Finance
 BHB,Finance
-BHC,Health Care
 BHE,Technology
 BHF,Finance
 BHFAL,Finance
@@ -308,16 +173,8 @@ BHFAP,Finance
 BHK,Finance
 BHLB,Finance
 BHV,Finance
-BIAF,Health Care
 BIGC,Technology
-BIIB,Health Care
-BIOL,Health Care
-BIOR,Health Care
-BIVI,Health Care
-BJDX,Health Care
 BK,Finance
-BKD,Health Care
-BKDT,Health Care
 BKKT,Technology
 BKN,Finance
 BKSC,Finance
@@ -330,68 +187,46 @@ BLACU,Finance
 BLBX,Technology
 BLE,Finance
 BLEU,Finance
-BLFS,Health Care
 BLFY,Finance
 BLIN,Technology
 BLK,Finance
 BLKB,Technology
-BLPH,Health Care
-BLTE,Health Care
-BLUE,Health Care
 BLW,Finance
 BLZE,Technology
 BMA,Finance
 BMBL,Technology
 BME,Finance
-BMEA,Health Care
-BMRA,Health Care
 BMRC,Finance
-BMRN,Health Care
-BMY,Health Care
-BNGO,Health Care
-BNOX,Health Care
-BNTC,Health Care
 BNY,Finance
 BOCN,Finance
 BOCNU,Finance
 BOE,Finance
 BOH,Finance
 BOKF,Finance
-BOLT,Health Care
 BOTJ,Finance
 BOX,Technology
-BPMC,Health Care
 BPOP,Finance
 BPOPM,Finance
 BPRN,Finance
-BPTH,Health Care
 BRC,Technology
 BRKL,Finance
 BRO,Finance
-BRTX,Health Care
 BRW,Finance
 BRZE,Technology
 BSBR,Finance
-BSGM,Health Care
 BSL,Finance
 BSRR,Finance
 BST,Finance
 BSVN,Finance
-BSX,Health Care
 BSY,Technology
 BTA,Finance
-BTAI,Health Care
 BTBT,Finance
 BTCS,Finance
-BTCY,Health Care
-BTMD,Health Care
 BTO,Finance
 BTT,Finance
-BTTX,Health Care
 BTZ,Finance
 BUI,Finance
 BUSE,Finance
-BVS,Health Care
 BW,Technology
 BWAQ,Finance
 BWB,Finance
@@ -403,26 +238,18 @@ BXMX,Finance
 BY,Finance
 BYFC,Finance
 BYM,Finance
-BYSI,Health Care
 C,Finance
-CABA,Health Care
 CAC,Finance
 CACC,Finance
 CACI,Technology
 CADE,Finance
-CADL,Health Care
 CAF,Finance
-CAH,Health Care
 CALB,Finance
 CALX,Technology
-CAPR,Health Care
-CARA,Health Care
 CARE,Finance
 CARV,Finance
 CASH,Finance
-CASI,Health Care
 CATC,Finance
-CATX,Health Care
 CATY,Finance
 CBAN,Finance
 CBFV,Finance
@@ -435,13 +262,8 @@ CBSH,Finance
 CBU,Finance
 CCB,Finance
 CCBG,Finance
-CCCC,Health Care
 CCCS,Technology
 CCD,Finance
-CCEL,Health Care
-CCLD,Health Care
-CCLDO,Health Care
-CCLDP,Health Care
 CCNE,Finance
 CCRD,Technology
 CCSI,Technology
@@ -449,20 +271,9 @@ CCTS,Finance
 CCTSU,Finance
 CDAQ,Finance
 CDAQU,Finance
-CDIO,Health Care
-CDMO,Health Care
-CDNA,Health Care
 CDNS,Technology
-CDTX,Health Care
-CDXC,Health Care
-CDXS,Health Care
 CEE,Finance
-CELC,Health Care
-CELU,Health Care
-CELZ,Health Care
 CEM,Finance
-CERE,Health Care
-CERS,Health Care
 CERT,Technology
 CET,Finance
 CETX,Technology
@@ -479,233 +290,144 @@ CFR,Finance
 CFSB,Finance
 CG,Finance
 CGBD,Finance
-CGC,Health Care
-CGEM,Health Care
 CGO,Finance
-CGTX,Health Care
 CHCO,Finance
-CHE,Health Care
 CHI,Finance
 CHMG,Finance
 CHN,Finance
-CHRS,Health Care
 CHW,Finance
 CHY,Finance
-CI,Health Care
 CIA,Finance
 CIF,Finance
 CIFR,Finance
 CII,Finance
 CIK,Finance
 CINF,Finance
-CING,Health Care
 CISO,Technology
 CITE,Finance
 CIVB,Finance
 CIX,Technology
 CIZN,Finance
-CKPT,Health Care
 CLBK,Finance
-CLDX,Health Care
 CLIR,Technology
 CLM,Finance
 CLMB,Technology
-CLNN,Health Care
-CLOV,Health Care
-CLPT,Health Care
-CLRB,Health Care
 CLRO,Technology
-CLSD,Health Care
 CLSK,Technology
 CMA,Finance
 CMAX,Technology
 CMCA,Finance
 CMCAU,Finance
 CME,Finance
-CMND,Health Care
-CMPX,Health Care
-CMRA,Health Care
-CMRX,Health Care
 CMTL,Technology
 CMU,Finance
 CNA,Finance
-CNC,Health Care
 CNDT,Technology
 CNFR,Finance
-CNMD,Health Care
 CNO,Finance
 CNOB,Finance
 CNOBP,Finance
 CNS,Finance
-CNSP,Health Care
-CNTX,Health Care
 CNXC,Technology
 CNXN,Technology
-COCP,Health Care
-CODX,Health Care
-COEP,Health Care
 COF,Finance
 COFS,Finance
-COGT,Health Care
 COHN,Finance
 COIN,Finance
 COLB,Finance
-COLL,Health Care
 COMM,Technology
-COO,Health Care
 COOL,Finance
 COOLU,Finance
 COOLW,Finance
 COOP,Finance
-CORT,Health Care
-COSM,Health Care
-COYA,Health Care
 CPF,Finance
-CPIX,Health Care
-CPRX,Health Care
 CPSS,Finance
 CPTN,Technology
 CPZ,Finance
-CRBP,Health Care
-CRBU,Health Care
-CRDF,Health Care
-CRDL,Health Care
 CRDO,Technology
 CRESY,Finance
 CREX,Technology
 CRF,Finance
-CRIS,Health Care
 CRM,Technology
-CRMD,Health Care
 CRNC,Technology
-CRNX,Health Care
-CRON,Health Care
 CRSR,Technology
 CRUS,Technology
 CRVL,Finance
-CRVS,Health Care
 CRWD,Technology
-CSBR,Health Care
 CSGP,Finance
 CSGS,Technology
 CSLM,Finance
 CSPI,Technology
 CSQ,Finance
-CSTL,Health Care
 CSWC,Finance
 CTBI,Finance
-CTKB,Health Care
 CTLP,Technology
-CTLT,Health Care
-CTMX,Health Care
 CTR,Finance
 CTS,Technology
 CTSH,Technology
-CTSO,Health Care
-CTXR,Health Care
 CUBA,Finance
 CUBB,Finance
 CUBI,Finance
-CUE,Health Care
 CUEN,Technology
 CULL,Finance
-CUTR,Health Care
 CVBF,Finance
-CVKD,Health Care
 CVLT,Technology
 CVLY,Finance
-CVM,Health Care
-CVRX,Health Care
-CVS,Health Care
 CVV,Technology
 CWBC,Finance
-CWBR,Health Care
 CXE,Finance
 CXH,Finance
-CYCC,Health Care
-CYCCP,Health Care
-CYCN,Health Care
-CYH,Health Care
 CYN,Technology
-CYTH,Health Care
-CYTHW,Health Care
-CYTK,Health Care
 CZFS,Finance
 CZNC,Finance
 CZWI,Finance
 DAIO,Technology
-DARE,Health Care
 DATS,Technology
 DATSW,Technology
 DAVE,Technology
-DAWN,Health Care
 DBX,Technology
-DCGO,Health Care
 DCOM,Finance
 DCOMP,Finance
-DCPH,Health Care
-DCTH,Health Care
 DDD,Technology
 DDOG,Technology
 DECA,Finance
-DERM,Health Care
 DFLI,Technology
 DFS,Finance
 DGICA,Finance
 DGICB,Finance
 DGII,Technology
 DGLY,Technology
-DGX,Health Care
 DH,Technology
 DHF,Finance
 DHIL,Finance
-DHR,Health Care
 DHX,Technology
 DHY,Finance
 DIOD,Technology
 DJCO,Technology
 DLB,Technology
-DMAC,Health Care
 DMF,Finance
 DMO,Finance
 DMRC,Technology
-DMTK,Health Care
-DNA,Health Care
 DNB,Technology
-DNLI,Health Care
 DNP,Finance
 DOCN,Technology
 DOCU,Technology
-DOMH,Health Care
 DOMO,Technology
 DPCS,Finance
 DPCSU,Finance
 DPG,Finance
-DRMA,Health Care
-DRRX,Health Care
-DRUG,Health Care
-DSGN,Health Care
 DSM,Finance
 DSP,Technology
 DSU,Finance
 DT,Technology
 DTF,Finance
-DTIL,Health Care
 DTST,Technology
 DUOL,Technology
 DUOT,Technology
-DVA,Health Care
-DVAX,Health Care
-DXCM,Health Care
-DXR,Health Care
-DYAI,Health Care
-DYN,Health Care
-DYNT,Health Care
 EAD,Finance
 EB,Technology
 EBC,Finance
 EBMT,Finance
-EBS,Health Care
 EBTC,Finance
 ECBK,Finance
 ECC,Finance
@@ -714,41 +436,24 @@ ECCV,Finance
 ECCW,Finance
 ECCX,Finance
 ECF,Finance
-ECOR,Health Care
 EDD,Finance
 EDF,Finance
-EDIT,Health Care
-EDSA,Health Care
 EEA,Finance
 EEFT,Technology
 EFR,Finance
 EFSC,Finance
 EFSCP,Finance
 EFT,Finance
-EFTR,Health Care
 EFX,Finance
 EGAN,Technology
 EGBN,Finance
 EGF,Finance
 EGHT,Technology
 EGIO,Technology
-EGRX,Health Care
-EHC,Health Care
 EHI,Finance
 EHTH,Finance
 EIG,Finance
-EIGR,Health Care
 EIM,Finance
-EKSO,Health Care
-ELAN,Health Care
-ELDN,Health Care
-ELEV,Health Care
-ELMD,Health Care
-ELOX,Health Care
-ELV,Health Care
-ELVN,Health Care
-ELYM,Health Care
-EMBC,Health Care
 EMCG,Finance
 EMCGU,Finance
 EMD,Finance
@@ -756,33 +461,22 @@ EMF,Finance
 EMKR,Technology
 EMO,Finance
 ENPH,Technology
-ENSC,Health Care
-ENSG,Health Care
-ENTA,Health Care
 ENTG,Technology
 ENV,Technology
 ENVA,Finance
-ENVB,Health Care
 ENX,Finance
-ENZ,Health Care
 EOD,Finance
 EOI,Finance
-EOLS,Health Care
 EOSE,Technology
 EOSEW,Technology
 EOT,Finance
 EPAM,Technology
-EPIX,Health Care
-EQ,Health Care
 EQBK,Finance
 EQS,Finance
-ERAS,Health Care
 ERC,Finance
 ERIE,Finance
 ERII,Technology
-ERNA,Health Care
 ESP,Technology
-ESPR,Health Care
 ESQ,Finance
 ESSA,Finance
 ESTC,Technology
@@ -790,9 +484,7 @@ ETAO,Finance
 ETB,Finance
 ETG,Finance
 ETJ,Finance
-ETNB,Health Care
 ETO,Finance
-ETON,Health Care
 ETV,Finance
 ETW,Finance
 ETY,Finance
@@ -802,39 +494,25 @@ EVCM,Technology
 EVER,Technology
 EVF,Finance
 EVG,Finance
-EVH,Health Care
-EVLO,Health Care
 EVLV,Technology
 EVM,Finance
 EVN,Finance
-EVOK,Health Care
 EVR,Finance
 EVT,Finance
 EVV,Finance
-EW,Health Care
 EWBC,Finance
-EWTX,Health Care
-EXAS,Health Care
-EXEL,Health Care
 EXFY,Technology
 EXG,Finance
 EXLS,Technology
 EXPI,Finance
-EYE,Health Care
-EYEN,Health Care
-EYPT,Health Care
 EZFL,Technology
 FAF,Finance
 FAM,Finance
-FATE,Health Care
 FAX,Finance
-FBIO,Health Care
-FBIOP,Health Care
 FBIZ,Finance
 FBK,Finance
 FBMS,Finance
 FBNC,Finance
-FBRX,Health Care
 FCAP,Finance
 FCBC,Finance
 FCCO,Finance
@@ -845,11 +523,8 @@ FCNCP,Finance
 FCO,Finance
 FCT,Finance
 FDBC,Finance
-FDMT,Health Care
 FDS,Finance
 FDUS,Finance
-FEMY,Health Care
-FENC,Health Care
 FFA,Finance
 FFBC,Finance
 FFIC,Finance
@@ -860,14 +535,12 @@ FFWM,Finance
 FGB,Finance
 FGBI,Finance
 FGBIP,Finance
-FGEN,Health Care
 FGF,Finance
 FGFPP,Finance
 FGI,Finance
 FHB,Finance
 FHI,Finance
 FHN,Finance
-FHTX,Health Care
 FIBK,Finance
 FICO,Technology
 FINV,Finance
@@ -879,8 +552,6 @@ FITBO,Finance
 FITBP,Finance
 FIVN,Technology
 FLC,Finance
-FLGC,Health Care
-FLGT,Health Care
 FLIC,Finance
 FLYW,Technology
 FMAO,Finance
@@ -890,14 +561,11 @@ FMNB,Finance
 FMY,Finance
 FNB,Finance
 FNCB,Finance
-FNCH,Health Care
 FNF,Finance
 FNLC,Finance
 FNWB,Finance
 FNWD,Finance
 FOF,Finance
-FOLD,Health Care
-FONR,Health Care
 FOR,Finance
 FORA,Technology
 FORM,Technology
@@ -913,7 +581,6 @@ FROG,Technology
 FRPH,Finance
 FRSH,Technology
 FRST,Finance
-FRTX,Health Care
 FSBC,Finance
 FSBW,Finance
 FSEA,Finance
@@ -926,28 +593,22 @@ FTF,Finance
 FTHM,Finance
 FTHY,Finance
 FTNT,Technology
-FULC,Health Care
 FULT,Finance
 FULTP,Finance
 FUNC,Finance
 FUND,Finance
 FUSB,Finance
-FUSN,Health Care
 FVCB,Finance
-FWBI,Health Care
 FXNC,Finance
 GAB,Finance
 GABC,Finance
 GAIN,Finance
 GAINN,Finance
 GAINZ,Finance
-GALT,Health Care
 GAM,Finance
-GANX,Health Care
 GBAB,Finance
 GBCI,Finance
 GBDC,Finance
-GBIO,Health Care
 GBNY,Finance
 GBTG,Technology
 GCBC,Finance
@@ -966,57 +627,41 @@ GECCO,Finance
 GEGGL,Technology
 GEHC,Technology
 GEN,Technology
-GERN,Health Care
-GEVO,Health Care
 GF,Finance
 GFS,Technology
 GGAL,Finance
 GGN,Finance
 GGT,Finance
-GH,Health Care
 GHI,Finance
-GHSI,Health Care
 GHY,Finance
 GIC,Technology
-GILD,Health Care
 GJH,Finance
 GJO,Finance
 GJP,Finance
 GJR,Finance
 GJS,Finance
 GJT,Finance
-GKOS,Health Care
 GL,Finance
 GLAD,Finance
 GLBZ,Finance
 GLO,Finance
 GLQ,Finance
-GLSI,Health Care
 GLU,Finance
-GLUE,Health Care
 GLV,Finance
 GLW,Technology
-GLYC,Health Care
-GMED,Health Care
 GMGI,Technology
-GNLX,Health Care
-GNPX,Health Care
 GNT,Finance
 GNW,Finance
 GOCO,Finance
 GOF,Finance
 GOOG,Technology
 GOOGL,Technology
-GOSS,Health Care
-GOVX,Health Care
 GPAC,Finance
 GREE,Finance
 GREEL,Finance
 GRF,Finance
 GROM,Technology
 GROW,Finance
-GRTS,Health Care
-GRTX,Health Care
 GRX,Finance
 GS,Finance
 GSBC,Finance
@@ -1024,17 +669,13 @@ GSBD,Finance
 GSHD,Finance
 GSIT,Technology
 GTAC,Finance
-GTBP,Health Care
-GTHX,Health Care
 GTLB,Technology
 GTLS,Technology
 GUT,Finance
 GVP,Technology
 GWRE,Technology
-HAE,Health Care
 HAFC,Finance
 HALL,Finance
-HALO,Health Care
 HAYW,Technology
 HBAN,Finance
 HBANM,Finance
@@ -1042,16 +683,11 @@ HBANP,Finance
 HBCP,Finance
 HBNC,Finance
 HBT,Finance
-HCA,Health Care
-HCAT,Health Care
 HCI,Finance
 HCKT,Technology
 HCP,Technology
-HCSG,Health Care
 HCTI,Technology
-HCWB,Health Care
 HCXY,Finance
-HEPA,Health Care
 HEQ,Finance
 HFBL,Finance
 HFWA,Finance
@@ -1065,7 +701,6 @@ HLI,Finance
 HLIT,Technology
 HLNE,Finance
 HLTH,Technology
-HLVX,Health Care
 HMN,Finance
 HMNF,Finance
 HMST,Finance
@@ -1074,34 +709,20 @@ HNNAZ,Finance
 HNVR,Finance
 HNW,Finance
 HOLO,Technology
-HOLX,Health Care
 HOMB,Finance
 HONE,Finance
 HOOD,Technology
-HOOK,Health Care
 HOPE,Finance
-HOTH,Health Care
 HOUS,Finance
-HOWL,Health Care
 HPF,Finance
 HPI,Finance
 HPQ,Technology
 HPS,Finance
 HQH,Finance
 HQL,Finance
-HQY,Health Care
-HRMY,Health Care
-HROW,Health Care
-HROWL,Health Care
-HROWM,Health Care
-HRTX,Health Care
 HRZN,Finance
-HSCS,Health Care
-HSDT,Health Care
-HSIC,Health Care
 HSPO,Finance
 HSPOU,Finance
-HSTO,Health Care
 HTBI,Finance
 HTBK,Finance
 HTD,Finance
@@ -1113,126 +734,68 @@ HTLF,Finance
 HTLFP,Finance
 HUBB,Technology
 HUBS,Technology
-HUGE,Health Care
-HUM,Health Care
-HUMA,Health Care
 HWBK,Finance
 HWC,Finance
 HWCPZ,Finance
 HYB,Finance
-HYPR,Health Care
 HYT,Finance
 IAE,Finance
 IAF,Finance
-IART,Health Care
 IBCP,Finance
-IBIO,Health Care
 IBKR,Finance
 IBM,Technology
 IBOC,Finance
-IBRX,Health Care
 IBTX,Finance
-ICAD,Health Care
-ICCC,Health Care
 ICCH,Finance
 ICE,Finance
 ICHR,Technology
 ICMB,Finance
-ICU,Health Care
-ICUI,Health Care
 IDAI,Technology
 IDE,Finance
 IDN,Technology
-IDXX,Health Care
-IDYA,Health Care
 IFN,Finance
 IGA,Finance
 IGD,Finance
 IGI,Finance
-IGMS,Health Care
 IGR,Finance
 IHD,Finance
 IIF,Finance
 III,Technology
 IIIV,Technology
 IIM,Finance
-IKNA,Health Care
-IKT,Health Care
-ILMN,Health Care
-IMCC,Health Care
 IMMR,Technology
-IMMX,Health Care
-IMNM,Health Care
-IMNN,Health Care
-IMRX,Health Care
-IMUX,Health Care
-IMVT,Health Care
 IMXI,Technology
-INAB,Health Care
 INBK,Finance
 INBKZ,Finance
-INBS,Health Care
-INCY,Health Care
 INDB,Finance
 INDI,Technology
-INDP,Health Care
-INFU,Health Care
-INGN,Health Care
-INKT,Health Care
-INM,Health Care
-INMB,Health Care
-INNV,Health Care
-INO,Health Care
 INOD,Technology
 INSE,Technology
 INSI,Finance
-INSM,Health Care
-INSP,Health Care
 INTA,Technology
 INTC,Technology
 INTT,Technology
 INTU,Technology
 INTZ,Technology
-INVA,Health Care
 INVE,Technology
-INVO,Health Care
-INZY,Health Care
-IONM,Health Care
-IONS,Health Care
 IOR,Finance
-IOVA,Health Care
-IPA,Health Care
 IPDN,Technology
 IPGP,Technology
 IQI,Finance
-IQV,Health Care
-IRIX,Health Care
-IRMD,Health Care
-IRON,Health Care
 IROQ,Finance
-IRTC,Health Care
-IRWD,Health Care
 ISD,Finance
 ISDR,Technology
-ISPC,Health Care
-ISRG,Health Care
 ISTR,Finance
 ISUN,Technology
 IT,Finance
-ITCI,Health Care
-ITGR,Health Care
 ITIC,Finance
-ITOS,Health Care
 ITUB,Finance
 IVAC,Technology
 IVCP,Finance
 IVCPU,Finance
 IVDA,Technology
-IVVD,Health Care
 IVZ,Finance
-JAGX,Health Care
 JAMF,Technology
-JANX,Health Care
 JBK,Finance
 JBL,Technology
 JCE,Finance
@@ -1246,7 +809,6 @@ JLL,Finance
 JLS,Finance
 JMM,Finance
 JMSB,Finance
-JNJ,Health Care
 JNPR,Technology
 JOF,Finance
 JPC,Finance
@@ -1255,121 +817,69 @@ JQC,Finance
 JRI,Finance
 JRS,Finance
 JSM,Finance
-JSPR,Health Care
-KA,Health Care
 KAI,Technology
-KALA,Health Care
-KAVL,Health Care
 KBNT,Technology
 KE,Technology
 KEY,Finance
 KF,Finance
 KFFB,Finance
-KIDS,Health Care
 KINS,Finance
 KKR,Finance
 KLAC,Technology
 KLTR,Technology
 KMPB,Finance
 KMPR,Finance
-KNSA,Health Care
 KNSL,Finance
-KOD,Health Care
 KOPN,Technology
 KPLT,Technology
-KPRX,Health Care
-KRBP,Health Care
-KRMD,Health Care
 KRNL,Finance
 KRNLU,Finance
 KRNY,Finance
-KRON,Health Care
-KROS,Health Care
-KRYS,Health Care
 KSCP,Technology
 KSM,Finance
 KSPN,Technology
 KTCC,Technology
 KTF,Finance
 KTH,Finance
-KTRA,Health Care
-KTTA,Health Care
-KURA,Health Care
 KVHI,Technology
-KYMR,Health Care
 KYN,Finance
-KZR,Health Care
 L,Finance
 LARK,Finance
 LASR,Technology
 LATG,Finance
 LATGU,Finance
 LAW,Technology
-LBPH,Health Care
 LC,Finance
 LCNB,Finance
-LCTX,Health Care
 LDOS,Technology
 LDP,Finance
-LEGN,Health Care
 LEO,Finance
-LEXX,Health Care
-LFCR,Health Care
-LFST,Health Care
 LFUS,Technology
 LGL,Technology
-LGND,Health Care
-LGVN,Health Care
-LH,Health Care
-LIAN,Health Care
-LIFE,Health Care
 LIFW,Technology
 LIFWW,Technology
 LINK,Technology
-LIPO,Health Care
 LITE,Technology
-LIXT,Health Care
-LIXTW,Health Care
 LKFN,Finance
-LLY,Health Care
-LMAT,Health Care
 LMFA,Finance
 LMND,Finance
 LNC,Finance
-LNSR,Health Care
-LNTH,Health Care
 LOB,Finance
 LODE,Finance
 LOGI,Technology
-LPCN,Health Care
 LPLA,Finance
 LPRO,Finance
 LPSN,Technology
 LPTH,Technology
-LPTX,Health Care
-LQDA,Health Care
 LRCX,Technology
 LRFC,Finance
-LRMR,Health Care
 LSBK,Finance
 LSCC,Technology
-LSDI,Health Care
-LSTA,Health Care
 LTCH,Technology
-LTRN,Health Care
 LTRPA,Technology
 LTRPB,Technology
-LUCD,Health Care
-LUCY,Health Care
-LUCYW,Health Care
-LUMO,Health Care
-LUNA,Health Care
-LUNG,Health Care
 LVRO,Finance
-LXRX,Health Care
-LYEL,Health Care
 LYFT,Technology
-LYRA,Health Care
 LZ,Technology
 MACA,Finance
 MACAU,Finance
@@ -1377,8 +887,6 @@ MAIN,Finance
 MANH,Technology
 MAPS,Technology
 MARA,Finance
-MASI,Health Care
-MASS,Health Care
 MAV,Finance
 MBCN,Finance
 MBI,Finance
@@ -1386,9 +894,7 @@ MBIN,Finance
 MBINM,Finance
 MBINN,Finance
 MBINO,Finance
-MBIO,Health Care
 MBNKP,Finance
-MBRX,Health Care
 MBWM,Finance
 MCAA,Finance
 MCAAU,Finance
@@ -1396,23 +902,14 @@ MCBC,Finance
 MCBS,Finance
 MCHP,Technology
 MCI,Finance
-MCK,Health Care
 MCO,Finance
 MCR,Finance
-MCRB,Health Care
 MCVT,Finance
 MCY,Finance
-MD,Health Care
 MDB,Technology
-MDGL,Health Care
 MDRX,Technology
-MDT,Health Care
-MDXG,Health Care
-ME,Health Care
-MEDP,Health Care
 MEDS,Technology
 MEI,Technology
-MEIP,Health Care
 MET,Finance
 META,Technology
 MFD,Finance
@@ -1422,11 +919,9 @@ MFM,Finance
 MG,Technology
 MGAM,Technology
 MGF,Finance
-MGNX,Health Care
 MGR,Finance
 MGRB,Finance
 MGRD,Finance
-MGTX,Health Care
 MGYR,Finance
 MHD,Finance
 MHF,Finance
@@ -1434,8 +929,6 @@ MHI,Finance
 MHN,Finance
 MIN,Finance
 MIR,Technology
-MIRM,Health Care
-MIST,Health Care
 MITA,Finance
 MITAU,Finance
 MITK,Technology
@@ -1447,30 +940,17 @@ MKTX,Finance
 ML,Technology
 MLGO,Technology
 MLP,Finance
-MLSS,Health Care
-MLTX,Health Care
-MLYS,Health Care
 MMAT,Technology
 MMC,Finance
 MMD,Finance
-MMSI,Health Care
 MMT,Finance
 MMU,Finance
-MNKD,Health Care
-MNMD,Health Care
-MNOV,Health Care
-MNPR,Health Care
 MNSB,Finance
 MNSBP,Finance
 MNTX,Technology
-MO,Health Care
-MODD,Health Care
 MODN,Technology
 MOFG,Finance
-MOH,Health Care
-MORF,Health Care
 MORN,Finance
-MOVE,Health Care
 MPA,Finance
 MPB,Finance
 MPV,Finance
@@ -1478,17 +958,10 @@ MPWR,Technology
 MQ,Technology
 MQT,Finance
 MQY,Finance
-MRAI,Health Care
 MRAM,Technology
 MRBK,Finance
 MRCC,Finance
 MRIN,Technology
-MRK,Health Care
-MRKR,Health Care
-MRNA,Health Care
-MRNS,Health Care
-MRSN,Health Care
-MRVI,Health Care
 MRVL,Technology
 MS,Finance
 MSA,Technology
@@ -1504,10 +977,7 @@ MSTR,Technology
 MSVB,Finance
 MTB,Finance
 MTCH,Technology
-MTEM,Health Care
-MTEX,Health Care
 MTG,Finance
-MTNB,Health Care
 MTSI,Technology
 MTTR,Technology
 MU,Technology
@@ -1520,35 +990,25 @@ MVBF,Finance
 MVF,Finance
 MVLA,Technology
 MVT,Finance
-MXCT,Health Care
 MXE,Finance
 MXF,Finance
 MXL,Technology
 MYD,Finance
 MYFW,Finance
-MYGN,Health Care
 MYI,Finance
-MYMD,Health Care
 MYN,Finance
-MYO,Health Care
 MYPS,Technology
 MYPSW,Technology
 NAC,Finance
 NAD,Finance
 NAN,Finance
-NAOV,Health Care
-NARI,Health Care
-NAUT,Health Care
-NAVB,Health Care
 NAVI,Finance
 NAZ,Finance
 NBB,Finance
 NBH,Finance
 NBHC,Finance
-NBIX,Health Care
 NBN,Finance
 NBTB,Finance
-NBY,Health Care
 NCA,Finance
 NCNO,Technology
 NCPL,Finance
@@ -1556,28 +1016,19 @@ NCV,Finance
 NCZ,Finance
 NDAQ,Finance
 NDP,Finance
-NDRA,Health Care
 NEA,Finance
 NECB,Finance
 NEN,Finance
-NEO,Health Care
-NEOG,Health Care
-NEPH,Health Care
-NERV,Health Care
 NET,Technology
 NEWT,Finance
 NEWTL,Finance
-NEXI,Health Care
 NFBK,Finance
 NFJ,Finance
-NHC,Health Care
 NHS,Finance
 NIC,Finance
 NIE,Finance
 NIM,Finance
 NKSH,Finance
-NKTR,Health Care
-NKTX,Health Care
 NKX,Finance
 NMFC,Finance
 NMI,Finance
@@ -1585,151 +1036,95 @@ NMIH,Finance
 NMRK,Finance
 NMS,Finance
 NMT,Finance
-NMTC,Health Care
 NMZ,Finance
 NNI,Finance
-NNVC,Health Care
 NNY,Finance
 NOC,Technology
 NODK,Finance
 NOM,Finance
-NOTV,Health Care
 NOW,Technology
-NPCE,Health Care
 NPV,Finance
 NQP,Finance
-NRBO,Health Care
 NRC,Technology
 NRDS,Finance
 NRDY,Technology
 NRIM,Finance
-NRIX,Health Care
 NRK,Finance
 NRO,Finance
-NRXP,Health Care
 NSIT,Technology
 NSSC,Technology
-NSTG,Health Care
 NSTS,Finance
 NSYS,Technology
 NTAP,Technology
 NTCT,Technology
 NTIP,Technology
-NTLA,Health Care
 NTNX,Technology
-NTRA,Health Care
-NTRB,Health Care
-NTRBW,Health Care
 NTRS,Finance
 NTRSO,Finance
 NTWK,Technology
-NURO,Health Care
-NUS,Health Care
 NUTX,Technology
 NUV,Finance
-NUVB,Health Care
-NUVL,Health Care
 NUW,Finance
-NUWE,Health Care
-NVAX,Health Care
-NVCT,Health Care
 NVDA,Technology
 NVEC,Technology
 NVG,Finance
-NVNO,Health Care
-NVOS,Health Care
-NVRO,Health Care
 NVTS,Technology
 NWBI,Finance
 NWFL,Finance
 NWLI,Finance
 NXC,Finance
-NXGL,Health Care
 NXJ,Finance
-NXL,Health Care
 NXN,Finance
 NXP,Finance
 NXPL,Technology
 NXT,Technology
-NXTC,Health Care
 NXTP,Technology
 NYCB,Finance
 NZF,Finance
-OABI,Health Care
-OBIO,Health Care
 OBLG,Technology
 OBT,Finance
 OCCI,Finance
 OCCIN,Finance
 OCCIO,Finance
-OCEA,Health Care
 OCFC,Finance
 OCFCP,Finance
-OCGN,Health Care
 OCN,Finance
 OCSL,Finance
-OCUL,Health Care
-OCUP,Health Care
-OCX,Health Care
 OFED,Finance
 OFS,Finance
 OFSSH,Finance
-OGEN,Health Care
-OGI,Health Care
 OIA,Finance
 OKTA,Technology
 OLB,Technology
 OLED,Technology
-OLMA,Health Care
-OM,Health Care
-OMCL,Health Care
-OMER,Health Care
-OMGA,Health Care
-OMI,Health Care
-OMIC,Health Care
 OMQS,Technology
 ON,Technology
 ONB,Finance
 ONBPO,Finance
 ONBPP,Finance
-ONCT,Health Care
-ONCY,Health Care
 ONFO,Technology
 ONTO,Technology
-ONVO,Health Care
 ONYX,Finance
 ONYXU,Finance
 OPAD,Finance
 OPBK,Finance
-OPCH,Health Care
 OPEN,Finance
-OPGN,Health Care
 OPHC,Finance
-OPK,Health Care
 OPOF,Finance
 OPP,Finance
 OPRT,Finance
-OPRX,Health Care
-OPTN,Health Care
 OPY,Finance
 ORCL,Technology
-ORGO,Health Care
-ORGS,Health Care
 ORI,Finance
-ORIC,Health Care
 ORRF,Finance
-OSA,Health Care
 OSBC,Finance
 OSIS,Technology
 OSPN,Technology
 OSS,Technology
-OSUR,Health Care
-OTLK,Health Care
 OTRK,Technology
 OTRKP,Technology
 OUST,Technology
 OVBC,Finance
-OVID,Health Care
 OVLY,Finance
 OWL,Finance
 OXLC,Finance
@@ -1743,38 +1138,25 @@ OXSQ,Finance
 OXSQZ,Finance
 OZK,Finance
 OZKAP,Finance
-PACB,Health Care
 PAI,Finance
-PALI,Health Care
 PALT,Technology
 PANW,Technology
 PAR,Technology
-PASG,Health Care
-PAVM,Health Care
 PAYO,Technology
 PAYS,Technology
 PB,Finance
 PBBK,Finance
 PBFS,Finance
-PBH,Health Care
 PBHC,Finance
-PBLA,Health Care
-PBYI,Health Care
 PCB,Finance
 PCF,Finance
 PCK,Finance
 PCM,Finance
 PCN,Finance
 PCQ,Finance
-PCRX,Health Care
-PCSA,Health Care
 PCTY,Technology
-PCVX,Health Care
-PDCO,Health Care
-PDEX,Health Care
 PDFS,Technology
 PDI,Finance
-PDSB,Health Care
 PDT,Finance
 PEBK,Finance
 PEBO,Finance
@@ -1783,20 +1165,15 @@ PEGR,Finance
 PEGRU,Finance
 PEGY,Technology
 PEO,Finance
-PEPG,Health Care
 PET,Technology
-PETQ,Health Care
-PETV,Health Care
 PFBC,Finance
 PFC,Finance
 PFD,Finance
-PFE,Health Care
 PFG,Finance
 PFH,Finance
 PFIS,Finance
 PFL,Finance
 PFLT,Finance
-PFMT,Health Care
 PFN,Finance
 PFO,Finance
 PFS,Finance
@@ -1806,18 +1183,12 @@ PFTAU,Finance
 PFX,Finance
 PFXNZ,Finance
 PGC,Finance
-PGEN,Health Care
-PGNY,Health Care
 PGP,Finance
 PGR,Finance
-PHAT,Health Care
 PHD,Finance
-PHIO,Health Care
 PHK,Finance
-PHR,Health Care
 PHT,Finance
 PIM,Finance
-PINC,Health Care
 PIPR,Finance
 PJT,Finance
 PKBK,Finance
@@ -1826,20 +1197,13 @@ PLBC,Finance
 PLMI,Finance
 PLMIU,Finance
 PLMR,Finance
-PLRX,Health Care
-PLSE,Health Care
 PLUS,Technology
 PLXS,Technology
-PM,Health Care
-PMCB,Health Care
-PMD,Health Care
 PMF,Finance
 PML,Finance
 PMM,Finance
-PMN,Health Care
 PMO,Finance
 PMTS,Finance
-PMVP,Health Care
 PMX,Finance
 PNBK,Finance
 PNC,Finance
@@ -1848,55 +1212,34 @@ PNFP,Finance
 PNFPP,Finance
 PNI,Finance
 PNNT,Finance
-PNTG,Health Care
-POAI,Health Care
 POCI,Technology
-PODD,Health Care
 POET,Technology
 POWI,Technology
 PPBI,Finance
 PPT,Finance
 PRA,Finance
 PRAA,Finance
-PRAX,Health Care
 PRCH,Technology
-PRCT,Health Care
 PRFT,Technology
-PRGO,Health Care
 PRGS,Technology
 PRH,Finance
 PRI,Finance
 PRK,Finance
-PRLD,Health Care
 PRLH,Finance
-PRME,Health Care
 PRO,Technology
-PROK,Health Care
 PROV,Finance
-PRPH,Health Care
 PRS,Finance
 PRSO,Technology
 PRST,Technology
-PRTA,Health Care
 PRTC,Finance
-PRTG,Health Care
 PRTH,Technology
 PRU,Finance
 PRVA,Technology
 PSEC,Finance
-PSNL,Health Care
-PSTV,Health Care
-PSTX,Health Care
 PTC,Technology
-PTCT,Health Care
-PTGX,Health Care
-PTIX,Health Care
 PTMN,Finance
-PTN,Health Care
-PTPI,Health Care
 PTY,Finance
 PUBM,Technology
-PULM,Health Care
 PVBC,Finance
 PWOD,Finance
 PWP,Finance
@@ -1905,47 +1248,33 @@ PWUP,Finance
 PWUPU,Finance
 PX,Finance
 PXLW,Technology
-PXMD,Health Care
 PYCR,Technology
 PYN,Finance
-PYXS,Health Care
 PZC,Finance
 QCOM,Technology
 QCRH,Finance
-QDEL,Health Care
 QDRO,Finance
 QDROU,Finance
-QLGN,Health Care
 QLYS,Technology
 QMCO,Technology
-QNCX,Health Care
 QQQX,Finance
-QSI,Health Care
-QTRX,Health Care
 QUBT,Technology
 QUIK,Technology
 RAMP,Technology
 RAND,Finance
-RANI,Health Care
-RAPT,Health Care
-RARE,Health Care
 RBB,Finance
 RBBN,Technology
 RBCAA,Finance
 RBKB,Finance
 RBLX,Technology
 RCC,Finance
-RCEL,Health Care
 RCG,Finance
-RCKT,Health Care
 RCRT,Technology
 RCS,Finance
 RDFN,Finance
 RDN,Finance
-RDNT,Health Care
 RDVT,Technology
 REFR,Technology
-REGN,Health Care
 REKR,Technology
 RELI,Finance
 RELL,Technology
@@ -1953,84 +1282,52 @@ RELY,Technology
 RENE,Finance
 RENEU,Finance
 RENEW,Finance
-REPL,Health Care
-REVB,Health Care
 RF,Finance
 RFI,Finance
 RFIL,Technology
 RGA,Finance
-RGEN,Health Care
-RGLS,Health Care
-RGNX,Health Care
 RGTI,Technology
-RIGL,Health Care
 RILY,Finance
 RILYL,Finance
 RILYP,Finance
 RIOT,Technology
 RJF,Finance
 RKT,Finance
-RLAY,Health Care
 RLI,Finance
-RLMD,Health Care
-RLYB,Health Care
 RM,Finance
 RMBS,Technology
-RMD,Health Care
 RMNI,Technology
 RMR,Finance
 RMT,Finance
-RMTI,Health Care
-RNA,Health Care
-RNAZ,Health Care
 RNP,Finance
 RNST,Finance
-RNXT,Health Care
 ROG,Technology
 ROOT,Finance
 ROP,Technology
 RPAY,Technology
 RPD,Technology
-RPHM,Health Care
-RPID,Health Care
-RPRX,Health Care
-RPTX,Health Care
 RQI,Finance
 RRBI,Finance
-RSLS,Health Care
 RSSS,Technology
 RUM,Technology
-RVMD,Health Care
-RVNC,Health Care
-RVP,Health Care
-RVPH,Health Care
 RVSB,Finance
 RVT,Finance
 RVYL,Technology
-RXRX,Health Care
-RXST,Health Care
 RXT,Technology
-RYTM,Health Care
 RZB,Finance
 RZC,Finance
-RZLT,Health Care
 S,Technology
-SABS,Health Care
 SAFT,Finance
-SAGE,Health Care
 SAJ,Finance
 SAMG,Finance
-SANA,Health Care
 SANM,Technology
 SAR,Finance
 SASR,Finance
 SAT,Finance
 SATS,Technology
-SAVA,Health Care
 SAY,Finance
 SBCF,Finance
 SBFG,Finance
-SBFM,Health Care
 SBI,Finance
 SBIG,Technology
 SBNY,Finance
@@ -2039,47 +1336,29 @@ SBT,Finance
 SCD,Finance
 SCHW,Finance
 SCKT,Technology
-SCLX,Health Care
 SCM,Finance
-SCPH,Health Care
 SCSC,Technology
 SCWX,Technology
-SCYX,Health Care
 SDGR,Technology
 SDIG,Finance
 SE,Technology
 SEAC,Technology
-SEEL,Health Care
-SEER,Health Care
 SEIC,Finance
-SEM,Health Care
-SENS,Health Care
-SERA,Health Care
 SF,Finance
 SFBC,Finance
 SFBS,Finance
 SFNC,Finance
 SFST,Finance
 SGH,Technology
-SGHT,Health Care
 SGMA,Technology
-SGMO,Health Care
-SGRY,Health Care
 SHBI,Finance
-SHC,Health Care
 SHCR,Technology
 SHCRW,Technology
 SHFS,Finance
 SHLS,Technology
-SHPH,Health Care
-SIBN,Health Care
 SIEB,Finance
-SIGA,Health Care
 SIGI,Finance
 SIGIP,Finance
-SILK,Health Care
-SILO,Health Care
-SINT,Health Care
 SITM,Technology
 SKGR,Finance
 SKGRW,Finance
@@ -2089,45 +1368,29 @@ SKYX,Technology
 SLAB,Technology
 SLAM,Finance
 SLAMU,Finance
-SLDB,Health Care
 SLM,Finance
 SLMBP,Finance
 SLNH,Technology
 SLNHP,Technology
-SLNO,Health Care
 SLP,Technology
 SLRC,Finance
-SLRX,Health Care
-SLS,Health Care
 SMAR,Technology
 SMBC,Finance
 SMBK,Finance
 SMCI,Technology
-SMLR,Health Care
-SMMT,Health Care
 SMRT,Technology
 SMSI,Technology
 SMTC,Technology
-SMTI,Health Care
 SNAP,Technology
 SNCR,Technology
 SNCRL,Technology
-SNDA,Health Care
-SNDL,Health Care
-SNDX,Health Care
 SNEX,Finance
 SNFCA,Finance
-SNGX,Health Care
-SNOA,Health Care
 SNOW,Technology
 SNPS,Technology
-SNPX,Health Care
-SNSE,Health Care
-SNTI,Health Care
 SNV,Finance
 SOFI,Finance
 SOFO,Technology
-SONN,Health Care
 SOPA,Technology
 SOR,Finance
 SOUN,Technology
@@ -2135,26 +1398,16 @@ SPE,Finance
 SPFI,Finance
 SPGI,Finance
 SPOK,Technology
-SPRB,Health Care
-SPRO,Health Care
-SPRY,Health Care
 SPSC,Technology
 SPT,Technology
 SPWR,Technology
 SPXX,Finance
 SQ,Technology
 SRCE,Finance
-SRDX,Health Care
-SRPT,Health Care
-SRRK,Health Care
-SRTS,Health Care
 SRV,Finance
-SRZN,Health Care
 SSB,Finance
 SSBI,Finance
 SSBK,Finance
-SSIC,Health Care
-SSKN,Health Care
 SSNC,Technology
 SSNT,Technology
 SSSS,Finance
@@ -2162,53 +1415,32 @@ SSSSL,Finance
 SSTI,Technology
 SSTK,Technology
 SSYS,Technology
-STAA,Health Care
 STBA,Finance
 STC,Finance
-STE,Health Care
 STEL,Finance
 STEM,Technology
 STEP,Finance
 STER,Technology
 STEW,Finance
-STIM,Health Care
 STK,Finance
 STNE,Technology
-STOK,Health Care
 STRM,Technology
-STRO,Health Care
-STRR,Health Care
-STRRP,Health Care
-STSS,Health Care
 STT,Finance
-STTK,Health Care
-STXS,Health Care
-SUPN,Health Care
 SURG,Technology
 SVII,Finance
 SVIIU,Finance
-SVRA,Health Care
 SVVC,Finance
-SWAV,Health Care
 SWI,Technology
 SWKH,Finance
 SWKS,Technology
-SWTX,Health Care
 SWZ,Finance
 SYBT,Finance
-SYBX,Health Care
 SYF,Finance
-SYK,Health Care
 SYNA,Technology
-SYRS,Health Care
 TACT,Technology
 TAIT,Technology
-TALK,Health Care
-TARA,Health Care
-TARS,Health Care
 TASK,Technology
 TBBK,Finance
-TBIO,Health Care
 TBLD,Finance
 TBNK,Finance
 TCBC,Finance
@@ -2218,64 +1450,33 @@ TCBK,Finance
 TCBS,Finance
 TCBX,Finance
 TCI,Finance
-TCMD,Health Care
-TCON,Health Care
 TCPC,Finance
-TCRT,Health Care
-TCRX,Health Care
 TCX,Technology
 TDC,Technology
 TDF,Finance
-TDOC,Health Care
-TECH,Health Care
 TEI,Finance
-TELA,Health Care
 TENB,Technology
 TENKU,Finance
-TENX,Health Care
-TERN,Health Care
 TFC,Finance
-TFFP,Health Care
 TFIN,Finance
 TFINP,Finance
 TFSL,Finance
-TFX,Health Care
 TGAN,Technology
 TGL,Technology
-TGTX,Health Care
-THC,Health Care
 THFF,Finance
 THG,Finance
 THQ,Finance
-THRD,Health Care
-THTX,Health Care
 THW,Finance
-TIL,Health Care
 TIPT,Finance
-TIVC,Health Care
-TKNO,Health Care
 TLGY,Finance
 TLGYU,Finance
-TLIS,Health Care
-TLRY,Health Care
 TLS,Technology
-TMCI,Health Care
-TMDX,Health Care
 TMP,Finance
-TNDM,Health Care
-TNGX,Health Care
-TNON,Health Care
-TNXP,Health Care
-TNYA,Health Care
-TOI,Health Care
-TOVX,Health Care
 TOWN,Finance
 TPG,Finance
 TPIC,Technology
-TPST,Health Care
 TPZ,Finance
 TRC,Finance
-TRDA,Health Care
 TREE,Finance
 TRIN,Finance
 TRINL,Finance
@@ -2287,55 +1488,38 @@ TROW,Finance
 TRST,Finance
 TRT,Technology
 TRU,Finance
-TRUP,Health Care
 TRV,Finance
-TRVI,Health Care
-TRVN,Health Care
 TSBK,Finance
-TSHA,Health Care
 TSI,Finance
 TSRI,Technology
-TSVT,Health Care
 TTD,Technology
 TTEC,Technology
 TTGT,Technology
 TTMI,Technology
-TTNP,Health Care
-TTOO,Health Care
 TTP,Finance
 TTWO,Technology
 TURN,Finance
-TVTX,Health Care
 TW,Finance
 TWKS,Technology
 TWN,Finance
-TWST,Health Care
-TXG,Health Care
-TXMD,Health Care
 TXN,Technology
 TY,Finance
 TYG,Finance
 TYL,Technology
-TYRA,Health Care
 U,Technology
 UBCP,Finance
 UBFO,Finance
 UBSI,Finance
-UBX,Health Care
 UCBI,Finance
 UCBIO,Finance
 UCTT,Technology
 UFCS,Finance
-UFPT,Health Care
-UHS,Health Care
 UI,Technology
 UIS,Technology
 ULBI,Technology
 UMBF,Finance
 UNAM,Finance
 UNB,Finance
-UNCY,Health Care
-UNH,Health Care
 UNM,Finance
 UNMA,Finance
 UNTY,Finance
@@ -2347,11 +1531,8 @@ USB,Finance
 USCB,Finance
 USCT,Finance
 USIO,Technology
-USPH,Health Care
 UTF,Finance
 UTG,Finance
-UTHR,Health Care
-UTMD,Health Care
 UTRS,Technology
 UUU,Technology
 UVE,Finance
@@ -2359,45 +1540,27 @@ UVSP,Finance
 UWMC,Finance
 VABK,Finance
 VALU,Finance
-VANI,Health Care
-VAPO,Health Care
-VAXX,Health Care
 VBF,Finance
 VBFC,Finance
-VBIV,Health Care
 VBTX,Finance
-VCEL,Health Care
-VCNX,Health Care
 VCSA,Technology
 VCTR,Finance
 VCV,Finance
-VCYT,Health Care
 VECO,Technology
-VERA,Health Care
 VERB,Technology
 VERI,Technology
-VERO,Health Care
-VERU,Health Care
-VERV,Health Care
 VERX,Technology
 VERY,Finance
 VFL,Finance
 VGI,Finance
 VGM,Finance
-VGR,Health Care
 VIAV,Technology
 VICR,Technology
-VIGL,Health Care
-VINC,Health Care
 VINO,Finance
 VINP,Finance
-VIR,Health Care
-VIRI,Health Care
 VIRT,Finance
-VIRX,Health Care
 VKI,Finance
 VKQ,Finance
-VKTX,Health Care
 VLT,Finance
 VLY,Finance
 VLYPO,Finance
@@ -2405,41 +1568,24 @@ VLYPP,Finance
 VMCA,Finance
 VMEO,Technology
 VMO,Finance
-VNDA,Health Care
-VOR,Health Care
 VOYA,Finance
 VPV,Finance
 VRAR,Technology
-VRCA,Health Care
-VRDN,Health Care
-VREX,Health Care
 VRME,Technology
 VRNS,Technology
 VRNT,Technology
-VRPX,Health Care
 VRSN,Technology
 VRTS,Finance
-VRTX,Health Care
 VSAT,Technology
 VSH,Technology
-VSTM,Health Care
-VTGN,Health Care
 VTN,Finance
-VTRS,Health Care
-VTVT,Health Care
-VTYX,Health Care
 VUZI,Technology
-VVOS,Health Care
 VVR,Finance
-VXRT,Health Care
-VYGR,Health Care
-VYNE,Health Care
 WABC,Finance
 WAFD,Finance
 WAFDP,Finance
 WAL,Finance
 WASH,Finance
-WAT,Health Care
 WAVD,Technology
 WBS,Finance
 WD,Finance
@@ -2453,21 +1599,18 @@ WGS,Technology
 WHF,Finance
 WHG,Finance
 WIA,Finance
-WINT,Health Care
 WISA,Technology
 WIW,Finance
 WK,Technology
 WMPN,Finance
 WNEB,Finance
 WOLF,Technology
-WORX,Health Care
 WRB,Finance
 WRLD,Finance
 WSBC,Finance
 WSBCP,Finance
 WSBF,Finance
 WSFS,Finance
-WST,Health Care
 WT,Finance
 WTBA,Finance
 WTFC,Finance
@@ -2477,51 +1620,23 @@ WTM,Finance
 WULF,Finance
 WYY,Technology
 XAIR,Technology
-XBIO,Health Care
-XBIOW,Health Care
-XBIT,Health Care
-XCUR,Health Care
 XELA,Technology
 XELAP,Technology
-XENE,Health Care
-XERS,Health Care
 XFLT,Finance
-XFOR,Health Care
-XGN,Health Care
-XLO,Health Care
 XMTR,Technology
-XNCR,Health Care
-XOMA,Health Care
-XOMAO,Health Care
-XOMAP,Health Care
 XP,Finance
 XPON,Technology
-XRAY,Health Care
-XRTX,Health Care
 XRX,Technology
-XTNT,Health Care
-YCBD,Health Care
 YELP,Technology
 YEXT,Technology
-YMAB,Health Care
-ZBH,Health Care
 ZBRA,Technology
 ZENV,Technology
 ZI,Technology
-ZIMV,Health Care
 ZION,Finance
 ZIONL,Finance
 ZIONO,Finance
 ZIONP,Finance
-ZIVO,Health Care
 ZM,Technology
-ZNTL,Health Care
-ZOM,Health Care
 ZS,Technology
 ZTR,Finance
-ZTS,Health Care
-ZVRA,Health Care
-ZVSA,Health Care
-ZYME,Health Care
-ZYXI,Health Care
 TRUE,Technology
