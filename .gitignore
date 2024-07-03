@@ -1,0 +1,15 @@
+# 檔案名稱 .gitignore
+
+
+flask/venv/
+
+
+config/database.yml
+
+
+/db/*.sqlite3
+
+
+*.tmp
+
+#.gitignore

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Generic{% endblock %}
+
+{% block banner %}
+
+{% endblock %}
+
+{% block content %}
+
+<section id="wrapper">
+    <header>
+        <div class="inner">
+            <h2>篩選器</h2>
+            <p>Phasellus non pulvinar erat. Fusce tincidunt nisl eget ipsum.</p>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="wrapper">
+        <div class="inner">
+
+            <h3 class="major">Select Sector</h3>
+            <div>
+                {% for sector in sectors %}
+                <button class="sector-button" data-sector="{{ sector }}" onclick="toggleSectorAndFilter(this)">{{ sector
+                    }}</button>
+                {% endfor %}
+            </div>
+            <hr>
+
+            <h3 class="major">Select Industry</h3>
+            <div id="industry-buttons"></div>
+            <hr>
+
+            <h3 class="major">Results</h3>
+            <div id="results"></div>
+            <hr>
+
+            <section class="features">
+                <article>
+                    <a href="#" class="image"><img src="images/pic04.jpg" alt="" /></a>
+                    <h3 class="major">Sed feugiat lorem</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
+                        ultrices.</p>
+                    <a href="#" class="special">Learn more</a>
+                </article>
+                <article>
+                    <a href="#" class="image"><img src="images/pic05.jpg" alt="" /></a>
+                    <h3 class="major">Nisl placerat</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
+                        ultrices.</p>
+                    <a href="#" class="special">Learn more</a>
+                </article>
+            </section>
+
+        </div>
+    </div>
+
+</section>
+<!-- <h1>篩選</h1>
+<h2>Select Sector</h2>
+<div>
+    {% for sector in sectors %}
+    <button class="sector-button" data-sector="{{ sector }}" onclick="toggleSectorAndFilter(this)">{{ sector
+        }}</button>
+    {% endfor %}
+</div>
+<hr>
+<h2>Select Industry</h2>
+<div id="industry-buttons"></div>
+
+<hr>
+<h2>Results</h2>
+
+<div id="results"></div> -->
+{% endblock %}

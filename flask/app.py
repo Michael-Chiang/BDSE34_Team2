@@ -14,11 +14,23 @@ db_config = {
 }
 
 # Grafana 配置
-grafana_url = "http://192.168.32.176:3000"
+grafana_url = "http://192.168.21.85:3000"
 grafana_api_key = "glsa_cNzq1IPXgKS1RqTl1vNPrpcvPAnoOXlt_e278fd0c"
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/generic')
+def generic():
+    return render_template('generic.html')
+
+@app.route('/elements')
+def elements():
+    return render_template('elements.html')
+
+@app.route('/filter', methods=['GET'])
+def filter():
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor(dictionary=True)
     
@@ -29,7 +41,7 @@ def index():
     cursor.close()
     connection.close()
     
-    return render_template('index.html', sectors=sectors)
+    return render_template('filter.html', sectors=sectors)
 
 @app.route('/filter_sectors', methods=['POST'])
 def filter_sectors():
@@ -82,6 +94,9 @@ def filter_results():
     
     cursor.close()
     connection.close()
+
+    print(results)
+    print(columns)
     
     return jsonify({'results': results, 'columns': columns})
 
