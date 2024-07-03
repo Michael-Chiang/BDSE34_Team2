@@ -1,4 +1,6 @@
 import copy
+import glob
+import os
 import time
 
 import numpy as np
@@ -21,11 +23,11 @@ def transform_type(x, device, is_train=True):
     return tensor if is_train else tensor.to(torch.int64)
 
 
-def split_data(stock, lookback, y):
+def split_data(stock, lookback, interval, y):
     data_raw = np.array(stock)
     n_time = len(data_raw)
     data, targets = [], []
-    for index in range(n_time - lookback):
+    for index in range(0, n_time - lookback, interval):
         data.append(data_raw[index : index + lookback, :])
         targets.append(y.iloc[index + lookback])
 
@@ -166,30 +168,45 @@ def load_model(path, input_dim, hidden_dim, num_layers, output_dim):
     return model
 
 
-def prepare_data(file_path, lookback, period):
-    data = pd.read_csv(file_path)
-    scaler = StandardScaler()
-    data_ = scaler.fit_transform(data.iloc[:, 1:].values)
+def prepare_data(file_paths, lookback, interval, period):
+    x_train_all = None
+    y_train_all = None
+    x_test_all = None
+    y_test_all = None
+    for file_path in file_paths:
+        data = pd.read_csv(file_path)
+        scaler = StandardScaler()
+        data_ = scaler.fit_transform(data.iloc[:, 1:].values)
 
-    ten_day_change = data["Close"].pct_change(periods=period) * 100
-    fixed_bins = [-float("inf"), -10, -2, 2, 10, float("inf")]
-    fixed_labels = [0, 1, 2, 3, 4]
-    ten_day_change_fixed_discrete = pd.cut(
-        ten_day_change, bins=fixed_bins, labels=fixed_labels
-    )
+        ten_day_change = data["Close"].pct_change(periods=period) * 100
+        fixed_bins = [-float("inf"), -10, -2, 2, 10, float("inf")]
+        fixed_labels = [0, 1, 2, 3, 4]
+        ten_day_change_fixed_discrete = pd.cut(
+            ten_day_change, bins=fixed_bins, labels=fixed_labels
+        )
 
-    x_train, y_train, x_test, y_test = split_data(
-        data_, lookback, ten_day_change_fixed_discrete
-    )
-    print("x_train.shape =", x_train.shape)
-    print("y_train.shape =", y_train.shape)
-    print("x_test.shape =", x_test.shape)
-    print("y_test.shape =", y_test.shape)
+        x_train, y_train, x_test, y_test = split_data(
+            data_, lookback, interval, ten_day_change_fixed_discrete
+        )
+        print("x_train.shape =", x_train.shape)
+        print("y_train.shape =", y_train.shape)
+        print("x_test.shape =", x_test.shape)
+        print("y_test.shape =", y_test.shape)
+        if x_train_all is None:
+            x_train_all = np.copy(x_train)
+            y_train_all = np.copy(y_train)
+            x_test_all = np.copy(x_test)
+            y_test_all = np.copy(y_test)
+        else:
+            x_train_all = np.concatenate((x_train_all, x_train), axis=0)
+            y_train_all = np.concatenate((y_train_all, y_train), axis=0)
+            x_test_all = np.concatenate((x_test_all, x_test), axis=0)
+            y_test_all = np.concatenate((y_test_all, y_test), axis=0)
 
-    x_train_ = transform_type(x_train, device)
-    x_test_ = transform_type(x_test, device)
-    y_train_ = transform_type(y_train, device, is_train=False)
-    y_test_ = transform_type(y_test, device, is_train=False)
+    x_train_ = transform_type(x_train_all, device)
+    x_test_ = transform_type(x_test_all, device)
+    y_train_ = transform_type(y_train_all, device, is_train=False)
+    y_test_ = transform_type(y_test_all, device, is_train=False)
 
     return x_train_, y_train_, x_test_, y_test_
 
@@ -200,18 +217,22 @@ def main():
     hidden_dim = 100
     num_layers = 7
     output_dim = 5
-    batch_size = 16
+    batch_size = 8
     num_epochs = 100
     lr = 0.0001
     lookback = 60  # Sequence length
+    interval = 10  # sample days difference
     period = 10  # predicted days after
     sector = "Finance"
-    clusterID = 0
+    clusterID = "0"
+    file_paths = glob.glob(os.path.join("stock_data_all", sector, clusterID, "*.csv"))
     file_path = f"stock_data_all/{sector}/{clusterID}/ABCB.csv"
     model_save_path = "model/best_lstm_model.pth"
 
     # Prepare data
-    x_train_, y_train_, x_test_, y_test_ = prepare_data(file_path, lookback, period)
+    x_train_, y_train_, x_test_, y_test_ = prepare_data(
+        file_paths, lookback, interval, period
+    )
 
     # Data loaders
     train_ds = TensorDataset(x_train_, y_train_)
