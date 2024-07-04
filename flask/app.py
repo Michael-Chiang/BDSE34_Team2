@@ -9,12 +9,12 @@ app = Flask(__name__)
 db_config = {
     'user': 'root',
     'password': 'P@ssw0rd',
-    'host': 'localhost',
+    'host': '192.168.32.176',
     'database': 'stock',
 }
 
 # Grafana 配置
-grafana_url = "http://192.168.21.85:3000"
+grafana_url = "http://192.168.32.176:3000"
 grafana_api_key = "glsa_cNzq1IPXgKS1RqTl1vNPrpcvPAnoOXlt_e278fd0c"
 
 @app.route('/')
@@ -35,7 +35,7 @@ def filter():
     cursor = connection.cursor(dictionary=True)
     
     # 獲取所有的Sector項目
-    cursor.execute("SELECT DISTINCT Sector FROM general_info")
+    cursor.execute("SELECT DISTINCT Sector FROM Latest_info")
     sectors = [row['Sector'] for row in cursor.fetchall()]
     
     cursor.close()
@@ -52,10 +52,10 @@ def filter_sectors():
     sectors_list = sectors.split(',')
 
     if sectors_list:
-        query = "SELECT DISTINCT Industry FROM general_info WHERE Sector IN (%s)" % ','.join(['%s'] * len(sectors_list))
+        query = "SELECT DISTINCT Industry FROM Latest_info WHERE Sector IN (%s)" % ','.join(['%s'] * len(sectors_list))
         cursor.execute(query, sectors_list)
     else:
-        query = "SELECT DISTINCT Industry FROM general_info"
+        query = "SELECT DISTINCT Industry FROM Latest_info"
         cursor.execute(query)
     
     industries = [row['Industry'] for row in cursor.fetchall()]
@@ -67,13 +67,17 @@ def filter_sectors():
 
 @app.route('/filter_results', methods=['POST'])
 def filter_results():
+
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor(dictionary=True)
     
     sectors = request.form.get('sectors')
     industries = request.form.get('industries')
+    page = request.form.get('page', 1, type=int)
+    per_page = 20
+    offset = (page - 1) * per_page
     
-    query = "SELECT * FROM general_info WHERE 1=1"
+    query = "SELECT * FROM Latest_info WHERE 1=1"
     params = []
     
     if sectors:
@@ -89,15 +93,15 @@ def filter_results():
     cursor.execute(query, params)
     results = cursor.fetchall()
     
-    cursor.execute("SHOW COLUMNS FROM general_info")
+    cursor.execute("SHOW COLUMNS FROM Latest_info")
     columns = [column['Field'] for column in cursor.fetchall()]
+
+    
     
     cursor.close()
     connection.close()
 
-    print(results)
-    print(columns)
-    
+
     return jsonify({'results': results, 'columns': columns})
 
 @app.route('/stock/<symbol>')
