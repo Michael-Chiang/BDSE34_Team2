@@ -1,1 +1,3 @@
+Correlation_test.py 是將財經類和科技類的股票和indicator.csv中的指數計算相關係數並合併成Correlation_all_Adj_Close.csv、Correlation_tech_Adj_Close.csv、Correlation_fin_Adj_Close.csv
 
+box_plot.py是將Correlation_all_Adj_Close.csv 中的相關係數繪製成七張盒鬚圖，分別是七個指數，並皆有分成科技和財精良組，來觀察不同類別股票與七個的指數相關係數關係如何
