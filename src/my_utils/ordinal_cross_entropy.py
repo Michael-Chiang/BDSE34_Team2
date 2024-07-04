@@ -1,3 +1,5 @@
+# ordinal_cross_entropy.py
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -20,7 +22,7 @@ class OrdinalCrossEntropyLoss(nn.Module):
             batch_size, num_classes).to(outputs.device)
         for i in range(batch_size):
             ordinal_labels[i, :targets[i] + 1] = 1
-        print(ordinal_labels)
+
         # Apply sigmoid to the outputs
         sigmoid_outputs = torch.sigmoid(outputs)
 
