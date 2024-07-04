@@ -11,6 +11,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader, TensorDataset
 
+from my_utils.ordinal_cross_entropy import OrdinalCrossEntropyLoss
+
 # Set device
 use_cuda = 1
 device = torch.device("cuda" if (torch.cuda.is_available() & use_cuda) else "cpu")
@@ -43,7 +45,15 @@ def split_data(stock, lookback, interval, y):
 
 
 def train(
-    model, num_epochs, train_dl, valid_dl, device, criterion, optimizer, scheduler
+    model,
+    num_epochs,
+    patience,
+    train_dl,
+    valid_dl,
+    device,
+    criterion,
+    optimizer,
+    scheduler,
 ):
     loss_hist_train = []
     accuracy_hist_train = []
@@ -52,6 +62,8 @@ def train(
 
     best_model_wts = copy.deepcopy(model.state_dict())
     best_acc = 0.0
+    min_valid_loss = np.inf
+    counter = 0
 
     for epoch in range(num_epochs):
         model.train()
@@ -100,13 +112,21 @@ def train(
             best_acc = valid_accuracy
             best_model_wts = copy.deepcopy(model.state_dict())
 
-        if epoch % 10 == 0:
-            print(
-                f"Epoch {epoch}:   Train accuracy: {epoch_accuracy:.4f}    Validation accuracy: {valid_accuracy:.4f} "
-            )
-            print(
-                f"Epoch {epoch}:   Train loss: {epoch_loss:.4f}    Validation loss: {valid_loss:.4f} "
-            )
+        print(
+            f"Epoch {epoch}:   Train accuracy: {epoch_accuracy:.4f}    Validation accuracy: {valid_accuracy:.4f} "
+        )
+        print(
+            f"Epoch {epoch}:   Train loss: {epoch_loss:.4f}    Validation loss: {valid_loss:.4f} "
+        )
+
+        if valid_loss < min_valid_loss:
+            min_valid_loss = valid_loss
+            counter = 0
+        else:
+            counter += 1
+
+        if counter >= patience:
+            break
 
     model.load_state_dict(best_model_wts)
 
@@ -128,10 +148,11 @@ def show_accuracy(model, x, y):
 
 
 class LSTM(nn.Module):
-    def __init__(self, input_dim, hidden_dim, num_layers, output_dim):
+    def __init__(self, input_dim, hidden_dim, num_layers, output_dim, seq_length):
         super(LSTM, self).__init__()
         self.hidden_dim = hidden_dim
         self.num_layers = num_layers
+        self.seq_len = seq_length
         self.lstm = nn.LSTM(
             input_dim,
             hidden_dim,
@@ -141,17 +162,24 @@ class LSTM(nn.Module):
             bidirectional=True,
         )
         self.fc = nn.Sequential(
-            nn.Linear(hidden_dim * 2, 20),
+            nn.Linear(hidden_dim * 2 * seq_length, 1000),
             nn.ReLU(),
+            nn.BatchNorm1d(num_features=1000),
             nn.Dropout(p=0.5),
-            nn.Linear(20, output_dim),
+            nn.Linear(1000, 100),
+            nn.ReLU(),
+            nn.BatchNorm1d(num_features=100),
+            nn.Dropout(p=0.5),
+            nn.Linear(100, output_dim),
         )
 
     def forward(self, x):
         h0 = torch.zeros(self.num_layers * 2, x.size(0), self.hidden_dim).to(device)
         c0 = torch.zeros(self.num_layers * 2, x.size(0), self.hidden_dim).to(device)
         out, _ = self.lstm(x, (h0, c0))
-        out = self.fc(out[:, -1, :])
+        # out = self.fc(out[:, -1, :])
+        out = out.contiguous().view(x.size(0), -1)
+        out = self.fc(out)
         return out
 
 
@@ -160,8 +188,8 @@ def save_model(model, path):
     print(f"Model saved to {path}")
 
 
-def load_model(path, input_dim, hidden_dim, num_layers, output_dim):
-    model = LSTM(input_dim, hidden_dim, num_layers, output_dim)
+def load_model(path, input_dim, hidden_dim, num_layers, output_dim, seq_length):
+    model = LSTM(input_dim, hidden_dim, num_layers, output_dim, seq_length)
     model.load_state_dict(torch.load(path))
     model.to(device)
     print(f"Model loaded from {path}")
@@ -202,12 +230,16 @@ def prepare_data(file_paths, lookback, interval, period):
             y_train_all = np.concatenate((y_train_all, y_train), axis=0)
             x_test_all = np.concatenate((x_test_all, x_test), axis=0)
             y_test_all = np.concatenate((y_test_all, y_test), axis=0)
-
+        # break
     x_train_ = transform_type(x_train_all, device)
     x_test_ = transform_type(x_test_all, device)
     y_train_ = transform_type(y_train_all, device, is_train=False)
     y_test_ = transform_type(y_test_all, device, is_train=False)
 
+    print("x_train_.shape =", x_train_.shape)
+    print("y_train_.shape =", y_train_.shape)
+    print("x_test_.shape =", x_test_.shape)
+    print("y_test_.shape =", y_test_.shape)
     return x_train_, y_train_, x_test_, y_test_
 
 
@@ -218,8 +250,9 @@ def main():
     num_layers = 7
     output_dim = 5
     batch_size = 8
-    num_epochs = 100
-    lr = 0.0001
+    num_epochs = 15
+    lr = 0.00005
+    patience = 3
     lookback = 60  # Sequence length
     interval = 10  # sample days difference
     period = 10  # predicted days after
@@ -246,30 +279,40 @@ def main():
         hidden_dim=hidden_dim,
         output_dim=output_dim,
         num_layers=num_layers,
+        seq_length=lookback,
     ).to(device)
-    criterion = torch.nn.CrossEntropyLoss()
+    # criterion = torch.nn.CrossEntropyLoss()
+    criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=100, gamma=0.1)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
 
     # Train model
     start_time = time.time()
     best_model, hist = train(
-        model, num_epochs, train_dl, test_dl, device, criterion, optimizer, scheduler
+        model,
+        num_epochs,
+        patience,
+        train_dl,
+        test_dl,
+        device,
+        criterion,
+        optimizer,
+        scheduler,
     )
     training_time = time.time() - start_time
     print("Training time: {}".format(training_time))
-    print(
-        "Training accuracy: {:.4f}".format(
-            show_accuracy(best_model, x_train_, y_train_)
-        )
-    )
+    # print(
+    #     "Training accuracy: {:.4f}".format(
+    #         show_accuracy(best_model, x_train_, y_train_)
+    #     )
+    # )
     print(
         "Testing accuracy: {:.4f}".format(show_accuracy(best_model, x_test_, y_test_))
     )
 
     # Save model
     save_model(best_model, model_save_path)
-    load_model(model_save_path, input_dim, hidden_dim, num_layers, output_dim)
+    load_model(model_save_path, input_dim, hidden_dim, num_layers, output_dim, lookback)
 
 
 if __name__ == "__main__":
