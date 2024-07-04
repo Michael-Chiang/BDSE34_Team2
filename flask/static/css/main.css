@@ -2313,6 +2313,7 @@ input[type="text"],
 input[type="password"],
 input[type="email"],
 input[type="tel"],
+input[type="number"],
 select,
 textarea {
 	-moz-appearance: none;
@@ -2335,6 +2336,7 @@ input[type="text"]:invalid,
 input[type="password"]:invalid,
 input[type="email"]:invalid,
 input[type="tel"]:invalid,
+input[type="number"]:invalid,
 select:invalid,
 textarea:invalid {
 	box-shadow: none;
@@ -2344,6 +2346,7 @@ input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
 input[type="tel"]:focus,
+input[type="number"]:focus,
 select:focus,
 textarea:focus {
 	border-color: #5b6ba6;
@@ -2375,6 +2378,7 @@ select::-ms-expand {
 input[type="text"],
 input[type="password"],
 input[type="email"],
+input[type="number"],
 select {
 	height: 2.75em;
 }
@@ -3013,6 +3017,16 @@ table.alt tfoot {
 		padding-bottom: 0.5em;
 		/* 调整单元格内边距 */
 	}
+
+	/* 隐藏除了前两个栏位以外的所有栏位 */
+	table th:nth-child(n+3),
+	table td:nth-child(n+3) {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 736px) {
+
 
 	/* 隐藏除了前两个栏位以外的所有栏位 */
 	table th:nth-child(n+3),

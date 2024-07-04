@@ -36,16 +36,16 @@
                 </ul>
                 <hr>
 
-                <h3 class="major">Results</h3>
+                <h3 class="major" id="stock-results">Results</h3>
                 <div id="results"></div>
-                <hr>
 
-                <h4>Pagination</h4>
-                <ul class="pagination">
-                    <li><span class="button small disabled" id="prev-button">Prev</span></li>
-                    <div id="pagination-buttons"></div>
-                    <li><span class="button small" id="next-button">Next</span></li>
+                <ul class="pagination" id="pagination-buttons">
                 </ul>
+                <div class="pagination-input-container">
+                    <input type="number" id="goto-page-input" placeholder="Go to page" min="1">
+                    <button class="button fit small" id="goto-page-button">Go</button>
+                </div>
+
             </section>
 
             <section class="features">

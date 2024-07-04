@@ -2,8 +2,7 @@ $(document).ready(function () {
 
     let currentPage = 1;
     let totalPages = 1;
-    let allResults = [];
-    let columns = [];
+    let resultsData = {};  // 保存请求返回的所有数据
 
     function toggleSelection(button) {
         button.classList.toggle('selected');
@@ -47,105 +46,132 @@ $(document).ready(function () {
         $.post('/filter_results', {
             sectors: selectedSectors.join(','),
             industries: selectedIndustries.join(','),
-
         }, function (data) {
-            //console.log(data);
-            allResults = data.results;  // 保存所有结果
-            columns = data.columns;  // 保存列信息
-            data = data
-            totalPages = Math.ceil(allResults.length / 20);  // 计算总页数
-            displayResults(data, allResults, columns);  // 显示当前页结果
-            updatePagination();  // 更新分页按钮
-            // var table = '<table border="1"><thead><tr>';
-            // for (var i = 0; i < data.columns.length; i++) {
-            //     table += '<th>' + data.columns[i] + '</th>';
-            // }
-            // table += '</tr></thead><tbody>';
-            // for (var i = 0; i < data.results.length; i++) {
-            //     table += '<tr>';
-            //     for (var j = 0; j < data.columns.length; j++) {
-            //         if (data.columns[j] === 'Symbol') {
-            //             table += '<td><a href="/stock/' + data.results[i][data.columns[j]] + '">' + data.results[i][data.columns[j]] + '</a></td>';
-            //         } else {
-            //             table += '<td>' + data.results[i][data.columns[j]] + '</td>';
-            //         }
-            //     }
-            //     table += '</tr>';
-            // }
-            // table += '</tbody></table>';
-            // $('#results').html(table);
-
-            // totalPages = data.total_pages;  // 更新总页数
-            // updatePagination();  // 更新分页按钮
+            if (data && data.results && data.columns) {
+                resultsData = data;
+                totalPages = Math.ceil(data.results.length / 20);
+                displayResults();
+                updatePagination();
+            } else {
+                $('#results').html('<p>No results found</p>');
+            }
         });
     }
 
-    function displayResults(data, allResults, columns) {
-        //console.log(data);
-
+    function displayResults() {
+        const { results, columns } = resultsData;
         var table = '<table border="1"><thead><tr>';
-        for (var i = 0; i < data.columns.length; i++) {
-            table += '<th>' + data.columns[i] + '</th>';
+        for (var i = 0; i < columns.length; i++) {
+            table += '<th>' + columns[i] + '</th>';
         }
         table += '</tr></thead><tbody>';
-
         let start = (currentPage - 1) * 20;
         let end = start + 20;
-        let pageResults = allResults.slice(start, end);  // 获取当前页的数据
-
-
-
-
-
+        let pageResults = results.slice(start, end);
         for (var i = 0; i < pageResults.length; i++) {
             table += '<tr>';
-            for (var j = 0; j < data.columns.length; j++) {
+            for (var j = 0; j < columns.length; j++) {
                 if (columns[j] === 'Symbol') {
-                    table += '<td><a href="/stock/' + pageResults[i][columns[j]] + '">' + pageResults[i][data.columns[j]] + '</a></td>';
+                    table += '<td><a href="/stock/' + pageResults[i][columns[j]] + '">' + pageResults[i][columns[j]] + '</a></td>';
                 } else {
-                    table += '<td>' + pageResults[i][data.columns[j]] + '</td>';
+                    table += '<td>' + pageResults[i][columns[j]] + '</td>';
                 }
             }
             table += '</tr>';
         }
         table += '</tbody></table>';
         $('#results').html(table);
-
-        totalPages = data.total_pages;  // 更新总页数
-        updatePagination();  // 更新分页按钮
     }
 
     function updatePagination() {
         let paginationHtml = '';
-        for (let i = 1; i <= totalPages; i++) {
-            paginationHtml += `<li><a href="#" class="page ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</a></li>`;
+
+        paginationHtml += `<li><button class="button small ${currentPage === 1 ? 'disabled' : ''}" id="prev-button">Prev</button></li>`;
+
+        if (currentPage > 3) {
+            paginationHtml += `<li><button class="page" data-page="1">1</button></li>`;
+            if (currentPage > 4) {
+                paginationHtml += `<li><span>...</span></li>`;
+            }
         }
+
+        for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+            paginationHtml += `<li><button class="page ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button></li>`;
+        }
+
+        if (currentPage < totalPages - 2) {
+            if (currentPage < totalPages - 3) {
+                paginationHtml += `<li><span>...</span></li>`;
+            }
+            paginationHtml += `<li><button class="page" data-page="${totalPages}">${totalPages}</button></li>`;
+        }
+
+        paginationHtml += `<li><button class="button small ${currentPage === totalPages ? 'disabled' : ''}" id="next-button">Next</button></li>`;
         $('#pagination-buttons').html(paginationHtml);
-        document.getElementById('prev-button').classList.toggle('disabled', currentPage === 1);
-        document.getElementById('next-button').classList.toggle('disabled', currentPage === totalPages);
+
+        // 绑定上一页和下一页按钮的事件
+        $('#prev-button').off('click').on('click', function () {
+            if (currentPage > 1) {
+                goToPage(currentPage - 1);
+            }
+        });
+
+        $('#next-button').off('click').on('click', function () {
+            if (currentPage < totalPages) {
+                goToPage(currentPage + 1);
+            }
+        });
+
+        // 绑定具体页码按钮的事件
+        $('.page').off('click').on('click', function () {
+            const page = $(this).data('page');
+            if (page) {
+                goToPage(page);
+            }
+        });
+
+        // 绑定Go按钮的事件
+        $('#goto-page-button').off('click').on('click', function () {
+            const page = parseInt($('#goto-page-input').val());
+            if (page) {
+                goToPage(page);
+            }
+        });
+
+        // 调整小屏幕上的分页显示
+        if (window.matchMedia("(max-width: 736px)").matches) {
+            $('.page').each(function () {
+                const page = parseInt($(this).data('page'));
+                if (Math.abs(page - currentPage) > 1 && page !== 1 && page !== totalPages) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            });
+            $('.page-dots').hide();
+        }
     }
+
+
 
     function goToPage(page) {
         if (page < 1 || page > totalPages) return;
         currentPage = page;
-        displayResults(data, allResults, columns);  // 显示当前页结果
+        displayResults();
+        updatePagination();
+        scrollToResults();  // 滚动到结果表格
     }
 
-    document.getElementById('prev-button').addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            displayResults(data, allResults, columns);  // 显示当前页结果
+    function scrollToResults() {
+        const resultsElement = document.getElementById('stock-results');
+        if (resultsElement) {
+            resultsElement.scrollIntoView({ behavior: 'smooth' });
         }
-    });
+    }
 
-    document.getElementById('next-button').addEventListener('click', () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            displayResults(data, allResults, columns);  // 显示当前页结果
-        }
-    });
+    // 将goToPage函数绑定到window对象上
+    window.goToPage = goToPage;
 
-    // 初始加载数据
     updateResults();
 
 

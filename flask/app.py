@@ -9,7 +9,8 @@ app = Flask(__name__)
 db_config = {
     'user': 'root',
     'password': 'P@ssw0rd',
-    'host': '192.168.32.176',
+    #'host': '192.168.32.176',
+    'host': 'Localhost',
     'database': 'stock',
 }
 
@@ -96,8 +97,6 @@ def filter_results():
     cursor.execute("SHOW COLUMNS FROM Latest_info")
     columns = [column['Field'] for column in cursor.fetchall()]
 
-    
-    
     cursor.close()
     connection.close()
 

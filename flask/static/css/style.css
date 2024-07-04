@@ -2,3 +2,56 @@
     background-color: #4c5c96;
     box-shadow: none;
 }
+
+#pagination-buttons>li>button.page {
+    box-shadow: none;
+    font-family: "Source Sans Pro", Helvetica, sans-serif;
+
+}
+
+ul.pagination,
+.pagination-input-container {
+    display: flex;
+    justify-content: center;
+    /* 水平居中 */
+    align-items: center;
+    /* 垂直居中 */
+    margin: 10px;
+    /* 根据需要调整外边距 */
+}
+
+#goto-page-input {
+    height: 35px;
+    /* 调整为所需的高度 */
+    width: 120px;
+    padding: 13px;
+    margin-right: 10px;
+    /* 输入框与按钮之间的间距 */
+}
+
+
+#goto-page-button {
+    height: 35px;
+    /* 调整为所需的高度 */
+    width: 40px;
+    padding: 0;
+
+}
+
+@media screen and (max-width: 736px) {
+
+    .page-dots,
+    .page {
+        display: none;
+    }
+
+    .page[data-page="1"],
+    .page[data-page="2"],
+    .page[data-page="totalPages"],
+    .page[data-page="totalPages-1"],
+    .page[data-page="currentPage"],
+    .page[data-page="currentPage+1"],
+    .page[data-page="currentPage-1"] {
+        display: inline-block;
+    }
+}
