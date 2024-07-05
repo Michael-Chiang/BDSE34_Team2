@@ -1,7 +1,9 @@
 import copy
 import glob
+import logging
 import os
 import time
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -11,12 +13,26 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader, TensorDataset
 
-from my_utils.ordinal_cross_entropy import OrdinalCrossEntropyLoss
+# Get current time for log file name
+current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+log_dir = "log"
+os.makedirs(log_dir, exist_ok=True)
+log_filename = os.path.join(log_dir, f"log_{current_time}.txt")
+
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(message)s",
+    handlers=[
+        logging.StreamHandler(),  # Log to console
+        logging.FileHandler(log_filename),  # Log to file]
+    ],
+)
 
 # Set device
 use_cuda = 1
 device = torch.device("cuda" if (torch.cuda.is_available() & use_cuda) else "cpu")
-print(device)
+logging.info(f"Device: {device}")
 
 
 # Data transformation functions
@@ -35,7 +51,7 @@ def split_data(stock, lookback, interval, y):
 
     data = np.array(data)
     targets = np.array(targets)
-    print("Total data samples:{}".format(data.shape))
+    logging.info(f"Total data samples: {data.shape}")
 
     # Split training and testing data
     x_train, x_test, y_train, y_test = train_test_split(
@@ -112,11 +128,11 @@ def train(
             best_acc = valid_accuracy
             best_model_wts = copy.deepcopy(model.state_dict())
 
-        print(
-            f"Epoch {epoch}:   Train accuracy: {epoch_accuracy:.4f}    Validation accuracy: {valid_accuracy:.4f} "
+        logging.info(
+            f"Epoch {epoch}:   Train accuracy: {epoch_accuracy:.4f}    Validation accuracy: {valid_accuracy:.4f}"
         )
-        print(
-            f"Epoch {epoch}:   Train loss: {epoch_loss:.4f}    Validation loss: {valid_loss:.4f} "
+        logging.info(
+            f"Epoch {epoch}:   Train loss: {epoch_loss:.4f}    Validation loss: {valid_loss:.4f}"
         )
 
         if valid_loss < min_valid_loss:
@@ -139,12 +155,15 @@ def train(
     return model, history
 
 
-def show_accuracy(model, x, y):
+def show_accuracy(model, dl):
     model.eval()
+    correct = 0
+    size = len(dl.dataset)
     with torch.no_grad():
-        x_pred = model(x).detach().cpu().numpy()
-    is_correct = (np.argmax(x_pred, axis=1) == y.cpu().numpy()).sum() / len(x_pred)
-    return is_correct
+        for batch_x, batch_y in dl:
+            pred_y = model(batch_x)
+            correct += (pred_y.argmax(axis=1) == batch_y).type(torch.float).sum().item()
+    return correct / size
 
 
 class LSTM(nn.Module):
@@ -162,11 +181,11 @@ class LSTM(nn.Module):
             bidirectional=True,
         )
         self.fc = nn.Sequential(
-            nn.Linear(hidden_dim * 2 * seq_length, 1000),
+            nn.Linear(hidden_dim * 2, 500),
             nn.ReLU(),
-            nn.BatchNorm1d(num_features=1000),
+            nn.BatchNorm1d(num_features=500),
             nn.Dropout(p=0.5),
-            nn.Linear(1000, 100),
+            nn.Linear(500, 100),
             nn.ReLU(),
             nn.BatchNorm1d(num_features=100),
             nn.Dropout(p=0.5),
@@ -177,22 +196,21 @@ class LSTM(nn.Module):
         h0 = torch.zeros(self.num_layers * 2, x.size(0), self.hidden_dim).to(device)
         c0 = torch.zeros(self.num_layers * 2, x.size(0), self.hidden_dim).to(device)
         out, _ = self.lstm(x, (h0, c0))
-        # out = self.fc(out[:, -1, :])
-        out = out.contiguous().view(x.size(0), -1)
-        out = self.fc(out)
+        # out = out.contiguous().view(x.size(0), -1)
+        out = self.fc(out[:, -1, :])
         return out
 
 
 def save_model(model, path):
     torch.save(model.state_dict(), path)
-    print(f"Model saved to {path}")
+    logging.info(f"Model saved to {path}")
 
 
 def load_model(path, input_dim, hidden_dim, num_layers, output_dim, seq_length):
     model = LSTM(input_dim, hidden_dim, num_layers, output_dim, seq_length)
     model.load_state_dict(torch.load(path))
     model.to(device)
-    print(f"Model loaded from {path}")
+    logging.info(f"Model loaded from {path}")
     return model
 
 
@@ -216,10 +234,10 @@ def prepare_data(file_paths, lookback, interval, period):
         x_train, y_train, x_test, y_test = split_data(
             data_, lookback, interval, ten_day_change_fixed_discrete
         )
-        print("x_train.shape =", x_train.shape)
-        print("y_train.shape =", y_train.shape)
-        print("x_test.shape =", x_test.shape)
-        print("y_test.shape =", y_test.shape)
+        logging.info(f"x_train.shape = {x_train.shape}")
+        logging.info(f"y_train.shape = {y_train.shape}")
+        logging.info(f"x_test.shape = {x_test.shape}")
+        logging.info(f"y_test.shape = {y_test.shape}")
         if x_train_all is None:
             x_train_all = np.copy(x_train)
             y_train_all = np.copy(y_train)
@@ -230,16 +248,15 @@ def prepare_data(file_paths, lookback, interval, period):
             y_train_all = np.concatenate((y_train_all, y_train), axis=0)
             x_test_all = np.concatenate((x_test_all, x_test), axis=0)
             y_test_all = np.concatenate((y_test_all, y_test), axis=0)
-        # break
     x_train_ = transform_type(x_train_all, device)
     x_test_ = transform_type(x_test_all, device)
     y_train_ = transform_type(y_train_all, device, is_train=False)
     y_test_ = transform_type(y_test_all, device, is_train=False)
 
-    print("x_train_.shape =", x_train_.shape)
-    print("y_train_.shape =", y_train_.shape)
-    print("x_test_.shape =", x_test_.shape)
-    print("y_test_.shape =", y_test_.shape)
+    logging.info(f"x_train_.shape = {x_train_.shape}")
+    logging.info(f"y_train_.shape = {y_train_.shape}")
+    logging.info(f"x_test_.shape = {x_test_.shape}")
+    logging.info(f"y_test_.shape = {y_test_.shape}")
     return x_train_, y_train_, x_test_, y_test_
 
 
@@ -247,10 +264,10 @@ def main():
     # Parameters
     input_dim = 71  # Number of features
     hidden_dim = 100
-    num_layers = 7
+    num_layers = 3
     output_dim = 5
     batch_size = 8
-    num_epochs = 15
+    num_epochs = 20
     lr = 0.00005
     patience = 3
     lookback = 60  # Sequence length
@@ -260,7 +277,7 @@ def main():
     clusterID = "0"
     file_paths = glob.glob(os.path.join("stock_data_all", sector, clusterID, "*.csv"))
     file_path = f"stock_data_all/{sector}/{clusterID}/ABCB.csv"
-    model_save_path = "model/best_lstm_model.pth"
+    model_save_path = f"model/best_lstm_model_{current_time}.pth"
 
     # Prepare data
     x_train_, y_train_, x_test_, y_test_ = prepare_data(
@@ -281,10 +298,9 @@ def main():
         num_layers=num_layers,
         seq_length=lookback,
     ).to(device)
-    # criterion = torch.nn.CrossEntropyLoss()
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5)
 
     # Train model
     start_time = time.time()
@@ -300,15 +316,8 @@ def main():
         scheduler,
     )
     training_time = time.time() - start_time
-    print("Training time: {}".format(training_time))
-    # print(
-    #     "Training accuracy: {:.4f}".format(
-    #         show_accuracy(best_model, x_train_, y_train_)
-    #     )
-    # )
-    print(
-        "Testing accuracy: {:.4f}".format(show_accuracy(best_model, x_test_, y_test_))
-    )
+    logging.info(f"Training time: {training_time}")
+    logging.info(f"Testing accuracy: {show_accuracy(best_model, test_dl):.4f}")
 
     # Save model
     save_model(best_model, model_save_path)
