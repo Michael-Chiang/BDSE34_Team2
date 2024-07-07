@@ -9,8 +9,9 @@ app = Flask(__name__)
 db_config = {
     'user': 'root',
     'password': 'P@ssw0rd',
-    #'host': '192.168.32.176',
-    'host': 'Localhost',
+    #'host': '192.168.32.176', # MySQL
+    #'host': 'Localhost', # MySQL本地
+    'host': 'StockDB', # Docker MySQL
     'database': 'stock',
 }
 
@@ -139,4 +140,4 @@ def generate_grafana_dashboard_url(symbol):
     
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
