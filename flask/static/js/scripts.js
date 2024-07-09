@@ -3,6 +3,8 @@ $(document).ready(function () {
     let currentPage = 1;
     let totalPages = 1;
     let resultsData = {};  // 保存请求返回的所有数据
+    let priceRange = { min_price: 0, max_price: 100 };  // 初始化价格范围
+
 
     function toggleSelection(button) {
         button.classList.toggle('selected');
@@ -43,20 +45,36 @@ $(document).ready(function () {
             }
         });
 
+        const stockID = $('#stock-id-input').val(); // 获取输入框中的股票代码
+        const minPrice = $('#price-min').val();
+        const maxPrice = $('#price-max').val();
+
         $.post('/filter_results', {
             sectors: selectedSectors.join(','),
             industries: selectedIndustries.join(','),
+            stock_id: stockID,
+            min_price: minPrice,
+            max_price: maxPrice
         }, function (data) {
             if (data && data.results && data.columns) {
                 resultsData = data;
                 totalPages = Math.ceil(data.results.length / 20);
                 displayResults();
                 updatePagination();
+                $('#total-count').text(`Total results: ${data.results.length}`);  // 显示总记录数
+                updatePriceRange(data.price_range);  // 更新价格范围
             } else {
                 $('#results').html('<p>No results found</p>');
+                $('#total-count').text(`Total results: 0`);  // 显示总记录数
+
+
             }
         });
     }
+
+    $('#price-min, #price-max').on('slidestop', function () {
+        updateResults();
+    });
 
     function displayResults() {
         const { results, columns } = resultsData;
@@ -188,4 +206,56 @@ $(document).ready(function () {
 
     window.toggleSectorAndFilter = toggleSectorAndFilter;
     window.toggleIndustryAndFilter = toggleIndustryAndFilter;
+
+    // 添加处理stockID搜索的逻辑
+    $('#stock-id-search-button').on('click', function () {
+        currentPage = 1;  // 重置为第一页
+        updateResults();  // 更新结果
+    });
+
+    function updatePriceRange(price_range) {
+        priceRange = price_range;  // 更新全局的价格范围
+        $('#minLabel').text(price_range.min_price);
+        $('#maxLabel').text(price_range.max_price);
+        $('#price-min').attr('min', price_range.min_price).attr('max', price_range.max_price).val(price_range.min_price);
+        $('#price-max').attr('min', price_range.min_price).attr('max', price_range.max_price).val(price_range.max_price);
+        $('#price-min, #price-max').slider('refresh');
+    }
+
+    $('#price-min, #price-max').on('slidestop', function () {
+        updateResults();
+    });
+
+    window.updateResults = updateResults;
+
+
+
+    // // 使用iframe引入jQuery Mobile样式
+    // const iframe = document.createElement("iframe");
+    // iframe.style.display = "none";
+    // document.body.appendChild(iframe);
+    // const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    // const script = iframeDoc.createElement("script");
+    // script.src = "https://code.jquery.com/jquery-1.11.3.min.js";
+    // script.onload = function () {
+    //     const mobileScript = iframeDoc.createElement("script");
+    //     mobileScript.src = "https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js";
+    //     mobileScript.onload = function () {
+    //         const fieldContain = iframeDoc.createElement("div");
+    //         fieldContain.setAttribute("data-role", "fieldcontain");
+    //         fieldContain.innerHTML = `
+    //             <label for="price-range">价格范围:</label>
+    //             <input type="range" name="price-min" id="price-min" min="${$('#price-min').attr('min')}" max="${$('#price-max').attr('max')}" value="${$('#price-min').val()}">
+    //             <input type="range" name="price-max" id="price-max" min="${$('#price-min').attr('min')}" max="${$('#price-max').attr('max')}" value="${$('#price-max').val()}">
+    //         `;
+    //         iframeDoc.body.appendChild(fieldContain);
+    //         $('#price-slider-container').html(iframeDoc.body.innerHTML);
+
+    //         $('#price-min, #price-max').slider('refresh');
+    //     };
+    //     iframeDoc.body.appendChild(mobileScript);
+    // };
+    // iframeDoc.body.appendChild(script);
+
 });
+

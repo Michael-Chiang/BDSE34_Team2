@@ -20,6 +20,15 @@
     <div class="wrapper">
         <div class="inner">
             <section>
+                <h4>價格區間選擇</h4>
+                <iframe id="price-slider-iframe" style="border: none; width: 100%; height: 200px;"></iframe>
+                <div class="range-labels">
+                    <span id="minLabel">{{ price_range.min_price }}</span> - <span id="maxLabel">{{
+                        price_range.max_price }}</span>
+                </div>
+
+                <hr>
+
                 <h3 class="major">Select Sector</h3>
                 <ul class="actions fit small">
                     {% for sector in sectors %}
@@ -39,11 +48,19 @@
                 <h3 class="major" id="stock-results">Results</h3>
                 <div id="results"></div>
 
+                <div id="total-count"></div>
+
                 <ul class="pagination" id="pagination-buttons">
                 </ul>
                 <div class="pagination-input-container">
-                    <input type="number" id="goto-page-input" placeholder="page" min="1">
-                    <button class="button fit small" id="goto-page-button">Go</button>
+                    <input class="small" type="number" id="goto-page-input" placeholder="page" min="1">
+                    <button class="button small" id="goto-page-button">Go</button>
+                </div>
+
+                <h3 class="major">Search by Stock ID</h3>
+                <div class="stock-id-search-container">
+                    <input class="small" type="text" id="stock-id-input" placeholder="Enter Stock ID">
+                    <button class="button small" id="stock-id-search-button">Search</button>
                 </div>
 
             </section>
@@ -71,5 +88,7 @@
     </div>
 
 </section>
+
+<script></script>
 
 {% endblock %}

@@ -3040,6 +3040,8 @@ table.alt tfoot {
 input[type="submit"],
 input[type="reset"],
 input[type="button"],
+input[type="number"],
+input[type="text"],
 button,
 .button {
 	-moz-appearance: none;
@@ -3073,6 +3075,8 @@ button,
 input[type="submit"]:hover,
 input[type="reset"]:hover,
 input[type="button"]:hover,
+input[type="number"]:hover,
+input[type="text"]:hover,
 button:hover,
 .button:hover {
 	background-color: rgba(255, 255, 255, 0.025);
@@ -3081,6 +3085,8 @@ button:hover,
 input[type="submit"]:active,
 input[type="reset"]:active,
 input[type="button"]:active,
+input[type="number"]:active,
+input[type="text"]:active,
 button:active,
 .button:active {
 	background-color: rgba(255, 255, 255, 0.075);
@@ -3089,6 +3095,8 @@ button:active,
 input[type="submit"].icon:before,
 input[type="reset"].icon:before,
 input[type="button"].icon:before,
+input[type="number"].icon:before,
+input[type="text"].icon:before,
 button.icon:before,
 .button.icon:before {
 	margin-right: 0.5em;
@@ -3098,6 +3106,8 @@ button.icon:before,
 input[type="submit"].primary,
 input[type="reset"].primary,
 input[type="button"].primary,
+input[type="number"].primary,
+input[type="text"].primary,
 button.primary,
 .button.primary {
 	background-color: #4c5c96;
@@ -3107,6 +3117,8 @@ button.primary,
 input[type="submit"].primary:hover,
 input[type="reset"].primary:hover,
 input[type="button"].primary:hover,
+input[type="number"].primary:hover,
+input[type="text"].primary:hover,
 button.primary:hover,
 .button.primary:hover {
 	background-color: #53639e;
@@ -3115,6 +3127,8 @@ button.primary:hover,
 input[type="submit"].primary:active,
 input[type="reset"].primary:active,
 input[type="button"].primary:active,
+input[type="number"].primary:active,
+input[type="text"].primary:active,
 button.primary:active,
 .button.primary:active {
 	background-color: #45558d;
@@ -3123,6 +3137,8 @@ button.primary:active,
 input[type="submit"].primary.icon:before,
 input[type="reset"].primary.icon:before,
 input[type="button"].primary.icon:before,
+input[type="number"].primary.icon:before,
+input[type="text"].primary.icon:before,
 button.primary.icon:before,
 .button.primary.icon:before {
 	color: #7985b0;
@@ -3131,6 +3147,8 @@ button.primary.icon:before,
 input[type="submit"].fit,
 input[type="reset"].fit,
 input[type="button"].fit,
+input[type="number"].fit,
+input[type="text"].fit,
 button.fit,
 .button.fit {
 	width: 100%;
@@ -3139,6 +3157,8 @@ button.fit,
 input[type="submit"].small,
 input[type="reset"].small,
 input[type="button"].small,
+input[type="number"].small,
+input[type="text"].small,
 button.small,
 .button.small {
 	font-size: 0.6em;
@@ -3147,6 +3167,8 @@ button.small,
 input[type="submit"].large,
 input[type="reset"].large,
 input[type="button"].large,
+input[type="number"].large,
+input[type="text"].large,
 button.large,
 .button.large {
 	font-size: 1em;
@@ -3158,6 +3180,10 @@ input[type="reset"].disabled,
 input[type="reset"]:disabled,
 input[type="button"].disabled,
 input[type="button"]:disabled,
+input[type="number"].disabled,
+input[type="number"]:disabled,
+input[type="text"].disabled,
+input[type="text"]:disabled,
 button.disabled,
 button:disabled,
 .button.disabled,
@@ -3170,6 +3196,8 @@ button:disabled,
 	input[type="submit"],
 	input[type="reset"],
 	input[type="button"],
+	input[type="number"],
+	input[type="text"],
 	button,
 	.button {
 		padding: 0;

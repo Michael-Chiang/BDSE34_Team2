@@ -9,9 +9,9 @@ app = Flask(__name__)
 db_config = {
     'user': 'root',
     'password': 'P@ssw0rd',
-    #'host': '192.168.32.176', # MySQL
+    'host': '192.168.32.176', # MySQL
     #'host': 'Localhost', # MySQL本地
-    'host': 'StockDB', # Docker MySQL
+    #'host': 'StockDB', # Docker MySQL
     'database': 'stock',
 }
 
@@ -39,11 +39,14 @@ def filter():
     # 獲取所有的Sector項目
     cursor.execute("SELECT DISTINCT Sector FROM Latest_info")
     sectors = [row['Sector'] for row in cursor.fetchall()]
+
+    cursor.execute("SELECT MIN(`Latest Price`) as min_price, MAX(`Latest Price`) as max_price FROM Latest_info")
+    price_range = cursor.fetchone()
     
     cursor.close()
     connection.close()
     
-    return render_template('filter.html', sectors=sectors)
+    return render_template('filter.html', sectors=sectors, price_range=price_range)
 
 @app.route('/filter_sectors', methods=['POST'])
 def filter_sectors():
@@ -75,9 +78,10 @@ def filter_results():
     
     sectors = request.form.get('sectors')
     industries = request.form.get('industries')
-    page = request.form.get('page', 1, type=int)
-    per_page = 20
-    offset = (page - 1) * per_page
+    stock_id = request.form.get('stock_id')
+    min_price = request.form.get('min_price', type=float)
+    max_price = request.form.get('max_price', type=float)
+    
     
     query = "SELECT * FROM Latest_info WHERE 1=1"
     params = []
@@ -91,6 +95,19 @@ def filter_results():
         industries_list = industries.split(',')
         query += " AND Industry IN (%s)" % ','.join(['%s'] * len(industries_list))
         params.extend(industries_list)
+
+    if stock_id:  
+        query += " AND Symbol LIKE %s"
+        params.append('%' + stock_id + '%')
+
+    if min_price is not None:
+        query += " AND `Latest Price` >= %s"
+        params.append(min_price)
+
+    if max_price is not None:
+        query += " AND `Latest Price` <= %s"
+        params.append(max_price)
+    
     
     cursor.execute(query, params)
     results = cursor.fetchall()
@@ -98,11 +115,25 @@ def filter_results():
     cursor.execute("SHOW COLUMNS FROM Latest_info")
     columns = [column['Field'] for column in cursor.fetchall()]
 
+
+    cursor.execute("SELECT MIN(`Latest Price`) as min_price, MAX(`Latest Price`) as max_price FROM Latest_info")
+    price_range = cursor.fetchone()
+
     cursor.close()
     connection.close()
 
 
-    return jsonify({'results': results, 'columns': columns})
+    return jsonify({'results': results, 'columns': columns, 'price_range': price_range})
+
+@app.route('/get_price_range', methods=['GET'])
+def get_price_range():
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT MIN(`Latest Price`) as min_price, MAX(`Latest Price`) as max_price FROM Latest_info")
+    price_range = cursor.fetchone()
+    cursor.close()
+    connection.close()
+    return jsonify(price_range)
 
 @app.route('/stock/<symbol>')
 def stock_detail(symbol):
@@ -135,8 +166,6 @@ def generate_grafana_dashboard_url(symbol):
     to_timestamp = int(time.mktime(today.timetuple()) * 1000)
     
     return f"{grafana_url}/d/adompizn6fm68d/a-k-chart?orgId={org_id}&var-StockID={symbol}&from={from_timestamp}&to={to_timestamp}&kiosk"
-
-
     
 
 if __name__ == '__main__':
