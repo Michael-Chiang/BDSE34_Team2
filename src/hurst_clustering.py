@@ -55,7 +55,8 @@ def prepare_data_for_clustering(sector, start_date, end_date, stock_fig_dir):
 
     golden_shape = get_golden_length(start_date, end_date, sector)
 
-    csv_file_paths = glob.glob(os.path.join(f"stock_data_model/{sector}", "*.csv"))
+    csv_file_paths = glob.glob(os.path.join(
+        f"stock_data_model/{sector}", "*.csv"))
 
     # if os.path.exists(output_dir):
     #     clusters = pd.read_csv(output_dir + f'clustering_result_{sector}.csv')
@@ -68,17 +69,26 @@ def prepare_data_for_clustering(sector, start_date, end_date, stock_fig_dir):
         standardized_data = standardize_data(
             filtered_data, stockID, sector, stock_fig_dir
         )
+        filtered_data = filtered_data.values.reshape(-1)
+        Hs = []
+        n_segments = 1
+        segments = np.array_split(filtered_data, n_segments)
+        for i, segment in enumerate(segments):
 
-        # Evaluate Hurst equation
-        try:
-            H, c, _ = compute_Hc(
-                filtered_data.values.reshape(-1), kind="price", simplified=True
-            )
-            data_entry = [stockID] + [H]  # + filtered_data.values.reshape(-1).tolist()
-            logging.info(f"stockID = {stockID} H = {H}")
-            X.append(data_entry)
-        except:
-            logging.info(f"stockID = {stockID} invalid")
+            # Evaluate Hurst equation
+            try:
+                H, c, _ = compute_Hc(
+                    segment, kind="random_walk", simplified=True
+                )
+                logging.info(f"stockID = {stockID} segment = {i} H = {H}")
+                Hs.append(H)
+            # + filtered_data.values.reshape(-1).tolist()
+            except:
+                logging.info(f"stockID = {stockID} segment = {i} invalid")
+                Hs.append(1)
+
+        data_entry = [stockID] + Hs
+        X.append(data_entry)
 
     logging.info(f"Prepared data for {len(X)} stocks")
     return np.array(X, dtype=object)
@@ -98,15 +108,16 @@ def get_golden_length(start_date, end_date, sector):
 
 def perform_clustering(X):
     """Perform KMeans clustering."""
-    # logging.info(f'Performing KMeans clustering with {n_clusters} clusters')
-    # kmeans = KMeans(n_clusters=n_clusters, random_state=42)
-    # hclusterer = hdbscan.HDBSCAN(min_cluster_size=40)
-    # hclusterer.fit(X[:, 2:])
+    # logging.info(
+    #     f'Performing DBSCAN clustering with {min_samples} min_samples')
+    # # kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+    # hclusterer = DBSCAN(eps=0.15, min_samples=25)
+    # hclusterer.fit(X[:, 1:])
     # labels = hclusterer.labels_
 
     print(X.shape)
-    fixed_bins = [-float("inf"), 0.3, 0.7, float("inf")]
-    fixed_labels = [0, 1, 2]
+    fixed_bins = [-float("inf"), 0.3, 0.45, 0.55, 0.7, float("inf")]
+    fixed_labels = [0, 1, 2, 3, 4]
     labels = pd.cut(X[:, 1], bins=fixed_bins, labels=fixed_labels)
     return labels
 
@@ -159,10 +170,13 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     for sector in sectors:
-        model_path = os.path.join(model_dir, f"hurst_HDBSCAN_model_{sector}.pkl")
-        output_file = os.path.join(output_dir, f"hurst_clustering_result_{sector}.csv")
+        model_path = os.path.join(
+            model_dir, f"hurst_HDBSCAN_model_{sector}.pkl")
+        output_file = os.path.join(
+            output_dir, f"hurst_clustering_result_{sector}.csv")
 
-        X = prepare_data_for_clustering(sector, start_date, end_date, stock_fig_dir)
+        X = prepare_data_for_clustering(
+            sector, start_date, end_date, stock_fig_dir)
         logging.info(f"X.shape = {X.shape}")
         labels = perform_clustering(X)
 
