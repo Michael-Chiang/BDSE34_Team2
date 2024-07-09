@@ -5,10 +5,13 @@ import os
 import time
 from datetime import datetime
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import torch
 import torch.nn as nn
+from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader, TensorDataset
@@ -38,7 +41,7 @@ logging.info(f"Device: {device}")
 # Data transformation functions
 def transform_type(x, device, is_train=True):
     tensor = torch.Tensor(x.astype(float)).to(device)
-    return tensor if is_train else tensor.to(torch.int64)
+    return tensor  # if is_train else tensor.to(torch.int64)
 
 
 def split_data(stock, lookback, interval, y):
@@ -50,14 +53,26 @@ def split_data(stock, lookback, interval, y):
         targets.append(y.iloc[index + lookback])
 
     data = np.array(data)
-    targets = np.array(targets)
+    targets = np.array(targets).reshape(-1, 1)
     logging.info(f"Total data samples: {data.shape}")
 
     # Split training and testing data
     x_train, x_test, y_train, y_test = train_test_split(
         data, targets, test_size=0.2, shuffle=True, random_state=42
     )
-    return x_train, y_train, x_test, y_test
+    return [x_train, y_train, x_test, y_test]
+
+
+def discretization(pred):
+    # 定义类别中心点
+    class_centers = torch.tensor([0, 1, 2, 3, 4]).to(device)
+
+    # 计算预测值与每个类别中心的距离
+    distances = torch.abs(pred - class_centers.unsqueeze(0))
+
+    # 找到距离最小的类别索引
+    classes = torch.argmin(distances, dim=1)
+    return classes
 
 
 def train(
@@ -96,7 +111,10 @@ def train(
             optimizer.zero_grad()
 
             epoch_loss += loss.item() * y_batch.size(0)
-            is_correct = (torch.argmax(pred, dim=1) == y_batch).float()
+            is_correct = (discretization(pred) == y_batch.reshape(-1)).float()
+            # print(
+            #     f"pred.shape = {pred.shape}, discretization(pred).shape = {discretization(pred).shape}, y_batch.shape = {y_batch.shape}"
+            # )
             epoch_accuracy += is_correct.sum().item()
             batch_num += 1
 
@@ -116,7 +134,8 @@ def train(
                 pred = model(x_batch)
                 loss = criterion(pred, y_batch)
                 valid_loss += loss.item() * y_batch.size(0)
-                is_correct = (torch.argmax(pred, dim=1) == y_batch).float()
+                is_correct = (discretization(pred) == y_batch.reshape(-1)).float()
+
                 valid_accuracy += is_correct.sum().item()
 
         valid_loss /= len(valid_dl.dataset)
@@ -162,8 +181,59 @@ def show_accuracy(model, dl):
     with torch.no_grad():
         for batch_x, batch_y in dl:
             pred_y = model(batch_x)
-            correct += (pred_y.argmax(axis=1) == batch_y).type(torch.float).sum().item()
+            correct += (
+                (discretization(pred_y) == batch_y.reshape(-1))
+                .type(torch.float)
+                .sum()
+                .item()
+            )
     return correct / size
+
+
+def save_confusion_matrix(model, train_dl, test_dl, path):
+    model.eval()
+    correct = 0
+    size = len(train_dl.dataset)
+    all_batch_y = []
+    all_batch_y_pred = []
+    with torch.no_grad():
+        for dl in [train_dl, test_dl]:
+            for batch_x, batch_y in dl:
+                pred_y = model(batch_x)
+                correct += (
+                    (discretization(pred_y) == batch_y.reshape(-1))
+                    .type(torch.float)
+                    .sum()
+                    .item()
+                )
+                all_batch_y.append(batch_y.reshape(-1).cpu().numpy())
+                all_batch_y_pred.append(discretization(pred_y).cpu().numpy())
+
+            if dl == train_dl:
+                y_train = np.concatenate(all_batch_y)
+                y_train_pred = np.concatenate(all_batch_y_pred)
+            else:
+                y_test = np.concatenate(all_batch_y)
+                y_test_pred = np.concatenate(all_batch_y_pred)
+    # Calculate confusion matrix
+    train_cm = confusion_matrix(y_train, y_train_pred)
+    test_cm = confusion_matrix(y_test, y_test_pred)
+
+    # Plot confusion matrix
+    fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+
+    sns.heatmap(train_cm, annot=True, fmt="d", cmap="Blues", ax=ax[0])
+    ax[0].set_title("Train Confusion Matrix")
+    ax[0].set_xlabel("Predicted")
+    ax[0].set_ylabel("Actual")
+
+    sns.heatmap(test_cm, annot=True, fmt="d", cmap="Blues", ax=ax[1])
+    ax[1].set_title("Test Confusion Matrix")
+    ax[1].set_xlabel("Predicted")
+    ax[1].set_ylabel("Actual")
+
+    plt.tight_layout()
+    plt.savefig(path)
 
 
 class LSTM(nn.Module):
@@ -181,15 +251,15 @@ class LSTM(nn.Module):
             bidirectional=True,
         )
         self.fc = nn.Sequential(
-            nn.Linear(hidden_dim * 2, 500),
+            nn.Linear(hidden_dim * 2, 50),
             nn.ReLU(),
-            nn.BatchNorm1d(num_features=500),
+            nn.BatchNorm1d(num_features=50),
             nn.Dropout(p=0.5),
-            nn.Linear(500, 100),
+            nn.Linear(50, 10),
             nn.ReLU(),
-            nn.BatchNorm1d(num_features=100),
+            nn.BatchNorm1d(num_features=10),
             nn.Dropout(p=0.5),
-            nn.Linear(100, output_dim),
+            nn.Linear(10, output_dim),
         )
 
     def forward(self, x):
@@ -265,19 +335,20 @@ def main():
     input_dim = 71  # Number of features
     hidden_dim = 100
     num_layers = 3
-    output_dim = 5
-    batch_size = 8
+    output_dim = 1
+    batch_size = 32
     num_epochs = 20
     lr = 0.00005
-    patience = 3
+    patience = 5
     lookback = 60  # Sequence length
-    interval = 10  # sample days difference
+    interval = 2  # sample days difference
     period = 10  # predicted days after
     sector = "Finance"
-    clusterID = "0"
+    clusterID = "4"
     file_paths = glob.glob(os.path.join("stock_data_all", sector, clusterID, "*.csv"))
     file_path = f"stock_data_all/{sector}/{clusterID}/ABCB.csv"
-    model_save_path = f"model/best_lstm_model_{current_time}.pth"
+    model_save_path = f"model/best_lstm_model_{current_time}_{sector}_{clusterID}.pth"
+    figure_save_path = f"model/confusion_matrix_{current_time}_{sector}_{clusterID}.jpg"
 
     # Prepare data
     x_train_, y_train_, x_test_, y_test_ = prepare_data(
@@ -298,7 +369,7 @@ def main():
         num_layers=num_layers,
         seq_length=lookback,
     ).to(device)
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.MSELoss(reduction="mean")
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5)
 
@@ -322,6 +393,7 @@ def main():
     # Save model
     save_model(best_model, model_save_path)
     load_model(model_save_path, input_dim, hidden_dim, num_layers, output_dim, lookback)
+    save_confusion_matrix(model, train_dl, test_dl, figure_save_path)
 
 
 if __name__ == "__main__":
