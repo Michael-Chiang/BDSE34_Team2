@@ -12,6 +12,7 @@ import seaborn as sns
 import torch
 import torch.nn as nn
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader, TensorDataset
@@ -34,7 +35,8 @@ logging.basicConfig(
 
 # Set device
 use_cuda = 1
-device = torch.device("cuda" if (torch.cuda.is_available() & use_cuda) else "cpu")
+device = torch.device("cuda" if (
+    torch.cuda.is_available() & use_cuda) else "cpu")
 logging.info(f"Device: {device}")
 
 
@@ -49,7 +51,7 @@ def split_data(stock, lookback, interval, y):
     n_time = len(data_raw)
     data, targets = [], []
     for index in range(0, n_time - lookback, interval):
-        data.append(data_raw[index : index + lookback, :])
+        data.append(data_raw[index: index + lookback, :])
         targets.append(y.iloc[index + lookback])
 
     data = np.array(data)
@@ -134,7 +136,8 @@ def train(
                 pred = model(x_batch)
                 loss = criterion(pred, y_batch)
                 valid_loss += loss.item() * y_batch.size(0)
-                is_correct = (discretization(pred) == y_batch.reshape(-1)).float()
+                is_correct = (discretization(pred) ==
+                              y_batch.reshape(-1)).float()
 
                 valid_accuracy += is_correct.sum().item()
 
@@ -215,6 +218,11 @@ def save_confusion_matrix(model, train_dl, test_dl, path):
             else:
                 y_test = np.concatenate(all_batch_y)
                 y_test_pred = np.concatenate(all_batch_y_pred)
+
+    logging.info(
+        f'train classification results:{classification_report(y_train, y_train_pred)}')
+    logging.info(
+        f'test classification results:{classification_report(y_test, y_test_pred)}')
     # Calculate confusion matrix
     train_cm = confusion_matrix(y_train, y_train_pred)
     test_cm = confusion_matrix(y_test, y_test_pred)
@@ -263,8 +271,10 @@ class LSTM(nn.Module):
         )
 
     def forward(self, x):
-        h0 = torch.zeros(self.num_layers * 2, x.size(0), self.hidden_dim).to(device)
-        c0 = torch.zeros(self.num_layers * 2, x.size(0), self.hidden_dim).to(device)
+        h0 = torch.zeros(self.num_layers * 2, x.size(0),
+                         self.hidden_dim).to(device)
+        c0 = torch.zeros(self.num_layers * 2, x.size(0),
+                         self.hidden_dim).to(device)
         out, _ = self.lstm(x, (h0, c0))
         # out = out.contiguous().view(x.size(0), -1)
         out = self.fc(out[:, -1, :])
@@ -345,7 +355,8 @@ def main():
     period = 10  # predicted days after
     sector = "Finance"
     clusterID = "4"
-    file_paths = glob.glob(os.path.join("stock_data_all", sector, clusterID, "*.csv"))
+    file_paths = glob.glob(os.path.join(
+        "stock_data_all", sector, clusterID, "*.csv"))
     file_path = f"stock_data_all/{sector}/{clusterID}/ABCB.csv"
     model_save_path = f"model/best_lstm_model_{current_time}_{sector}_{clusterID}.pth"
     figure_save_path = f"model/confusion_matrix_{current_time}_{sector}_{clusterID}.jpg"
@@ -371,7 +382,8 @@ def main():
     ).to(device)
     criterion = nn.MSELoss(reduction="mean")
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5)
+    scheduler = torch.optim.lr_scheduler.StepLR(
+        optimizer, step_size=5, gamma=0.5)
 
     # Train model
     start_time = time.time()
@@ -392,7 +404,8 @@ def main():
 
     # Save model
     save_model(best_model, model_save_path)
-    load_model(model_save_path, input_dim, hidden_dim, num_layers, output_dim, lookback)
+    load_model(model_save_path, input_dim, hidden_dim,
+               num_layers, output_dim, lookback)
     save_confusion_matrix(model, train_dl, test_dl, figure_save_path)
 
 
