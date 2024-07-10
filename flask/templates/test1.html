@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.css" rel="stylesheet">
+
+
+    <style>
+        #slider {
+            margin: 50px auto;
+            width: 80%;
+        }
+
+        #slider-value {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: grid;
+            place-items: center center;
+            width: 100%;
+            height: 100vh;
+            background: rgb(255, 255, 255);
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(62, 168, 255, 0.2) 100%);
+        }
+
+        .content {
+            width: 50%;
+            margin: 0 auto;
+            text-align: center;
+
+            h2 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+        }
+
+        .slider-area {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            column-gap: 20px;
+            background: inherit;
+            border: 1px solid #d4d4d4;
+            padding: 40px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(100px);
+
+            .slider-title {
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            &-wrapper {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                column-gap: 20px;
+            }
+
+            #skip-value-lower,
+            #skip-value-upper {
+                font-size: 16px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .noUi-target {
+                flex: 1;
+                position: relative;
+                background: #e3e3e3;
+                border-radius: 50px;
+
+                &.noUi-horizontal {
+                    height: 10px;
+                }
+
+                .noUi-base,
+                .noUi-connects {
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                    z-index: 1;
+                }
+
+                .noUi-connects {
+                    border-radius: 3px;
+                    overflow: hidden;
+                    z-index: 0;
+
+                    .noUi-connect {
+                        height: 100%;
+                        width: 100%;
+                        transform-style: preserve-3d;
+                        transform-origin: 0 0;
+                        transform-style: flat;
+                        background-color: #3ea8ff;
+                    }
+                }
+
+                .noUi-origin {
+                    will-change: transform;
+                    position: absolute;
+                    z-index: 1;
+                    top: 0;
+                    right: 0;
+                    height: 0;
+                    width: 100%;
+
+                    .noUi-handle {
+                        border-radius: 50px;
+                        background: #fff;
+                        cursor: default;
+                        background-color: #3ea8ff;
+                        backface-visibility: hidden;
+                        position: absolute;
+                        width: 21px;
+                        height: 21px;
+                        right: -10px;
+                        top: -6px;
+
+                        .noUi-touch-area {
+                            height: 100%;
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+
+            .noUi-draggable {
+                cursor: ew-resize;
+            }
+        } */
+    </style>
+
+</head>
+
+<body>
+    <div id="slider"></div>
+    <div id="slider-value">
+        Min: <span id="slider-min"></span> - Max: <span id="slider-max"></span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
+    <script>
+        var slider = document.getElementById('slider');
+
+        noUiSlider.create(slider, {
+            start: [20, 80], // 初始值
+            connect: true,
+            range: {
+                'min': 0,
+                'max': 100
+            },
+            tooltips: [true, true]
+        });
+
+        var minValue = document.getElementById('slider-min');
+        var maxValue = document.getElementById('slider-max');
+
+        slider.noUiSlider.on('update', function (values, handle) {
+            if (handle === 0) {
+                minValue.innerHTML = values[0];
+            } else {
+                maxValue.innerHTML = values[1];
+            }
+        });
+    </script>
+
+</body>
+
+</html>

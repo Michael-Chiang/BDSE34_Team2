@@ -9,8 +9,8 @@ app = Flask(__name__)
 db_config = {
     'user': 'root',
     'password': 'P@ssw0rd',
-    'host': '192.168.32.176', # MySQL
-    #'host': 'Localhost', # MySQL本地
+    #'host': '192.168.32.176', # MySQL
+    'host': 'Localhost', # MySQL本地
     #'host': 'StockDB', # Docker MySQL
     'database': 'stock',
 }
@@ -129,10 +129,13 @@ def filter_results():
 def get_price_range():
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor(dictionary=True)
+
     cursor.execute("SELECT MIN(`Latest Price`) as min_price, MAX(`Latest Price`) as max_price FROM Latest_info")
     price_range = cursor.fetchone()
+
     cursor.close()
     connection.close()
+    
     return jsonify(price_range)
 
 @app.route('/stock/<symbol>')

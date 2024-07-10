@@ -19,7 +19,41 @@ ul.pagination,
     /* 垂直居中 */
     margin: 10px;
     /* 根据需要调整外边距 */
+
 }
+
+ul {
+    max-height: 245px;
+    /* 根據需要調整高度 */
+    overflow-y: auto;
+    /* border: 1px solid #ccc; */
+    /* 可選：添加邊框方便查看滾動區域 */
+}
+
+/* 自定义滚动条样式 */
+ul::-webkit-scrollbar {
+    width: 10px;
+    /* 滚动条宽度 */
+}
+
+ul::-webkit-scrollbar-track {
+    background: #464646;
+    border-radius: 6px;
+    /* 滚动条轨道背景色 */
+}
+
+ul::-webkit-scrollbar-thumb {
+    background: #888;
+    /* 滚动条颜色 */
+    border-radius: 6px;
+    /* 滚动条圆角 */
+}
+
+ul::-webkit-scrollbar-thumb:hover {
+    background: #adadad;
+    /* 滚动条悬停颜色 */
+}
+
 
 #goto-page-input,
 #stock-id-input {
@@ -46,4 +80,110 @@ ul.pagination,
     .page[data-page="currentPage-1"] {
         display: inline-block;
     }
+}
+
+#slider {
+    margin: 50px auto;
+    width: 80%;
+}
+
+#slider-value {
+    text-align: center;
+    margin-top: 20px;
+}
+
+button {
+    padding: 0 10px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+#results {
+    width: 100%;
+    overflow-x: auto;
+    /* 添加水平滚动条 */
+}
+
+/* 自定义滚动条样式 */
+#results::-webkit-scrollbar {
+    height: 10px;
+    /* 滚动条宽度 */
+}
+
+#results::-webkit-scrollbar-track {
+    background: #464646;
+    border-radius: 6px;
+    /* 滚动条轨道背景色 */
+}
+
+#results::-webkit-scrollbar-thumb {
+    background: #888;
+    /* 滚动条颜色 */
+    border-radius: 6px;
+    /* 滚动条圆角 */
+}
+
+#results::-webkit-scrollbar-thumb:hover {
+    background: #adadad;
+    /* 滚动条悬停颜色 */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    /* table-layout: fixed; */
+}
+
+th,
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* 使用省略号表示超出部分 */
+    max-width: 100%;
+    /* 设置最大宽度 */
+}
+
+section {
+    overflow: hidden;
+    /* 隐藏超出部分的内容 */
+}
+
+/* 自定义滑块轨道 */
+.noUi-target,
+.noUi-lower,
+.noUi-connect {
+    background: #dbdbdb !important;
+    /* 滑块轨道背景色 */
+}
+
+.noUi-connect {
+    background: #4b5475 !important;
+    /* 滑块活动部分的背景色 */
+    /
+}
+
+/* 自定义滑块 */
+.noUi-handle {
+    background: #ff5733;
+    /* 滑块颜色 */
+    border: 2px solid #ff5733;
+    /* 滑块边框 */
+    height: 20px;
+    /* 滑块高度 */
+    width: 20px;
+    /* 滑块宽度 */
+    border-radius: 40% !important;
+    /* 滑块圆角 */
+}
+
+.noUi-tooltip {
+    background: #9baacd !important;
+    color: #000000 !important;
+    font-family: "Source Sans Pro", Helvetica, sans-serif;
+    font-weight: bold;
+    border: none !important;
+    padding: 0px 8px !important;
+    border-radius: 3px !important;
+
 }
