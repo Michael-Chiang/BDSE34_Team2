@@ -198,12 +198,15 @@ $(document).ready(function () {
                 }
             });
 
+
             sliderElement.noUiSlider.on('change', function () {
+                currentPage = 1;  // 重置为第一页
                 updateResults();
             });
 
             sliderInitialized = true;
             slider = sliderElement;
+            updateResults();
         },
         error: function (error) {
             console.error('Error fetching price range:', error);
