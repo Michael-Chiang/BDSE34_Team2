@@ -7,6 +7,7 @@ from datetime import datetime
 
 import matplotlib.pyplot as plt
 import numpy as np
+import optuna
 import pandas as pd
 import seaborn as sns
 import torch
@@ -40,10 +41,20 @@ device = torch.device("cuda" if (torch.cuda.is_available() & use_cuda) else "cpu
 logging.info(f"Device: {device}")
 
 
-# Data transformation functions
-def transform_type(x, device, is_train=True):
-    tensor = torch.Tensor(x.astype(float)).to(device)
-    return tensor  # if is_train else tensor.to(torch.int64)
+def show_accuracy(model, dl):
+    model.eval()
+    correct = 0
+    size = len(dl.dataset)
+    with torch.no_grad():
+        for batch_x, batch_y in dl:
+            pred_y = model(batch_x)
+            correct += (
+                (discretization(pred_y) == batch_y.reshape(-1))
+                .type(torch.float)
+                .sum()
+                .item()
+            )
+    return correct / size
 
 
 def split_data(stock, lookback, interval, y):
@@ -75,6 +86,65 @@ def discretization(pred):
     # 找到距离最小的类别索引
     classes = torch.argmin(distances, dim=1)
     return classes
+
+
+# Data transformation functions
+def transform_type(x, device, is_train=True):
+    tensor = torch.Tensor(x.astype(float)).to(device)
+    return tensor
+
+
+def save_confusion_matrix(model, train_dl, test_dl, path):
+    model.eval()
+    correct = 0
+    size = len(train_dl.dataset)
+    all_batch_y = []
+    all_batch_y_pred = []
+    with torch.no_grad():
+        for dl in [train_dl, test_dl]:
+            for batch_x, batch_y in dl:
+                pred_y = model(batch_x)
+                correct += (
+                    (discretization(pred_y) == batch_y.reshape(-1))
+                    .type(torch.float)
+                    .sum()
+                    .item()
+                )
+                all_batch_y.append(batch_y.reshape(-1).cpu().numpy())
+                all_batch_y_pred.append(discretization(pred_y).cpu().numpy())
+
+            if dl == train_dl:
+                y_train = np.concatenate(all_batch_y)
+                y_train_pred = np.concatenate(all_batch_y_pred)
+            else:
+                y_test = np.concatenate(all_batch_y)
+                y_test_pred = np.concatenate(all_batch_y_pred)
+
+    logging.info(
+        f"train classification results:\n{classification_report(y_train, y_train_pred)}"
+    )
+    logging.info(
+        f"test classification results:\n{classification_report(y_test, y_test_pred)}"
+    )
+    # Calculate confusion matrix
+    train_cm = confusion_matrix(y_train, y_train_pred)
+    test_cm = confusion_matrix(y_test, y_test_pred)
+
+    # Plot confusion matrix
+    fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+
+    sns.heatmap(train_cm, annot=True, fmt="d", cmap="Blues", ax=ax[0])
+    ax[0].set_title("Train Confusion Matrix")
+    ax[0].set_xlabel("Predicted")
+    ax[0].set_ylabel("Actual")
+
+    sns.heatmap(test_cm, annot=True, fmt="d", cmap="Blues", ax=ax[1])
+    ax[1].set_title("Test Confusion Matrix")
+    ax[1].set_xlabel("Predicted")
+    ax[1].set_ylabel("Actual")
+
+    plt.tight_layout()
+    plt.savefig(path)
 
 
 def train(
@@ -176,73 +246,52 @@ def train(
     return model, history
 
 
-def show_accuracy(model, dl):
-    model.eval()
-    correct = 0
-    size = len(dl.dataset)
-    with torch.no_grad():
-        for batch_x, batch_y in dl:
-            pred_y = model(batch_x)
-            correct += (
-                (discretization(pred_y) == batch_y.reshape(-1))
-                .type(torch.float)
-                .sum()
-                .item()
-            )
-    return correct / size
+def objective(trial):
+    # Hyperparameter search space
+    hidden_dim = trial.suggest_int("hidden_dim", 50, 200)
+    num_layers = trial.suggest_int("num_layers", 1, 3)
+    lr = trial.suggest_float("lr", 1e-5, 1e-3, log=True)
+    batch_size = trial.suggest_categorical("batch_size", [8, 16, 32, 64])
 
-
-def save_confusion_matrix(model, train_dl, test_dl, path):
-    model.eval()
-    correct = 0
-    size = len(train_dl.dataset)
-    all_batch_y = []
-    all_batch_y_pred = []
-    with torch.no_grad():
-        for dl in [train_dl, test_dl]:
-            for batch_x, batch_y in dl:
-                pred_y = model(batch_x)
-                correct += (
-                    (discretization(pred_y) == batch_y.reshape(-1))
-                    .type(torch.float)
-                    .sum()
-                    .item()
-                )
-                all_batch_y.append(batch_y.reshape(-1).cpu().numpy())
-                all_batch_y_pred.append(discretization(pred_y).cpu().numpy())
-
-            if dl == train_dl:
-                y_train = np.concatenate(all_batch_y)
-                y_train_pred = np.concatenate(all_batch_y_pred)
-            else:
-                y_test = np.concatenate(all_batch_y)
-                y_test_pred = np.concatenate(all_batch_y_pred)
-
-    logging.info(
-        f"train classification results:\n{classification_report(y_train, y_train_pred)}"
+    # Prepare data (reuse the existing function)
+    x_train_, y_train_, x_test_, y_test_ = prepare_data(
+        file_paths, lookback, interval, period
     )
-    logging.info(
-        f"test classification results:\n{classification_report(y_test, y_test_pred)}"
+
+    # Data loaders
+    train_ds = TensorDataset(x_train_, y_train_)
+    test_ds = TensorDataset(x_test_, y_test_)
+    train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
+    test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
+
+    # Initialize model
+    model = LSTM(
+        input_dim=input_dim,
+        hidden_dim=hidden_dim,
+        output_dim=output_dim,
+        num_layers=num_layers,
+        seq_length=lookback,
+    ).to(device)
+    criterion = nn.MSELoss(reduction="mean")
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5)
+
+    # Train model
+    best_model, hist = train(
+        model,
+        num_epochs,
+        patience,
+        train_dl,
+        test_dl,
+        device,
+        criterion,
+        optimizer,
+        scheduler,
     )
-    # Calculate confusion matrix
-    train_cm = confusion_matrix(y_train, y_train_pred)
-    test_cm = confusion_matrix(y_test, y_test_pred)
 
-    # Plot confusion matrix
-    fig, ax = plt.subplots(1, 2, figsize=(12, 5))
-
-    sns.heatmap(train_cm, annot=True, fmt="d", cmap="Blues", ax=ax[0])
-    ax[0].set_title("Train Confusion Matrix")
-    ax[0].set_xlabel("Predicted")
-    ax[0].set_ylabel("Actual")
-
-    sns.heatmap(test_cm, annot=True, fmt="d", cmap="Blues", ax=ax[1])
-    ax[1].set_title("Test Confusion Matrix")
-    ax[1].set_xlabel("Predicted")
-    ax[1].set_ylabel("Actual")
-
-    plt.tight_layout()
-    plt.savefig(path)
+    # Evaluate model
+    accuracy = show_accuracy(best_model, test_dl)
+    return accuracy
 
 
 def save_model(model, path):
@@ -306,36 +355,42 @@ def prepare_data(file_paths, lookback, interval, period):
 
 def main():
     # Parameters
+    global input_dim, hidden_dim, num_layers, output_dim, batch_size, num_epochs, lr, patience, lookback, interval, period, sector, clusterID, file_paths, device
     input_dim = 71  # Number of features
-    hidden_dim = 500
-    num_layers = 3
     output_dim = 1
-    batch_size = 32
-    num_epochs = 50
-    lr = 0.00005
+    num_epochs = 20
     patience = 10
     lookback = 60  # Sequence length
-    interval = 2  # sample days difference
+    interval = 10  # sample days difference
     period = 10  # predicted days after
     sector = "Finance"
     clusterID = "0"
     file_paths = glob.glob(os.path.join("stock_data_all", sector, clusterID, "*.csv"))
-    file_path = f"stock_data_all/{sector}/{clusterID}/ABCB.csv"
     model_save_path = f"model/best_lstm_model_{current_time}_{sector}_{clusterID}.pth"
     figure_save_path = f"model/confusion_matrix_{current_time}_{sector}_{clusterID}.jpg"
 
-    # Prepare data
+    # Optimize hyperparameters using Optuna
+    study = optuna.create_study(direction="maximize")
+    study.optimize(objective, n_trials=50)
+
+    logging.info(f"Best hyperparameters: {study.best_params}")
+
+    # Train the final model with best hyperparameters
+    best_params = study.best_params
+    hidden_dim = best_params["hidden_dim"]
+    num_layers = best_params["num_layers"]
+    lr = best_params["lr"]
+    batch_size = best_params["batch_size"]
+
     x_train_, y_train_, x_test_, y_test_ = prepare_data(
         file_paths, lookback, interval, period
     )
 
-    # Data loaders
     train_ds = TensorDataset(x_train_, y_train_)
     test_ds = TensorDataset(x_test_, y_test_)
     train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
     test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
 
-    # Initialize model
     model = LSTM(
         input_dim=input_dim,
         hidden_dim=hidden_dim,
@@ -347,7 +402,6 @@ def main():
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5)
 
-    # Train model
     start_time = time.time()
     best_model, hist = train(
         model,
