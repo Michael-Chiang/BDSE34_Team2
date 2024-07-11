@@ -40,3 +40,60 @@ class LSTM(nn.Module):
         # out = out.contiguous().view(x.size(0), -1)
         out = self.fc(out[:, -1, :])
         return out
+
+
+class ConvBlock(nn.Module):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size=3,
+        pool_kernel_size=2,
+        pool_stride=2,
+        dropout_rate=0.5,
+    ):
+        super(ConvBlock, self).__init__()
+        self.conv = nn.Conv1d(
+            in_channels, out_channels, kernel_size=kernel_size, padding=kernel_size // 2
+        )
+        self.pool = nn.MaxPool1d(kernel_size=pool_kernel_size, stride=pool_stride)
+        self.bn = nn.BatchNorm1d(in_channels)
+        self.dropout = nn.Dropout1d(p=dropout_rate)
+        self.relu = nn.ReLU()
+
+    def forward(self, x):
+        x = self.bn(x)
+        x = self.relu(x)
+        x = self.conv(x)
+        x = self.pool(x)
+        x = self.dropout(x)
+        return x
+
+
+class CNN(nn.Module):
+    def __init__(self, in_channels, output_dim, num_features, dropout_rate):
+        super(CNN, self).__init__()
+        self.block1 = ConvBlock(
+            in_channels=in_channels, out_channels=128, dropout_rate=dropout_rate
+        )  # 第一层卷积模块
+        self.block2 = ConvBlock(
+            in_channels=128, out_channels=256, dropout_rate=dropout_rate
+        )  # 第二层卷积模块
+        self.block3 = ConvBlock(
+            in_channels=256, out_channels=512, dropout_rate=dropout_rate
+        )  # 第三层卷积模块
+        self.final_length = num_features // (2**3)
+        self.fc = nn.Linear(
+            in_features=512 * self.final_length, out_features=output_dim
+        )  # 全连接层
+
+    def forward(self, x):
+        x = x.transpose(
+            1, 2
+        )  # 调整形状以适应Conv1d层 (batch_size, num_features, sequence_length)
+        x = self.block1(x)
+        x = self.block2(x)
+        x = self.block3(x)
+        x = x.view(x.size(0), -1)  # 展平
+        x = self.fc(x)
+        return x

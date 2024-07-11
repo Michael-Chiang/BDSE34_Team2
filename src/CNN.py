@@ -16,7 +16,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from torch.utils.data import DataLoader, TensorDataset
 
-from my_utils.models import LSTM
+from my_utils.models import CNN, LSTM
 
 # Get current time for log file name
 current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -247,8 +247,10 @@ def save_model(model, path):
     logging.info(f"Model saved to {path}")
 
 
-def load_model(path, input_dim, hidden_dim, num_layers, output_dim, seq_length):
-    model = LSTM(input_dim, hidden_dim, num_layers, output_dim, seq_length)
+def load_model(path, in_channels, output_dim, num_features, dropout_rate):
+    model = CNN(
+        in_channels, output_dim, num_features=num_features, dropout_rate=dropout_rate
+    )
     model.load_state_dict(torch.load(path))
     model.to(device)
     logging.info(f"Model loaded from {path}")
@@ -303,13 +305,12 @@ def prepare_data(file_paths, lookback, interval, period):
 
 def main():
     # Parameters
-    input_dim = 71  # Number of features
-    hidden_dim = 100
-    num_layers = 2
+    in_channels = 71  # Number of features
     output_dim = 5
     batch_size = 64
     num_epochs = 200
     lr = 0.0001
+    dropout_rate = 0.5
     patience = 20
     lookback = 20  # Sequence length
     interval = 5  # sample days difference
@@ -317,8 +318,8 @@ def main():
     sector = "Technology"
     clusterID = "4"
     file_paths = glob.glob(os.path.join("stock_data_all", sector, clusterID, "*.csv"))
-    model_save_path = f"model/best_lstm_model_{sector}_{clusterID}.pth"
-    figure_save_path = f"figure/confusion_matrix_{sector}_{clusterID}.jpg"
+    model_save_path = f"model/best_1dcnn_model_{current_time}_{sector}_{clusterID}.pth"
+    figure_save_path = f"model/confusion_matrix_{current_time}_{sector}_{clusterID}.jpg"
 
     # Prepare data
     x_train_, y_train_, x_test_, y_test_ = prepare_data(
@@ -332,12 +333,11 @@ def main():
     test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
 
     # Initialize model
-    model = LSTM(
-        input_dim=input_dim,
-        hidden_dim=hidden_dim,
+    model = CNN(
+        in_channels=in_channels,
         output_dim=output_dim,
-        num_layers=num_layers,
-        seq_length=lookback,
+        num_features=lookback,
+        dropout_rate=dropout_rate,
     ).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
@@ -363,7 +363,9 @@ def main():
 
     # Save model
     save_model(best_model, model_save_path)
-    load_model(model_save_path, input_dim, hidden_dim, num_layers, output_dim, lookback)
+    load_model(
+        model_save_path, in_channels, output_dim, lookback, dropout_rate=dropout_rate
+    )
     save_confusion_matrix(model, train_dl, test_dl, figure_save_path)
 
 
