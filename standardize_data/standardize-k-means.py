@@ -7,9 +7,9 @@ from sklearn.preprocessing import StandardScaler
 # 读取分群对照表
 tech_clusterID_df = pd.read_csv('stock_all_info_technology_k-means.csv')
 finance_clusterID_df = pd.read_csv('stock_all_info_finance_k-means.csv')
-QQQ = pd.read_csv('C:/Share/期末專題/index_3/QQQ.csv', index_col='Date', parse_dates=['Date'])
+QQQ = pd.read_csv('C:/Share/期末專題/daily_data_combine/QQQ.csv', index_col='Date', parse_dates=['Date'])
 QQQ.sort_index(inplace = True)
-XLF = pd.read_csv('C:/Share/期末專題/index_3/XLF.csv', index_col='Date', parse_dates=['Date'])
+XLF = pd.read_csv('C:/Share/期末專題/daily_data_combine/XLF.csv', index_col='Date', parse_dates=['Date'])
 XLF.sort_index(inplace = True)
 
 
