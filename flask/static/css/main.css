@@ -4164,7 +4164,7 @@ body.is-preload #banner p {
 	}
 
 	h3 {
-		margin: 1em 1.5em 1em 1.5em
+		margin: 1em 0em 1em 0em
 	}
 
 	.wrapper.spotlight .image {
@@ -4199,7 +4199,13 @@ body.is-preload #banner p {
 	}
 
 	.wrapper .inner {
-		padding: 2em 2em 0.1em 2em;
+		padding: 2em 1.5em 0.1em 1.5em;
+
+	}
+
+	h3 {
+		margin: 1em 0em 1em 0em;
+
 	}
 
 

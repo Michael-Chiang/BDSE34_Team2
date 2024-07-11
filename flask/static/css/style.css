@@ -10,8 +10,7 @@
 }
 
 ul.pagination,
-.pagination-input-container,
-.stock-id-search-container {
+.pagination-input-container {
     display: flex;
     justify-content: center;
     /* 水平居中 */
@@ -22,35 +21,69 @@ ul.pagination,
 
 }
 
-ul {
-    max-height: 245px;
-    /* 根據需要調整高度 */
+.stock-id-search-container {
+    display: flex;
+}
+
+.ulcontainer {
+    height: 260px;
     overflow-y: auto;
-    /* border: 1px solid #ccc; */
-    /* 可選：添加邊框方便查看滾動區域 */
+    overflow-x: hidden;
+
+}
+
+.filtercontainer {
+    border: #60627c 1px solid;
+    border-radius: 5px;
+    padding: 15px 15px 20px 15px;
+    margin-bottom: 20px;
+    margin-right: -10px;
+    background-color: rgba(255, 255, 255, 0.025);
+}
+
+ul.actions.fit {
+    margin-bottom: 0;
+}
+
+@media screen and (max-width: 980px) {
+
+    .ulcontainer {
+        height: auto;
+        max-height: 260px;
+    }
+
+}
+
+@media screen and (max-width: 480px) {
+
+
+
+    ul.actions.fit li {
+        max-width: 95%;
+    }
 }
 
 /* 自定义滚动条样式 */
-ul::-webkit-scrollbar {
-    width: 10px;
+.ulcontainer::-webkit-scrollbar {
+    width: 8px;
     /* 滚动条宽度 */
-    height: 10px;
+    height: 8px;
 }
 
-ul::-webkit-scrollbar-track {
+.ulcontainer::-webkit-scrollbar-track {
     background: #464646;
     border-radius: 6px;
     /* 滚动条轨道背景色 */
 }
 
-ul::-webkit-scrollbar-thumb {
+.ulcontainer::-webkit-scrollbar-thumb {
     background: #888;
     /* 滚动条颜色 */
     border-radius: 6px;
     /* 滚动条圆角 */
 }
 
-ul::-webkit-scrollbar-thumb:hover {
+.ulcontainer::-webkit-scrollbar-thumb:hover {
     background: #adadad;
     /* 滚动条悬停颜色 */
 }
@@ -62,8 +95,6 @@ ul::-webkit-scrollbar-thumb:hover {
     padding: 13px;
     margin-right: 10px;
 }
-
-
 
 @media screen and (max-width: 736px) {
 
@@ -90,13 +121,14 @@ ul::-webkit-scrollbar-thumb:hover {
 
 #slider-value {
     text-align: center;
-    margin-top: 20px;
+    margin: -20px 0 10px 0;
 }
 
 button {
     padding: 0 10px !important;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-wrap: wrap;
 
 }
 
@@ -108,7 +140,7 @@ button {
 
 /* 自定义滚动条样式 */
 #results::-webkit-scrollbar {
-    height: 10px;
+    height: 8px;
     /* 滚动条宽度 */
 }
 
@@ -145,7 +177,13 @@ td {
     /* 设置最大宽度 */
 }
 
-section {
+.total-count {
+    font-size: 18px;
+    text-align: right;
+    margin: 10px 5px 20px 5px;
+}
+
+section .results {
     overflow: hidden;
     /* 隐藏超出部分的内容 */
 }
@@ -186,4 +224,7 @@ section {
     border-radius: 3px !important;
 }
 
-.row>.col-6 {}
+table th:nth-child(6),
+table td:nth-child(6) {
+    display: none;
+}

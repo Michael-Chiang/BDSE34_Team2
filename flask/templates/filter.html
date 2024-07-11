@@ -23,46 +23,59 @@
     <!-- Content -->
     <div class="wrapper">
         <div class="inner">
-            <section>
+            <section class="select">
                 <div class="row">
-                    <div class="col-6 col-12-medium">
-                        <h3>價格區間選擇</h3>
-                        <hr>
-                        <div id="slider"></div>
-                        <div id="slider-value">
-                            Min: <span id="slider-min"></span> - Max: <span id="slider-max"></span>
+                    <div class="col-12 col-12-medium">
+                        <div class="filtercontainer">
+                            <h3 class="major">SELECT BY LATEST PRICE</h3>
+                            <div id="slider"></div>
+                            <div id="slider-value">
+                                Min: <span id="slider-min"></span> - Max: <span id="slider-max"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <hr>
+
                 <div class="row">
                     <div class="col-6 col-12-medium">
-                        <h3 class="major">Select Sector</h3>
-                        <ul class="actions fit small">
-                            {% for sector in sectors %}
-                            <li><button class="sector-button button small fit" data-sector="{{ sector }}"
-                                    onclick="toggleSectorAndFilter(this)">{{ sector
-                                    }}</button></li>
-                            {% endfor %}
-                        </ul>
+                        <div class="filtercontainer">
+                            <h3 class="major">Select Sector</h3>
+                            <div class="ulcontainer">
+                                <ul class="actions fit small">
+                                    {% for sector in sectors %}
+                                    <li><button class="sector-button button small fit" data-sector="{{ sector }}"
+                                            onclick="toggleSectorAndFilter(this)">{{ sector
+                                            }}</button></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-6 col-12-medium">
-                        <h3 class="major">Select Industry</h3>
-                        <ul class="actions fit small" id="industry-buttons">
-                            <!-- <div id="industry-buttons"></div> -->
-                        </ul>
+                        <div class="filtercontainer">
+                            <h3 class="major">Select Industry</h3>
+                            <div class="ulcontainer">
+
+                                <ul class="actions fit small" id="industry-buttons">
+                                    <!-- <div id="industry-buttons"></div> -->
+                                </ul>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
+                <br>
 
                 <h3 class="major">Search by Stock ID</h3>
+
                 <div class="stock-id-search-container">
-                    <input class="small" type="text" id="stock-id-input" placeholder="Enter Stock ID">
+                    <input class="small" type="text" id="stock-id-input" placeholder="Enter Symbol">
                     <button class="button small" id="stock-id-search-button">Search</button>
                 </div>
+                <br>
 
-                <hr>
-
+            </section>
+            <section class="results">
                 <h3 class="major" id="stock-results">Results</h3>
                 <div id="results"></div>
 
@@ -77,9 +90,9 @@
                     <button class="button small" id="goto-page-button">Go</button>
                 </div>
 
-
-
             </section>
+
+
 
             <section class="features">
                 <article>
