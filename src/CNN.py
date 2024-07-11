@@ -15,6 +15,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from torch.utils.data import DataLoader, TensorDataset
+from torchsummary import summary
 
 from my_utils.models import CNN, LSTM
 
@@ -339,6 +340,8 @@ def main():
         num_features=lookback,
         dropout_rate=dropout_rate,
     ).to(device)
+
+    logging.info(summary(model, (lookback, in_channels)))
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.8)
