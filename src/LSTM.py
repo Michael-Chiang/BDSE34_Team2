@@ -36,14 +36,15 @@ logging.basicConfig(
 
 # Set device
 use_cuda = 1
-device = torch.device("cuda" if (torch.cuda.is_available() & use_cuda) else "cpu")
+device = torch.device("cuda" if (
+    torch.cuda.is_available() & use_cuda) else "cpu")
 logging.info(f"Device: {device}")
 
 
 # Data transformation functions
 def transform_type(x, device, is_train=True):
     tensor = torch.Tensor(x.astype(float)).to(device)
-    return tensor  # if is_train else tensor.to(torch.int64)
+    return tensor if is_train else tensor.to(torch.int64)
 
 
 def split_data(stock, lookback, interval, y):
@@ -51,18 +52,18 @@ def split_data(stock, lookback, interval, y):
     n_time = len(data_raw)
     data, targets = [], []
     for index in range(0, n_time - lookback, interval):
-        data.append(data_raw[index : index + lookback, :])
+        data.append(data_raw[index: index + lookback, :])
         targets.append(y.iloc[index + lookback])
 
     data = np.array(data)
-    targets = np.array(targets).reshape(-1, 1)
+    targets = np.array(targets)
     logging.info(f"Total data samples: {data.shape}")
 
     # Split training and testing data
     x_train, x_test, y_train, y_test = train_test_split(
         data, targets, test_size=0.2, shuffle=True, random_state=42
     )
-    return [x_train, y_train, x_test, y_test]
+    return x_train, y_train, x_test, y_test
 
 
 def discretization(pred):
@@ -113,7 +114,7 @@ def train(
             optimizer.zero_grad()
 
             epoch_loss += loss.item() * y_batch.size(0)
-            is_correct = (discretization(pred) == y_batch.reshape(-1)).float()
+            is_correct = (torch.argmax(pred, dim=1) == y_batch).float()
             # print(
             #     f"pred.shape = {pred.shape}, discretization(pred).shape = {discretization(pred).shape}, y_batch.shape = {y_batch.shape}"
             # )
@@ -136,7 +137,7 @@ def train(
                 pred = model(x_batch)
                 loss = criterion(pred, y_batch)
                 valid_loss += loss.item() * y_batch.size(0)
-                is_correct = (discretization(pred) == y_batch.reshape(-1)).float()
+                is_correct = (torch.argmax(pred, dim=1) == y_batch).float()
 
                 valid_accuracy += is_correct.sum().item()
 
@@ -184,7 +185,7 @@ def show_accuracy(model, dl):
         for batch_x, batch_y in dl:
             pred_y = model(batch_x)
             correct += (
-                (discretization(pred_y) == batch_y.reshape(-1))
+                (torch.argmax(pred_y, dim=1) == batch_y)
                 .type(torch.float)
                 .sum()
                 .item()
@@ -203,13 +204,14 @@ def save_confusion_matrix(model, train_dl, test_dl, path):
             for batch_x, batch_y in dl:
                 pred_y = model(batch_x)
                 correct += (
-                    (discretization(pred_y) == batch_y.reshape(-1))
+                    (torch.argmax(pred_y, dim=1) == batch_y)
                     .type(torch.float)
                     .sum()
                     .item()
                 )
-                all_batch_y.append(batch_y.reshape(-1).cpu().numpy())
-                all_batch_y_pred.append(discretization(pred_y).cpu().numpy())
+                all_batch_y.append(batch_y.cpu().numpy())
+                all_batch_y_pred.append(
+                    torch.argmax(pred_y, dim=1).cpu().numpy())
 
             if dl == train_dl:
                 y_train = np.concatenate(all_batch_y)
@@ -219,24 +221,32 @@ def save_confusion_matrix(model, train_dl, test_dl, path):
                 y_test_pred = np.concatenate(all_batch_y_pred)
 
     logging.info(
-        f"train classification results:\n{classification_report(y_train, y_train_pred)}"
+        f"train classification results"
     )
     logging.info(
-        f"test classification results:\n{classification_report(y_test, y_test_pred)}"
+        f"{classification_report(y_train, y_train_pred)}"
+    )
+    logging.info(
+        f"test classification results"
+    )
+    logging.info(
+        f"{classification_report(y_test, y_test_pred)}"
     )
     # Calculate confusion matrix
     train_cm = confusion_matrix(y_train, y_train_pred)
+    train_cm = train_cm.astype('float') / train_cm.sum(axis=1)[:, np.newaxis]
     test_cm = confusion_matrix(y_test, y_test_pred)
+    test_cm = test_cm.astype('float') / test_cm.sum(axis=1)[:, np.newaxis]
 
     # Plot confusion matrix
     fig, ax = plt.subplots(1, 2, figsize=(12, 5))
 
-    sns.heatmap(train_cm, annot=True, fmt="d", cmap="Blues", ax=ax[0])
+    sns.heatmap(train_cm, annot=True, fmt=".2f", cmap="Blues", ax=ax[0])
     ax[0].set_title("Train Confusion Matrix")
     ax[0].set_xlabel("Predicted")
     ax[0].set_ylabel("Actual")
 
-    sns.heatmap(test_cm, annot=True, fmt="d", cmap="Blues", ax=ax[1])
+    sns.heatmap(test_cm, annot=True, fmt=".2f", cmap="Blues", ax=ax[1])
     ax[1].set_title("Test Confusion Matrix")
     ax[1].set_xlabel("Predicted")
     ax[1].set_ylabel("Actual")
@@ -307,20 +317,20 @@ def prepare_data(file_paths, lookback, interval, period):
 def main():
     # Parameters
     input_dim = 71  # Number of features
-    hidden_dim = 500
-    num_layers = 3
-    output_dim = 1
-    batch_size = 32
-    num_epochs = 50
-    lr = 0.00005
-    patience = 10
+    hidden_dim = 100
+    num_layers = 2
+    output_dim = 5
+    batch_size = 64
+    num_epochs = 200
+    lr = 0.0001
+    patience = 20
     lookback = 60  # Sequence length
-    interval = 2  # sample days difference
+    interval = 10  # sample days difference
     period = 10  # predicted days after
     sector = "Finance"
     clusterID = "0"
-    file_paths = glob.glob(os.path.join("stock_data_all", sector, clusterID, "*.csv"))
-    file_path = f"stock_data_all/{sector}/{clusterID}/ABCB.csv"
+    file_paths = glob.glob(os.path.join(
+        "stock_data_all", sector, clusterID, "*.csv"))
     model_save_path = f"model/best_lstm_model_{current_time}_{sector}_{clusterID}.pth"
     figure_save_path = f"model/confusion_matrix_{current_time}_{sector}_{clusterID}.jpg"
 
@@ -343,9 +353,10 @@ def main():
         num_layers=num_layers,
         seq_length=lookback,
     ).to(device)
-    criterion = nn.MSELoss(reduction="mean")
+    criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5)
+    scheduler = torch.optim.lr_scheduler.StepLR(
+        optimizer, step_size=20, gamma=0.8)
 
     # Train model
     start_time = time.time()
@@ -366,7 +377,8 @@ def main():
 
     # Save model
     save_model(best_model, model_save_path)
-    load_model(model_save_path, input_dim, hidden_dim, num_layers, output_dim, lookback)
+    load_model(model_save_path, input_dim, hidden_dim,
+               num_layers, output_dim, lookback)
     save_confusion_matrix(model, train_dl, test_dl, figure_save_path)
 
 
