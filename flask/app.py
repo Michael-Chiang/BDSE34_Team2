@@ -9,8 +9,8 @@ app = Flask(__name__)
 db_config = {
     'user': 'root',
     'password': 'P@ssw0rd',
-    #'host': '192.168.32.176', # MySQL
-    'host': 'Localhost', # MySQL本地
+    'host': '192.168.32.176', # MySQL
+    #'host': 'Localhost', # MySQL本地
     #'host': 'StockDB', # Docker MySQL
     'database': 'stock',
 }

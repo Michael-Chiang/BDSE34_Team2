@@ -3,6 +3,10 @@
 {% block title %}Generic{% endblock %}
 
 {% block banner %}
+<!-- Banner -->
+<section id="banner">
+
+</section>
 
 {% endblock %}
 
@@ -20,12 +24,15 @@
     <div class="wrapper">
         <div class="inner">
             <section>
-                <h3>價格區間選擇</h3>
-
-                <hr>
-                <div id="slider"></div>
-                <div id="slider-value">
-                    Min: <span id="slider-min"></span> - Max: <span id="slider-max"></span>
+                <div class="row">
+                    <div class="col-6 col-12-medium">
+                        <h3>價格區間選擇</h3>
+                        <hr>
+                        <div id="slider"></div>
+                        <div id="slider-value">
+                            Min: <span id="slider-min"></span> - Max: <span id="slider-max"></span>
+                        </div>
+                    </div>
                 </div>
                 <hr>
                 <div class="row">
@@ -48,24 +55,20 @@
                     </div>
                 </div>
 
-
-
-
-
-
-
-
-
-
-                <hr>
-
+                <h3 class="major">Search by Stock ID</h3>
+                <div class="stock-id-search-container">
+                    <input class="small" type="text" id="stock-id-input" placeholder="Enter Stock ID">
+                    <button class="button small" id="stock-id-search-button">Search</button>
+                </div>
 
                 <hr>
 
                 <h3 class="major" id="stock-results">Results</h3>
                 <div id="results"></div>
 
-                <div id="total-count"></div>
+                <div id="total-count">
+
+                </div>
 
                 <ul class="pagination" id="pagination-buttons">
                 </ul>
@@ -74,11 +77,7 @@
                     <button class="button small" id="goto-page-button">Go</button>
                 </div>
 
-                <h3 class="major">Search by Stock ID</h3>
-                <div class="stock-id-search-container">
-                    <input class="small" type="text" id="stock-id-input" placeholder="Enter Stock ID">
-                    <button class="button small" id="stock-id-search-button">Search</button>
-                </div>
+
 
             </section>
 

@@ -52,10 +52,10 @@ $(document).ready(function () {
                 totalPages = Math.ceil(data.results.length / 20);
                 displayResults();
                 updatePagination();
-                $('#total-count').text(`Total results: ${data.results.length}`);  // 显示总记录数
+                $('#total-count').html(`<p>Total results: ${data.results.length}</p>`);  // 显示总记录数
             } else {
                 $('#results').html('<p>No results found</p>');
-                $('#total-count').text(`Total results: 0`);  // 显示总记录数
+                $('#total-count').html(`<p>Total results: 0</p>`);  // 显示总记录数
             }
         });
     }

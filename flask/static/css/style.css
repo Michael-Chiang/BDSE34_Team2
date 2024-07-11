@@ -34,6 +34,7 @@ ul {
 ul::-webkit-scrollbar {
     width: 10px;
     /* 滚动条宽度 */
+    height: 10px;
 }
 
 ul::-webkit-scrollbar-track {
@@ -155,35 +156,34 @@ section {
 .noUi-connect {
     background: #dbdbdb !important;
     /* 滑块轨道背景色 */
+    height: 15px !important;
 }
 
 .noUi-connect {
-    background: #4b5475 !important;
+    background: #485275 !important;
     /* 滑块活动部分的背景色 */
     /
 }
 
 /* 自定义滑块 */
 .noUi-handle {
-    background: #ff5733;
+    background: #d9dcdd !important;
     /* 滑块颜色 */
     border: 2px solid #ff5733;
     /* 滑块边框 */
-    height: 20px;
-    /* 滑块高度 */
-    width: 20px;
-    /* 滑块宽度 */
     border-radius: 40% !important;
     /* 滑块圆角 */
 }
 
 .noUi-tooltip {
-    background: #9baacd !important;
+    background: #c4c6c7 !important;
     color: #000000 !important;
     font-family: "Source Sans Pro", Helvetica, sans-serif;
     font-weight: bold;
+    font-size: 14px;
     border: none !important;
     padding: 0px 8px !important;
     border-radius: 3px !important;
-
 }
+
+.row>.col-6 {}

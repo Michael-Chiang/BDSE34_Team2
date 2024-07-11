@@ -435,6 +435,7 @@ h6 {
 
 	h3 {
 		font-size: 0.8em;
+
 	}
 
 }
@@ -4158,8 +4159,12 @@ body.is-preload #banner p {
 	}
 
 	.wrapper .inner {
-		padding: 3em 3em 1em 3em;
+		padding: 3em 1.5em 1em 1.5em;
 		width: 100%;
+	}
+
+	h3 {
+		margin: 1em 1.5em 1em 1.5em
 	}
 
 	.wrapper.spotlight .image {
@@ -4196,6 +4201,10 @@ body.is-preload #banner p {
 	.wrapper .inner {
 		padding: 2em 2em 0.1em 2em;
 	}
+
+
+
+
 
 	.wrapper.spotlight .inner {
 		-moz-align-items: -moz-flex-start;
