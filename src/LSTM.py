@@ -408,7 +408,7 @@ if __name__ == "__main__":
     log_dir = "log"
     os.makedirs(log_dir, exist_ok=True)
     log_filename = os.path.join(
-        log_dir, f"log_{current_time}_{config.sector}_{config.clusterID}.txt")
+        log_dir, f"log_LSTM_{current_time}_{config.sector}_{config.clusterID}.txt")
 
     # Set up logging
     logging.basicConfig(
