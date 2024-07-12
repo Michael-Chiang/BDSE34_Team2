@@ -1,3 +1,4 @@
+import math
 from flask import Flask, render_template, request, jsonify
 import mysql.connector
 import time
@@ -53,17 +54,42 @@ def prediction():
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor(dictionary=True)
     
-    # 獲取所有的Sector項目
-    cursor.execute("SELECT DISTINCT Sector FROM Latest_info")
+    # 只获取 Finance 和 Technology 的 Sector 项目
+    cursor.execute("SELECT DISTINCT Sector FROM Latest_info WHERE Sector IN ('Finance', 'Technology')")
     sectors = [row['Sector'] for row in cursor.fetchall()]
 
     cursor.execute("SELECT MIN(`Latest Price`) as min_price, MAX(`Latest Price`) as max_price FROM Latest_info")
     price_range = cursor.fetchone()
+
+    print(sectors)
+    
+    #cursor.execute("SELECT DISTINCT prediction_dl FROM Latest_info")
+    #prediction_dl_values = [row['prediction_dl'] for row in cursor.fetchall()]
+
+    #cursor.execute("SELECT DISTINCT prediction_ml FROM Latest_info")
+    #prediction_ml_values = [row['prediction_ml'] for row in cursor.fetchall()]
     
     cursor.close()
     connection.close()
     
-    return render_template('filter.html', sectors=sectors, price_range=price_range)
+    return render_template('prediction.html', 
+                           sectors=sectors, 
+                           price_range=price_range, 
+                           #prediction_dl_values=prediction_dl_values, 
+                           #prediction_ml_values=prediction_ml_values
+                           )
+
+def value_to_text(value):
+    text_map = {
+        0: '大跌',
+        1: '小跌',
+        2: '持平',
+        3: '小漲',
+        4: '大漲'
+    }
+    return text_map.get(value, '')
+
+app.jinja_env.globals.update(value_to_text=value_to_text)
 
 @app.route('/filter_sectors', methods=['POST'])
 def filter_sectors():
@@ -87,7 +113,7 @@ def filter_sectors():
     
     return jsonify({'industries': industries})
 
-@app.route('/filter_results', methods=['POST'])
+@app.route('/filter_results', methods=['POST', 'GET'])
 def filter_results():
 
     connection = mysql.connector.connect(**db_config)
@@ -98,9 +124,19 @@ def filter_results():
     stock_id = request.form.get('stock_id')
     min_price = request.form.get('min_price', type=float)
     max_price = request.form.get('max_price', type=float)
+    prediction_dl = request.form.get('prediction_dl')
+    prediction_ml = request.form.get('prediction_ml')
+    page_type = request.form.get('page_type')
+
     
-    
-    query = "SELECT * FROM Latest_info WHERE 1=1"
+    # 添加过滤条件
+    if page_type == 'prediction':
+        query = "SELECT * FROM Latest_info WHERE `Sector` IN ('Finance', 'Technology') AND 1=1"
+        print("prediction")
+    else:
+        query = "SELECT * FROM Latest_info WHERE 1=1"
+        print("noprediction")
+
     params = []
     
     if sectors:
@@ -124,6 +160,16 @@ def filter_results():
     if max_price is not None:
         query += " AND `Latest Price` <= %s"
         params.append(max_price)
+
+    if prediction_dl:
+        prediction_dl_list = prediction_dl.split(',')
+        query += " AND prediction_dl IN (%s)" % ','.join(['%s'] * len(prediction_dl_list))
+        params.extend(prediction_dl_list)
+
+    if prediction_ml:
+        prediction_ml_list = prediction_ml.split(',')
+        query += " AND prediction_ml IN (%s)" % ','.join(['%s'] * len(prediction_ml_list))
+        params.extend(prediction_ml_list)
     
     
     cursor.execute(query, params)
@@ -131,7 +177,6 @@ def filter_results():
     
     cursor.execute("SHOW COLUMNS FROM Latest_info")
     columns = [column['Field'] for column in cursor.fetchall()]
-
 
     cursor.execute("SELECT MIN(`Latest Price`) as min_price, MAX(`Latest Price`) as max_price FROM Latest_info")
     price_range = cursor.fetchone()
@@ -144,15 +189,25 @@ def filter_results():
 
 @app.route('/get_price_range', methods=['GET'])
 def get_price_range():
+    page_type = request.args.get('page_type')
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor(dictionary=True)
+    
 
-    cursor.execute("SELECT MIN(`Latest Price`) as min_price, MAX(`Latest Price`) as max_price FROM Latest_info")
-    price_range = cursor.fetchone()
+    if page_type == 'prediction':
+        cursor.execute("SELECT MIN(`Latest Price`) as min_price, MAX(`Latest Price`) as max_price FROM Latest_info WHERE Sector IN ('Finance', 'Technology')")      
+        price_range = cursor.fetchone()
+        print("11111")
+        
+    else:
+        cursor.execute("SELECT MIN(`Latest Price`) as min_price, MAX(`Latest Price`) as max_price FROM Latest_info")
+        price_range = cursor.fetchone()
+        print("22222")
 
     cursor.close()
     connection.close()
-
+    print(price_range)
+    
     return jsonify(price_range)
 
 @app.route('/stock/<symbol>')

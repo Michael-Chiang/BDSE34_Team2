@@ -39,13 +39,20 @@ $(document).ready(function () {
 
         // 获取滑动条的值
         const priceRange = [minPrice, maxPrice];
+        const pageType = $('#page-type').val();  // 获取隐藏字段的值
 
         $.post('/filter_results', {
             sectors: selectedSectors.join(','),
             industries: selectedIndustries.join(','),
             stock_id: stockID,
             min_price: priceRange[0],
-            max_price: priceRange[1]
+            max_price: priceRange[1],
+            page_type: pageType,
+            // prediction_dl: selectedPredictionDL.join(','),
+            // prediction_ml: selectedPredictionML.join(','),
+
+
+
         }, function (data) {
             if (data && data.results && data.columns) {
                 resultsData = data;
@@ -157,8 +164,20 @@ $(document).ready(function () {
         updateResults();
     }
 
+    function togglePredictionDLAndFilter(button) {
+        toggleSelection(button);
+        updateResults();
+    }
+
+    function togglePredictionMLAndFilter(button) {
+        toggleSelection(button);
+        updateResults();
+    }
+
     window.toggleSectorAndFilter = toggleSectorAndFilter;
     window.toggleIndustryAndFilter = toggleIndustryAndFilter;
+    window.togglePredictionDLAndFilter = togglePredictionDLAndFilter;
+    window.togglePredictionMLAndFilter = togglePredictionMLAndFilter;
 
     // 添加处理stockID搜索的逻辑
     $('#stock-id-search-button').on('click', function () {
@@ -166,10 +185,14 @@ $(document).ready(function () {
         updateResults();  // 更新结果
     });
 
+    const pageType = $('#page-type').val();  // 获取隐藏字段的值
+
     // 获取价格范围并初始化滑动条
     $.ajax({
+
         url: '/get_price_range',
         method: 'GET',
+        data: { page_type: pageType },
         success: function (data) {
             var sliderElement = document.getElementById('slider');
             minPrice = parseFloat(data.min_price);
@@ -180,10 +203,30 @@ $(document).ready(function () {
                 connect: true,
                 range: {
                     'min': minPrice,
-                    'max': maxPrice
+                    '10%': [minPrice + (maxPrice - minPrice) * 0.005],
+                    '20%': [minPrice + (maxPrice - minPrice) * 0.01],
+                    '30%': [minPrice + (maxPrice - minPrice) * 0.02],
+                    '40%': [minPrice + (maxPrice - minPrice) * 0.03],
+                    '50%': [minPrice + (maxPrice - minPrice) * 0.05],
+                    '60%': [minPrice + (maxPrice - minPrice) * 0.07],
+                    '70%': [minPrice + (maxPrice - minPrice) * 0.10],
+                    '80%': [minPrice + (maxPrice - minPrice) * 0.50],
+                    '90%': [minPrice + (maxPrice - minPrice) * 0.70],
+                    'max': maxPrice,
                 },
-                tooltips: [true, true]
+                tooltips: [true, true],
+                format: {
+                    to: function (value) {
+                        return Math.round(value); // 四舍五入
+                    },
+                    from: function (value) {
+                        return Number(value);
+                    }
+                }
+
             });
+
+
 
             let minValue = document.getElementById('slider-min');
             let maxValue = document.getElementById('slider-max');
@@ -196,7 +239,10 @@ $(document).ready(function () {
                     maxValue.innerHTML = values[1];
                     maxPrice = values[1]; // 更新全局变量
                 }
+
             });
+
+
 
 
             sliderElement.noUiSlider.on('change', function () {
