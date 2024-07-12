@@ -4,7 +4,8 @@ import torch.nn as nn
 
 # Set device
 use_cuda = 1
-device = torch.device("cuda" if (torch.cuda.is_available() & use_cuda) else "cpu")
+device = torch.device("cuda" if (
+    torch.cuda.is_available() & use_cuda) else "cpu")
 
 
 class LSTM(nn.Module):
@@ -34,8 +35,10 @@ class LSTM(nn.Module):
         )
 
     def forward(self, x):
-        h0 = torch.zeros(self.num_layers * 2, x.size(0), self.hidden_dim).to(device)
-        c0 = torch.zeros(self.num_layers * 2, x.size(0), self.hidden_dim).to(device)
+        h0 = torch.zeros(self.num_layers * 2, x.size(0),
+                         self.hidden_dim).to(device)
+        c0 = torch.zeros(self.num_layers * 2, x.size(0),
+                         self.hidden_dim).to(device)
         out, _ = self.lstm(x, (h0, c0))
         # out = out.contiguous().view(x.size(0), -1)
         out = self.fc(out[:, -1, :])
@@ -49,14 +52,14 @@ class ConvBlock(nn.Module):
         out_channels,
         kernel_size=3,
         pool_kernel_size=2,
-        pool_stride=2,
         dropout_rate=0.5,
     ):
         super(ConvBlock, self).__init__()
         self.conv = nn.Conv1d(
-            in_channels, out_channels, kernel_size=kernel_size, padding=kernel_size // 2
+            in_channels, out_channels, kernel_size=kernel_size, padding=1
         )
-        self.pool = nn.MaxPool1d(kernel_size=pool_kernel_size, stride=pool_stride)
+        self.pool = nn.MaxPool1d(
+            kernel_size=pool_kernel_size)
         self.bn = nn.BatchNorm1d(in_channels)
         self.dropout = nn.Dropout1d(p=dropout_rate)
         self.relu = nn.ReLU()
@@ -88,9 +91,6 @@ class CNN(nn.Module):
         )  # 全连接层
 
     def forward(self, x):
-        x = x.transpose(
-            1, 2
-        )  # 调整形状以适应Conv1d层 (batch_size, num_features, sequence_length)
         x = self.block1(x)
         x = self.block2(x)
         x = self.block3(x)
