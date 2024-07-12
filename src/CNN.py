@@ -4,22 +4,23 @@ import logging
 import os
 import time
 from datetime import datetime
+from typing import Literal
 
 import matplotlib.pyplot as plt
+import mlflow
+import mlflow.pytorch
 import numpy as np
 import pandas as pd
+import pydantic_argparse
 import seaborn as sns
 import torch
 import torch.nn as nn
+from pydantic.v1 import BaseModel, Field, confloat, conint, root_validator
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import DataLoader, TensorDataset
 from torchsummary import summary
-
-from pydantic.v1 import BaseModel, Field, root_validator, confloat, conint
-from typing import Literal
-import pydantic_argparse
 
 from my_utils.models import CNN
 
@@ -31,37 +32,39 @@ class Config(BaseModel):
     num_epochs: int = Field(200, description="Number of epochs")
     lr: float = Field(0.0001, description="Learning rate")
     dropout_rate: confloat(ge=0.1, le=0.9) = Field(  # type: ignore
-        0.5, description="Dropout rate")
+        0.5, description="Dropout rate"
+    )
     patience: int = Field(20, description="Patience for early stopping")
     step_size: int = Field(20, description="Learning rate scheduler step size")
-    gamma: float = Field(
-        0.8, description="Learning rate scheduler weight decay")
-    sector: Literal['Finance', 'Technology'] = Field(
-        description="The name must be 'Finance' or 'Technology'")
+    gamma: float = Field(0.8, description="Learning rate scheduler weight decay")
+    sector: Literal["Finance", "Technology"] = Field(
+        description="The name must be 'Finance' or 'Technology'"
+    )
     lookback: int = Field(None, description="Sequence length")
     interval: int = Field(None, description="Sample days difference")
     period: int = Field(None, description="Predicted days after")
 
     @root_validator(pre=True)
     def set_defaults(cls, values):
-        name = values.get('sector')
-        if name == 'Finance':
-            values['lookback'] = 60
-            values['interval'] = 10
-            values['period'] = 10
-        elif name == 'Technology':
-            values['lookback'] = 20
-            values['interval'] = 5
-            values['period'] = 5
+        name = values.get("sector")
+        if name == "Finance":
+            values["lookback"] = 60
+            values["interval"] = 10
+            values["period"] = 10
+        elif name == "Technology":
+            values["lookback"] = 20
+            values["interval"] = 5
+            values["period"] = 5
         return values
+
     clusterID: conint(ge=0, le=4) = Field(  # type: ignore
-        description="Cluster ID")  # type: ignore
+        description="Cluster ID"
+    )  # type: ignore
 
 
 # Set device
 use_cuda = 1
-device = torch.device("cuda" if (
-    torch.cuda.is_available() & use_cuda) else "cpu")
+device = torch.device("cuda" if (torch.cuda.is_available() & use_cuda) else "cpu")
 logging.info(f"Device: {device}")
 
 
@@ -76,7 +79,7 @@ def split_data(stock, lookback, interval, y):
     n_time = len(data_raw)
     data, targets = [], []
     for index in range(0, n_time - lookback, interval):
-        data.append(data_raw[index: index + lookback, :])
+        data.append(data_raw[index : index + lookback, :])
         targets.append(y.iloc[index + lookback])
 
     data = np.array(data)
@@ -166,10 +169,13 @@ def train(
                 valid_accuracy += is_correct.sum().item()
 
         valid_loss /= len(valid_dl.dataset)
+
         valid_accuracy /= len(valid_dl.dataset)
         loss_hist_valid.append(valid_loss)
         accuracy_hist_valid.append(valid_accuracy)
-
+        # 记录每个 epoch 的平均损失
+        mlflow.log_metric("valid_loss", valid_loss, step=epoch)
+        mlflow.log_metric("valid_accuracy", valid_accuracy, step=epoch)
         if valid_accuracy > best_acc:
             best_acc = valid_accuracy
             best_model_wts = copy.deepcopy(model.state_dict())
@@ -209,8 +215,7 @@ def show_accuracy(model, dl):
         for batch_x, batch_y in dl:
             pred_y = model(batch_x)
             correct += (
-                (torch.argmax(pred_y, dim=1) == batch_y).type(
-                    torch.float).sum().item()
+                (torch.argmax(pred_y, dim=1) == batch_y).type(torch.float).sum().item()
             )
     return correct / size
 
@@ -232,8 +237,7 @@ def save_confusion_matrix(model, train_dl, test_dl, path):
                     .item()
                 )
                 all_batch_y.append(batch_y.cpu().numpy())
-                all_batch_y_pred.append(
-                    torch.argmax(pred_y, dim=1).cpu().numpy())
+                all_batch_y_pred.append(torch.argmax(pred_y, dim=1).cpu().numpy())
 
             if dl == train_dl:
                 y_train = np.concatenate(all_batch_y)
@@ -333,12 +337,15 @@ def prepare_data(file_paths, lookback, interval, period):
 def main(config: Config) -> None:
 
     clusterID = str(config.clusterID)
-    file_paths = glob.glob(os.path.join(
-        "stock_data_all", config.sector, clusterID, "*.csv"))
+    file_paths = glob.glob(
+        os.path.join("stock_data_all", config.sector, clusterID, "*.csv")
+    )
     model_path = "model/"
     figure_path = "figure/"
     model_save_path = f"model/best_1dcnn_model_{config.sector}_{clusterID}.pth"
-    figure_save_path = f"figure/confusion_matrix_best_1dcnn_{config.sector}_{clusterID}.jpg"
+    figure_save_path = (
+        f"figure/confusion_matrix_best_1dcnn_{config.sector}_{clusterID}.jpg"
+    )
 
     os.makedirs(model_path, exist_ok=True)
     os.makedirs(figure_path, exist_ok=True)
@@ -365,34 +372,41 @@ def main(config: Config) -> None:
     logging.info(summary(model, (config.lookback, config.num_features)))
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=config.lr)
-    scheduler = torch.optim.lr_scheduler.StepLR(
-        optimizer, step_size=20, gamma=0.8)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.8)
 
-    # Train model
-    start_time = time.time()
-    best_model, hist = train(
-        model,
-        config.num_epochs,
-        config.patience,
-        train_dl,
-        test_dl,
-        device,
-        criterion,
-        optimizer,
-        scheduler,
-    )
-    training_time = time.time() - start_time
-    logging.info(f"Training time: {training_time}")
-    logging.info(
-        f"Training accuracy: {show_accuracy(best_model, train_dl):.4f}")
-    logging.info(f"Testing accuracy: {show_accuracy(best_model, test_dl):.4f}")
+    with mlflow.start_run() as run:
+        # 记录超参数
+        mlflow.log_params(config.dict())
+        # Train model
+        start_time = time.time()
+        best_model, hist = train(
+            model,
+            config.num_epochs,
+            config.patience,
+            train_dl,
+            test_dl,
+            device,
+            criterion,
+            optimizer,
+            scheduler,
+        )
+        training_time = time.time() - start_time
+        logging.info(f"Training time: {training_time}")
+        logging.info(f"Training accuracy: {show_accuracy(best_model, train_dl):.4f}")
+        logging.info(f"Testing accuracy: {show_accuracy(best_model, test_dl):.4f}")
 
-    # Save model
-    save_model(best_model, model_save_path)
-    load_model(
-        model_save_path, config.lookback, config.output_dim, config.num_features, dropout_rate=config.dropout_rate
-    )
-    save_confusion_matrix(model, train_dl, test_dl, figure_save_path)
+        # Save model
+        save_model(best_model, model_save_path)
+        load_model(
+            model_save_path,
+            config.lookback,
+            config.output_dim,
+            config.num_features,
+            dropout_rate=config.dropout_rate,
+        )
+        save_confusion_matrix(model, train_dl, test_dl, figure_save_path)
+        # 保存模型
+        mlflow.pytorch.log_model(model, "model")
 
 
 if __name__ == "__main__":
@@ -408,7 +422,8 @@ if __name__ == "__main__":
     log_dir = "log"
     os.makedirs(log_dir, exist_ok=True)
     log_filename = os.path.join(
-        log_dir, f"log_CNN_{current_time}_{config.sector}_{config.clusterID}.txt")
+        log_dir, f"log_CNN_{current_time}_{config.sector}_{config.clusterID}.txt"
+    )
 
     # Set up logging
     logging.basicConfig(
@@ -420,4 +435,6 @@ if __name__ == "__main__":
             logging.FileHandler(log_filename),  # Log to file]
         ],
     )
+    # 设置 MLflow 跟踪 URI
+    mlflow.set_tracking_uri("http://localhost:5000")  # 或者其他 MLflow 服务器的 URI
     main(config)
