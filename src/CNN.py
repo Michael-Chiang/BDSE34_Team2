@@ -26,7 +26,7 @@ from my_utils.models import CNN
 
 
 class Config(BaseModel):
-    num_features: int = Field(71, description="Number of features")
+    in_channels: int = Field(71, description="Number of features")
     output_dim: int = Field(5, description="Output dimension")
     batch_size: int = Field(64, description="Batch size")
     num_epochs: int = Field(200, description="Number of epochs")
@@ -36,11 +36,12 @@ class Config(BaseModel):
     )
     patience: int = Field(20, description="Patience for early stopping")
     step_size: int = Field(20, description="Learning rate scheduler step size")
-    gamma: float = Field(0.8, description="Learning rate scheduler weight decay")
+    gamma: float = Field(
+        0.8, description="Learning rate scheduler weight decay")
     sector: Literal["Finance", "Technology"] = Field(
         description="The name must be 'Finance' or 'Technology'"
     )
-    lookback: int = Field(None, description="Sequence length")
+    num_features: int = Field(None, description="Sequence length")
     interval: int = Field(None, description="Sample days difference")
     period: int = Field(None, description="Predicted days after")
 
@@ -48,11 +49,11 @@ class Config(BaseModel):
     def set_defaults(cls, values):
         name = values.get("sector")
         if name == "Finance":
-            values["lookback"] = 60
+            values["num_features"] = 60
             values["interval"] = 10
             values["period"] = 10
         elif name == "Technology":
-            values["lookback"] = 20
+            values["num_features"] = 20
             values["interval"] = 5
             values["period"] = 5
         return values
@@ -64,14 +65,15 @@ class Config(BaseModel):
 
 # Set device
 use_cuda = 1
-device = torch.device("cuda" if (torch.cuda.is_available() & use_cuda) else "cpu")
+device = torch.device("cuda" if (
+    torch.cuda.is_available() & use_cuda) else "cpu")
 logging.info(f"Device: {device}")
 
 
 # Data transformation functions
 def transform_type(x, device, is_train=True):
     tensor = torch.Tensor(x.astype(float)).to(device)
-    return tensor if is_train else tensor.to(torch.int64)
+    return tensor.transpose(1, 2) if is_train else tensor.to(torch.int64)
 
 
 def split_data(stock, lookback, interval, y):
@@ -79,7 +81,7 @@ def split_data(stock, lookback, interval, y):
     n_time = len(data_raw)
     data, targets = [], []
     for index in range(0, n_time - lookback, interval):
-        data.append(data_raw[index : index + lookback, :])
+        data.append(data_raw[index: index + lookback, :])
         targets.append(y.iloc[index + lookback])
 
     data = np.array(data)
@@ -142,9 +144,6 @@ def train(
 
             epoch_loss += loss.item() * y_batch.size(0)
             is_correct = (torch.argmax(pred, dim=1) == y_batch).float()
-            # print(
-            #     f"pred.shape = {pred.shape}, discretization(pred).shape = {discretization(pred).shape}, y_batch.shape = {y_batch.shape}"
-            # )
             epoch_accuracy += is_correct.sum().item()
             batch_num += 1
 
@@ -215,7 +214,8 @@ def show_accuracy(model, dl):
         for batch_x, batch_y in dl:
             pred_y = model(batch_x)
             correct += (
-                (torch.argmax(pred_y, dim=1) == batch_y).type(torch.float).sum().item()
+                (torch.argmax(pred_y, dim=1) == batch_y).type(
+                    torch.float).sum().item()
             )
     return correct / size
 
@@ -237,7 +237,8 @@ def save_confusion_matrix(model, train_dl, test_dl, path):
                     .item()
                 )
                 all_batch_y.append(batch_y.cpu().numpy())
-                all_batch_y_pred.append(torch.argmax(pred_y, dim=1).cpu().numpy())
+                all_batch_y_pred.append(
+                    torch.argmax(pred_y, dim=1).cpu().numpy())
 
             if dl == train_dl:
                 y_train = np.concatenate(all_batch_y)
@@ -280,7 +281,7 @@ def save_model(model, path):
 
 def load_model(path, in_channels, output_dim, num_features, dropout_rate):
     model = CNN(
-        in_channels, output_dim, num_features=num_features, dropout_rate=dropout_rate
+        in_channels=in_channels, output_dim=output_dim, num_features=num_features, dropout_rate=dropout_rate
     )
     model.load_state_dict(torch.load(path))
     model.to(device)
@@ -352,7 +353,7 @@ def main(config: Config) -> None:
 
     # Prepare data
     x_train_, y_train_, x_test_, y_test_ = prepare_data(
-        file_paths, config.lookback, config.interval, config.period
+        file_paths, config.num_features, config.interval, config.period
     )
 
     # Data loaders
@@ -363,16 +364,17 @@ def main(config: Config) -> None:
 
     # Initialize model
     model = CNN(
-        in_channels=config.lookback,
+        in_channels=config.in_channels,
         output_dim=config.output_dim,
         num_features=config.num_features,
         dropout_rate=config.dropout_rate,
     ).to(device)
 
-    logging.info(summary(model, (config.lookback, config.num_features)))
+    logging.info(summary(model, (config.in_channels, config.num_features)))
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=config.lr)
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.8)
+    scheduler = torch.optim.lr_scheduler.StepLR(
+        optimizer, step_size=20, gamma=0.8)
 
     with mlflow.start_run() as run:
         # 记录超参数
@@ -392,14 +394,16 @@ def main(config: Config) -> None:
         )
         training_time = time.time() - start_time
         logging.info(f"Training time: {training_time}")
-        logging.info(f"Training accuracy: {show_accuracy(best_model, train_dl):.4f}")
-        logging.info(f"Testing accuracy: {show_accuracy(best_model, test_dl):.4f}")
+        logging.info(
+            f"Training accuracy: {show_accuracy(best_model, train_dl):.4f}")
+        logging.info(
+            f"Testing accuracy: {show_accuracy(best_model, test_dl):.4f}")
 
         # Save model
         save_model(best_model, model_save_path)
         load_model(
             model_save_path,
-            config.lookback,
+            config.in_channels,
             config.output_dim,
             config.num_features,
             dropout_rate=config.dropout_rate,
