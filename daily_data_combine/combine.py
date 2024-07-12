@@ -3,12 +3,27 @@ import os
 import numpy as np
 import pandas as pd
 
+aa = pd.read_csv('SOX.csv', index_col='Date', parse_dates=True)
+aa = aa[['Price']]
+aa.rename(columns={'Price': 'SOX'}, inplace=True)
+aa.to_csv('SOX_test.csv')
+NASDAQ = 'NASDAQ'
+Dow_Jones = 'Dow_Jones'
+SP_500 = 'S&P_500'
+SOX = 'SOX_test'
+USD_Index = 'USD_Index'
+VIX = 'VIX'
+WTI = 'WTI'
+BADI = 'BADI'
+
+output_file = 'indicator_data'
 
 def merge_files(file_a, file_b, output_file):
     # Read files into DataFrames
-    df_a = pd.read_csv(file_a, index_col='Date', parse_dates=True)
-    df_a.rename(columns={'Price': 'S&P_500'}, inplace=True)
-    df_b = pd.read_csv(file_b, index_col='Date', parse_dates=True)
+    df_a = pd.read_csv(f'{file_a}.csv', index_col='Date', parse_dates=True)
+    df_a = df_a[['Price']]
+    df_a.rename(columns={'Price': file_a}, inplace=True)
+    df_b = pd.read_csv(f'{file_b}.csv', index_col='Date', parse_dates=True)
 
     # Handle non-unique index in file B (optional)
     if not df_b.index.is_unique:
@@ -27,12 +42,14 @@ def merge_files(file_a, file_b, output_file):
 
 
     # Save merged data
-    merged_df.to_csv(output_file)
+    merged_df.to_csv(f'{output_file}.csv')
 
 
-# Replace 'file_a.csv' and 'file_b.csv' with your actual file paths
-file_a = 'daily_index.csv'
-file_b = 'index_3.csv'
-output_file = 'indicator_data.csv'
 
-merge_files(file_a, file_b, output_file)
+merge_files(USD_Index, SOX, output_file)
+merge_files(VIX, output_file, output_file)
+merge_files(WTI, output_file, output_file)
+merge_files(BADI, output_file, output_file)
+merge_files(NASDAQ, output_file, output_file)
+merge_files(Dow_Jones, output_file, output_file)
+merge_files(SP_500, output_file, output_file)
