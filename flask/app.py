@@ -48,6 +48,23 @@ def filter():
     
     return render_template('filter.html', sectors=sectors, price_range=price_range)
 
+@app.route('/prediction', methods=['GET'])
+def prediction():
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor(dictionary=True)
+    
+    # 獲取所有的Sector項目
+    cursor.execute("SELECT DISTINCT Sector FROM Latest_info")
+    sectors = [row['Sector'] for row in cursor.fetchall()]
+
+    cursor.execute("SELECT MIN(`Latest Price`) as min_price, MAX(`Latest Price`) as max_price FROM Latest_info")
+    price_range = cursor.fetchone()
+    
+    cursor.close()
+    connection.close()
+    
+    return render_template('filter.html', sectors=sectors, price_range=price_range)
+
 @app.route('/filter_sectors', methods=['POST'])
 def filter_sectors():
     connection = mysql.connector.connect(**db_config)
