@@ -7,8 +7,8 @@
 
 # stock = pd.read_csv('AAPL.csv', index_col="Date", parse_dates=True)
 
-# stock['RSI14_over_heat'] = stock['RSI14'] > 70
-# stock['RSI14_over_cold'] = stock['RSI14'] < 30
+# stock['RSI14_over_heat'] = stock['RSI14'] > 80
+# stock['RSI14_over_cold'] = stock['RSI14'] < 20
 
 # stock['Close > SMA5'] = stock['Close'] > stock['Close_SMA5']
 # stock['STD > 1.5'] = stock['Close'] .rolling(10).std() > 1.5
