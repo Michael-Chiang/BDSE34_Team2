@@ -15,8 +15,8 @@ for stock_id in stock_ids:
       continue  # 繼續下個迴圈
 
   # 計算技術指標 (跟原本邏輯相同)
-  stock['RSI14_over_heat'] = stock['RSI14'] > 80
-  stock['RSI14_over_cold'] = stock['RSI14'] < 20
+  stock['RSI14_over_heat'] = stock['RSI14'] > 70
+  stock['RSI14_over_cold'] = stock['RSI14'] < 30
 
   stock['Close > SMA5'] = stock['Close'] > stock['Close_SMA5']
   stock['STD > 1.5'] = stock['Close'].rolling(10).std() > 1.5
