@@ -54,7 +54,7 @@ $(document).ready(function () {
                 updatePagination();
                 $('#total-count').html(`<p class="total-count">Total results: ${data.results.length}</p>`);  // 显示总记录数
             } else {
-                $('#results').html('<p>No results found</p>');
+                $('#results').html('<p class="total-count">No results found</p>');
                 $('#total-count').html(`<p class="total-count">Total results: 0</p>`);  // 显示总记录数
             }
         });

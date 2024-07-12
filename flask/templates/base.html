@@ -24,6 +24,16 @@
     <!-- Page Wrapper -->
     <div id="page-wrapper">
 
+        {% block header %}
+        <!-- Header -->
+        <header id="header" class="alt">
+            <h1><a href="{{ url_for('index')}}">Solid State</a></h1>
+            <nav>
+                <a href="#menu">Menu</a>
+            </nav>
+        </header>
+        {% endblock %}
+
         <!-- Header -->
         <header id="header" class="alt">
             <h1><a href="{{ url_for('index')}}">Solid State</a></h1>
@@ -39,6 +49,7 @@
                 <ul class="links">
                     <li><a href="{{ url_for('index')}}">Home</a></li>
                     <li><a href="{{ url_for('filter')}}">Filter</a></li>
+                    <li><a href="{{ url_for('prediction')}}">Prediction</a></li>
                     <li><a href="{{ url_for('generic')}}">Generic</a></li>
                     <li><a href="{{ url_for('elements')}}">Elements</a></li>
                     <li><a href="#">Log In</a></li>

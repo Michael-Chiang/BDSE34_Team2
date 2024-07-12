@@ -2,6 +2,7 @@
 
 
 flask/venv/
+venv/
 
 
 config/database.yml

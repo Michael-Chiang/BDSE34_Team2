@@ -26,7 +26,7 @@ ul.pagination,
 }
 
 .ulcontainer {
-    height: 260px;
+    height: 255px;
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -45,18 +45,37 @@ ul.actions.fit {
     margin-bottom: 0;
 }
 
+@media screen and (max-width: 1680px) {
+
+    .ulcontainer {
+        max-height: 250px;
+    }
+
+}
+
+@media screen and (max-width: 1280px) {
+
+    .ulcontainer {
+        max-height: 230px;
+    }
+
+}
+
 @media screen and (max-width: 980px) {
 
     .ulcontainer {
         height: auto;
-        max-height: 260px;
+        max-height: 230px;
     }
 
 }
 
 @media screen and (max-width: 480px) {
 
-
+    .ulcontainer {
+        height: auto;
+        max-height: 200px;
+    }
 
     ul.actions.fit li {
         max-width: 95%;
@@ -87,7 +106,6 @@ ul.actions.fit {
     background: #adadad;
     /* 滚动条悬停颜色 */
 }
-
 
 #goto-page-input,
 #stock-id-input {
@@ -182,6 +200,7 @@ td {
     text-align: right;
     margin: 10px 5px 20px 5px;
 }
+
 
 section .results {
     overflow: hidden;

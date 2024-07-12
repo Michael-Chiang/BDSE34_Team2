@@ -3705,6 +3705,7 @@ body.is-menu-visible #menu .inner {
 		width: 100%;
 	}
 
+
 }
 
 @media screen and (max-width: 736px) {
@@ -3729,6 +3730,11 @@ body.is-menu-visible #menu .inner {
 	#banner p {
 		font-size: 0.8em;
 	}
+
+	/* #banner #small {
+		padding: 0;
+		height: 0;
+	} */
 
 }
 

@@ -2,10 +2,19 @@
 
 {% block title %}Generic{% endblock %}
 
+{% block header %}
+<!-- Header -->
+<header id="header">
+    <h1><a href="{{ url_for('index')}}">Solid State</a></h1>
+    <nav>
+        <a href="#menu">Menu</a>
+    </nav>
+</header>
+{% endblock %}
+
 {% block banner %}
 <!-- Banner -->
-<section id="banner">
-
+<section id="bannersmall" class="bannersmall">
 </section>
 
 {% endblock %}
@@ -76,11 +85,13 @@
 
             </section>
             <section class="results">
+
                 <h3 class="major" id="stock-results">Results</h3>
+                <!-- <div id="total-count">
+                </div> -->
                 <div id="results"></div>
 
                 <div id="total-count">
-
                 </div>
 
                 <ul class="pagination" id="pagination-buttons">
@@ -94,7 +105,7 @@
 
 
 
-            <section class="features">
+            <!-- <section class="features">
                 <article>
                     <a href="#" class="image"><img src="{{ url_for('static', filename='images/pic04.jpg') }}"
                             alt="" /></a>
@@ -111,7 +122,7 @@
                         ultrices.</p>
                     <a href="#" class="special">Learn more</a>
                 </article>
-            </section>
+            </section> -->
 
         </div>
     </div>
