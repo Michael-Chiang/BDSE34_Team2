@@ -243,7 +243,9 @@ section .results {
     border-radius: 3px !important;
 }
 
-table th:nth-child(6),
-table td:nth-child(6) {
+/* table th:nth-child(6),
+table td:nth-child(6),
+table th:nth-child(7),
+table td:nth-child(7) {
     display: none;
-}
+} */

@@ -63,11 +63,11 @@ def prediction():
 
     print(sectors)
     
-    #cursor.execute("SELECT DISTINCT prediction_dl FROM Latest_info")
-    #prediction_dl_values = [row['prediction_dl'] for row in cursor.fetchall()]
+    cursor.execute("SELECT DISTINCT `DL Prediction` FROM Latest_info")
+    prediction_dl_values = [row['DL Prediction'] for row in cursor.fetchall()]
 
-    #cursor.execute("SELECT DISTINCT prediction_ml FROM Latest_info")
-    #prediction_ml_values = [row['prediction_ml'] for row in cursor.fetchall()]
+    cursor.execute("SELECT DISTINCT `ML Prediction` FROM Latest_info")
+    prediction_ml_values = [row['ML Prediction'] for row in cursor.fetchall()]
     
     cursor.close()
     connection.close()
@@ -75,8 +75,8 @@ def prediction():
     return render_template('prediction.html', 
                            sectors=sectors, 
                            price_range=price_range, 
-                           #prediction_dl_values=prediction_dl_values, 
-                           #prediction_ml_values=prediction_ml_values
+                           prediction_dl_values=prediction_dl_values, 
+                           prediction_ml_values=prediction_ml_values
                            )
 
 def value_to_text(value):
@@ -163,12 +163,12 @@ def filter_results():
 
     if prediction_dl:
         prediction_dl_list = prediction_dl.split(',')
-        query += " AND prediction_dl IN (%s)" % ','.join(['%s'] * len(prediction_dl_list))
+        query += " AND `DL Prediction` IN (%s)" % ','.join(['%s'] * len(prediction_dl_list))
         params.extend(prediction_dl_list)
 
     if prediction_ml:
         prediction_ml_list = prediction_ml.split(',')
-        query += " AND prediction_ml IN (%s)" % ','.join(['%s'] * len(prediction_ml_list))
+        query += " AND ML Prediction IN (%s)" % ','.join(['%s'] * len(prediction_ml_list))
         params.extend(prediction_ml_list)
     
     

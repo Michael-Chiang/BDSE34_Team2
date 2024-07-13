@@ -35,6 +35,10 @@ $(document).ready(function () {
     function updateResults() {
         let selectedSectors = getSelectedItems('.sector-button', 'data-sector');
         let selectedIndustries = getSelectedItems('.industry-button', 'data-industry');
+
+        let selectedPredictionDL = getSelectedItems('.prediction-dl-button', 'data-value');
+        let selectedPredictionML = getSelectedItems('.prediction-ml-button', 'data-value');
+
         const stockID = $('#stock-id-input').val(); // 获取输入框中的股票代码
 
         // 获取滑动条的值
@@ -48,8 +52,8 @@ $(document).ready(function () {
             min_price: priceRange[0],
             max_price: priceRange[1],
             page_type: pageType,
-            // prediction_dl: selectedPredictionDL.join(','),
-            // prediction_ml: selectedPredictionML.join(','),
+            prediction_dl: selectedPredictionDL.join(','),
+            prediction_ml: selectedPredictionML.join(','),
 
 
 
