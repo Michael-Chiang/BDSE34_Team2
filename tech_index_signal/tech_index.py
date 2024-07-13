@@ -54,7 +54,4 @@ for filename in os.listdir(folder):
 
 
 
-  # 儲存結果為新檔 (檔名使用股票代碼)
-  stock.to_csv(f'{stock_id}(new).csv')
 
-print(f"{stock_id}處理完畢!")
