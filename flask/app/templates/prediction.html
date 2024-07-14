@@ -73,40 +73,40 @@
                     </div>
                 </div>
 
+
                 <div class="row">
                     <div class="col-6 col-12-medium">
                         <div class="filtercontainer">
                             <h3 class="major">Prediction ML</h3>
-                            <div class="ulcontainer">
-                                <ul class="actions fit small">
-                                    {% for value in prediction_dl_values %}
-                                    <li><button class="prediction-dl-button button small fit" data-value="{{ value }}"
-                                            onclick="togglePredictionDLAndFilter(this)">{{ value_to_text(value)
+                            <div class="ulcontainer prediction">
+                                <ul class="actions fit small prediction">
+                                    {% for value in prediction_ml_values %}
+                                    <li><button class="prediction-ml-button button small fit" data-value="{{ value }}"
+                                            onclick="togglePredictionMLAndFilter(this)">{{ prediction_ml_texts[value]
                                             }}</button></li>
                                     {% endfor %}
-
                                 </ul>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-6 col-12-medium">
                         <div class="filtercontainer">
                             <h3 class="major">Prediction DL</h3>
-                            <div class="ulcontainer">
-                                <ul class="actions fit small">
-                                    {% for value in prediction_ml_values %}
-                                    <li><button class="prediction-ml-button button small fit" data-value="{{ value }}"
-                                            onclick="togglePredictionMLAndFilter(this)">{{ value_to_text(value)
+                            <div class="ulcontainer prediction">
+                                <ul class="actions fit small prediction">
+                                    {% for value in prediction_dl_values %}
+                                    <li><button class="prediction-dl-button button small fit" data-value="{{ value }}"
+                                            onclick="togglePredictionDLAndFilter(this)">{{ prediction_dl_texts[value]
                                             }}</button></li>
                                     {% endfor %}
+
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
+                <br>
 
 
                 <h3 class="major">Search by Stock ID</h3>
