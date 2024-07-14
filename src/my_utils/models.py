@@ -4,7 +4,8 @@ import torch.nn as nn
 
 # Set device
 use_cuda = 1
-device = torch.device("cuda" if (torch.cuda.is_available() & use_cuda) else "cpu")
+device = torch.device("cuda" if (
+    torch.cuda.is_available() & use_cuda) else "cpu")
 
 
 class LSTM(nn.Module):
@@ -34,8 +35,10 @@ class LSTM(nn.Module):
         )
 
     def forward(self, x):
-        h0 = torch.zeros(self.num_layers * 2, x.size(0), self.hidden_dim).to(device)
-        c0 = torch.zeros(self.num_layers * 2, x.size(0), self.hidden_dim).to(device)
+        h0 = torch.zeros(self.num_layers * 2, x.size(0),
+                         self.hidden_dim).to(device)
+        c0 = torch.zeros(self.num_layers * 2, x.size(0),
+                         self.hidden_dim).to(device)
         out, _ = self.lstm(x, (h0, c0))
         # out = out.contiguous().view(x.size(0), -1)
         out = self.fc(out[:, -1, :])
@@ -50,50 +53,24 @@ class ConvBlock(nn.Module):
         kernel_size=3,
         pool_kernel_size=2,
         dropout_rate=0.5,
+        pool=False,
     ):
         super(ConvBlock, self).__init__()
         self.conv = nn.Conv1d(
-            in_channels, out_channels, kernel_size=kernel_size, padding=1
+            in_channels, out_channels, kernel_size=kernel_size, padding=kernel_size // 2
         )
-        self.pool = nn.MaxPool1d(kernel_size=pool_kernel_size)
+        self.max_pool = nn.MaxPool1d(kernel_size=pool_kernel_size)
         self.bn = nn.BatchNorm1d(in_channels)
         self.dropout = nn.Dropout1d(p=dropout_rate)
+        self.pool = pool
         self.relu = nn.ReLU()
 
     def forward(self, x):
         x = self.bn(x)
         x = self.relu(x)
         x = self.conv(x)
-        x = self.pool(x)
-        x = self.dropout(x)
-        return x
-
-
-class ResConvBlock(nn.Module):
-    def __init__(
-        self,
-        in_channels,
-        out_channels,
-        kernel_size=3,
-        pool_kernel_size=2,
-        dropout_rate=0.5,
-    ):
-        super(ResConvBlock, self).__init__()
-        self.conv = nn.Conv1d(
-            in_channels, out_channels, kernel_size=kernel_size, padding=1
-        )
-        self.pool = nn.MaxPool1d(kernel_size=pool_kernel_size)
-        self.bn = nn.BatchNorm1d(in_channels)
-        self.dropout = nn.Dropout1d(p=dropout_rate)
-        self.relu = nn.ReLU()
-
-    def forward(self, x):
-        x_skip = x
-        x = self.bn(x)
-        x = self.relu(x)
-        x = self.conv(x)
-        x = x_skip + x
-        x = self.pool(x)
+        if self.pool:
+            x = self.max_pool(x)
         x = self.dropout(x)
         return x
 
@@ -102,18 +79,22 @@ class CNN(nn.Module):
     def __init__(self, in_channels, output_dim, num_features, dropout_rate):
         super(CNN, self).__init__()
         self.block1 = ConvBlock(
-            in_channels=in_channels, out_channels=128, dropout_rate=dropout_rate
-        )  # 第一层卷积模块
-        self.block2 = ConvBlock(
-            in_channels=128, out_channels=256, dropout_rate=dropout_rate
-        )  # 第二层卷积模块
-        self.block3 = ConvBlock(
-            in_channels=256, out_channels=512, dropout_rate=dropout_rate
-        )  # 第三层卷积模块
+            in_channels=in_channels, out_channels=128, dropout_rate=dropout_rate, pool=True
+        )
+        self.block2 = self._make_layers(128, 256, 3)
+        self.block3 = self._make_layers(256, 512, 3)
         self.final_length = num_features // (2**3)
         self.fc = nn.Linear(
             in_features=512 * self.final_length, out_features=output_dim
         )  # 全连接层
+
+    def _make_layers(self, in_channels, out_channels, block_num):
+        layers = []
+        layers.append(ConvBlock(in_channels, out_channels))
+        for _ in range(1, block_num - 1):
+            layers.append(ConvBlock(out_channels, out_channels))
+        layers.append(ConvBlock(out_channels, out_channels, pool=True))
+        return nn.Sequential(*layers)
 
     def forward(self, x):
         x = self.block1(x)
