@@ -77,6 +77,57 @@ class GRU(nn.Module):
         return out
 
 
+class GRU_Attention(nn.Module):
+    def __init__(self, input_dim, hidden_dim, num_layers, output_dim):
+        super(GRU_Attention, self).__init__()
+        self.hidden_size = hidden_dim
+        self.num_layers = num_layers
+        self.gru = nn.GRU(input_dim, hidden_dim, num_layers,
+                          batch_first=True, dropout=0.5, bidirectional=True)
+        self.fc = nn.Sequential(
+            nn.Linear(hidden_dim * 2, 50),
+            nn.ReLU(),
+            nn.BatchNorm1d(num_features=50),
+            nn.Dropout(p=0.5),
+            nn.Linear(50, 10),
+            nn.ReLU(),
+            nn.BatchNorm1d(num_features=10),
+            nn.Dropout(p=0.5),
+            nn.Linear(10, output_dim),
+        )
+
+    def attention_net(self, gru_output, final_state):
+        # lstm_output : [batch_size, n_step, n_hidden * num_directions(=2)], F matrix
+        # final_state : [num_layers(=1) * num_directions(=2), batch_size, n_hidden]
+
+        # hidden = final_state.view(batch_size,-1,1)
+        hidden = torch.cat(
+            (final_state[0], final_state[1]), dim=1).unsqueeze(2)
+        # hidden : [batch_size, n_hidden * num_directions(=2), n_layer(=1)]
+        attn_weights = torch.bmm(gru_output, hidden).squeeze(2)
+        # attn_weights : [batch_size,n_step]
+        soft_attn_weights = nn.functional.softmax(attn_weights, 1)
+
+        # context: [batch_size, n_hidden * num_directions(=2)]
+        context = torch.bmm(gru_output.transpose(
+            1, 2), soft_attn_weights.unsqueeze(2)).squeeze(2)
+
+        return context, soft_attn_weights
+
+    def forward(self, x):
+        # Initialize hidden state with zeros
+        h0 = torch.zeros(self.num_layers * 2, x.size(0),
+                         self.hidden_size).to(device)
+
+        # Forward propagate the GRU
+        out, final_hidden_state = self.gru(x, h0)
+
+        # Decode the hidden state of the last time step
+        attn_output, attention = self.attention_net(out, final_hidden_state)
+        out = self.fc(attn_output)
+        return out, attention
+
+
 class ConvBlock(nn.Module):
     def __init__(
         self,
