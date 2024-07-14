@@ -45,6 +45,38 @@ class LSTM(nn.Module):
         return out
 
 
+class GRU(nn.Module):
+    def __init__(self, input_dim, hidden_dim, num_layers, output_dim):
+        super(GRU, self).__init__()
+        self.hidden_size = hidden_dim
+        self.num_layers = num_layers
+        self.gru = nn.GRU(input_dim, hidden_dim, num_layers,
+                          batch_first=True, dropout=0.5, bidirectional=True)
+        self.fc = nn.Sequential(
+            nn.Linear(hidden_dim * 2, 50),
+            nn.ReLU(),
+            nn.BatchNorm1d(num_features=50),
+            nn.Dropout(p=0.5),
+            nn.Linear(50, 10),
+            nn.ReLU(),
+            nn.BatchNorm1d(num_features=10),
+            nn.Dropout(p=0.5),
+            nn.Linear(10, output_dim),
+        )
+
+    def forward(self, x):
+        # Initialize hidden state with zeros
+        h0 = torch.zeros(self.num_layers * 2, x.size(0),
+                         self.hidden_size).to(device)
+
+        # Forward propagate the GRU
+        out, _ = self.gru(x, h0)
+
+        # Decode the hidden state of the last time step
+        out = self.fc(out[:, -1, :])
+        return out
+
+
 class ConvBlock(nn.Module):
     def __init__(
         self,

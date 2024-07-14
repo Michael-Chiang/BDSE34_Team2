@@ -21,7 +21,7 @@ from pydantic.v1 import BaseModel, Field, conint, root_validator
 from typing import Literal
 import pydantic_argparse
 
-from my_utils.models import LSTM
+from my_utils.models import GRU
 from my_utils.data_processing import prepare_data
 
 
@@ -29,7 +29,7 @@ class Config(BaseModel):
     input_dim: int = Field(71, description="Number of features")
     hidden_dim: int = Field(100, description="Hidden layer dimension")
     num_layers: conint(ge=1, le=5) = Field(  # type: ignore
-        2, description="Number of LSTM layers")
+        2, description="Number of GRU layers")
     output_dim: int = Field(5, description="Output dimension")
     batch_size: int = Field(64, description="Batch size")
     num_epochs: int = Field(200, description="Number of epochs")
@@ -261,8 +261,8 @@ def save_model(model, path):
     logging.info(f"Model saved to {path}")
 
 
-def load_model(path, input_dim, hidden_dim, num_layers, output_dim, seq_length):
-    model = LSTM(input_dim, hidden_dim, num_layers, output_dim, seq_length)
+def load_model(path, input_dim, hidden_dim, num_layers, output_dim):
+    model = GRU(input_dim, hidden_dim, num_layers, output_dim)
     model.load_state_dict(torch.load(path))
     model.to(device)
     logging.info(f"Model loaded from {path}")
@@ -289,8 +289,8 @@ def main(config: Config) -> None:
         "stock_data_all", config.sector, clusterID, "*.csv"))
     model_path = "model/"
     figure_path = "figure/"
-    model_save_path = f"model/best_lstm_model_{config.sector}_{clusterID}.pth"
-    figure_save_path = f"figure/confusion_matrix_best_lstm_{config.sector}_{clusterID}.jpg"
+    model_save_path = f"model/best_gru_model_{config.sector}_{clusterID}.pth"
+    figure_save_path = f"figure/confusion_matrix_best_gru_{config.sector}_{clusterID}.jpg"
 
     os.makedirs(model_path, exist_ok=True)
     os.makedirs(figure_path, exist_ok=True)
@@ -306,12 +306,11 @@ def main(config: Config) -> None:
     train_dl = DataLoader(train_ds, batch_size=config.batch_size, shuffle=True)
     test_dl = DataLoader(test_ds, batch_size=config.batch_size, shuffle=False)
     # Initialize model
-    model = LSTM(
+    model = GRU(
         input_dim=config.input_dim,
         hidden_dim=config.hidden_dim,
         output_dim=config.output_dim,
         num_layers=config.num_layers,
-        seq_length=config.lookback,
     ).to(device)
     logging.info(summary(model, (config.lookback, config.input_dim)))
     criterion = nn.CrossEntropyLoss()
@@ -319,7 +318,7 @@ def main(config: Config) -> None:
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimizer, step_size=config.step_size, gamma=config.gamma)
 
-    exp = mlflow.set_experiment(experiment_name="LSTM_model")
+    exp = mlflow.set_experiment(experiment_name="GRU_model")
     logging.info("Name: {}".format(exp.name))
     logging.info("Experiment_id: {}".format(exp.experiment_id))
     logging.info("Artifact Location: {}".format(exp.artifact_location))
@@ -327,7 +326,7 @@ def main(config: Config) -> None:
     logging.info("Lifecycle_stage: {}".format(exp.lifecycle_stage))
     logging.info("Creation timestamp: {}".format(exp.creation_time))
 
-    with mlflow.start_run(experiment_id=exp.experiment_id, run_name=f'LSTM layer {config.num_layers} hidden_dim {config.hidden_dim} input_dim {config.input_dim}'):
+    with mlflow.start_run(experiment_id=exp.experiment_id, run_name=f'GRU layer {config.num_layers} hidden_dim {config.hidden_dim} input_dim {config.input_dim}'):
         mlflow.log_params(config.dict())
         # Train model
         start_time = time.time()
@@ -356,7 +355,7 @@ def main(config: Config) -> None:
         # Save model
         save_model(best_model, model_save_path)
         load_model(model_save_path, config.input_dim, config.hidden_dim,
-                   config.num_layers, config.output_dim, config.lookback)
+                   config.num_layers, config.output_dim)
         save_confusion_matrix(model, train_dl, test_dl, figure_save_path)
         mlflow.pytorch.log_model(model, "model")
         mlflow.log_artifacts("../Data/")
@@ -368,8 +367,8 @@ def main(config: Config) -> None:
 if __name__ == "__main__":
     parser = pydantic_argparse.ArgumentParser(
         model=Config,
-        prog="LSTM Training Program",
-        description="Train LSTM model with given configuration",
+        prog="GRU Training Program",
+        description="Train GRU model with given configuration",
     )
     config = parser.parse_typed_args()
 
@@ -379,7 +378,7 @@ if __name__ == "__main__":
     log_dir = "log"
     os.makedirs(log_dir, exist_ok=True)
     log_filename = os.path.join(
-        log_dir, f"log_LSTM_{current_time}_{config.sector}_{config.clusterID}.txt")
+        log_dir, f"log_GRU_{current_time}_{config.sector}_{config.clusterID}.txt")
 
     # Set up logging
     logging.basicConfig(
