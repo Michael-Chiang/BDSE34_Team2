@@ -6,6 +6,8 @@ import time
 from datetime import datetime
 
 import matplotlib.pyplot as plt
+import mlflow
+import mlflow.pytorch
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -74,12 +76,12 @@ def transform_type(x, device, is_train=True):
     return tensor if is_train else tensor.to(torch.int64)
 
 
-def split_data(stock, lookback, interval, y):
+def split_data(stock, lookback, interval, y, input_dim):
     data_raw = np.array(stock)
     n_time = len(data_raw)
     data, targets = [], []
     for index in range(0, n_time - lookback, interval):
-        data.append(data_raw[index: index + lookback, :])
+        data.append(data_raw[index: index + lookback, :input_dim])
         targets.append(y.iloc[index + lookback])
 
     data = np.array(data)
@@ -173,6 +175,15 @@ def train(
         loss_hist_valid.append(valid_loss)
         accuracy_hist_valid.append(valid_accuracy)
 
+        metrics = {
+            "train_loss": epoch_loss,
+            "train_accuracy": epoch_accuracy,
+            "valid_loss": valid_loss,
+            "valid_accuracy": valid_accuracy,
+        }
+        # 记录每个度量
+        for metric_name, value in metrics.items():
+            mlflow.log_metric(metric_name, value, step=epoch)
         if valid_accuracy > best_acc:
             best_acc = valid_accuracy
             best_model_wts = copy.deepcopy(model.state_dict())
@@ -303,7 +314,7 @@ def prepare_data(file_paths, lookback, interval, period):
         )
 
         x_train, y_train, x_test, y_test = split_data(
-            data_, lookback, interval, ten_day_change_fixed_discrete
+            data_, lookback, interval, ten_day_change_fixed_discrete, config.input_dim
         )
         logging.info(f"x_train.shape = {x_train.shape}")
         logging.info(f"y_train.shape = {y_train.shape}")
@@ -331,6 +342,19 @@ def prepare_data(file_paths, lookback, interval, period):
     return x_train_, y_train_, x_test_, y_test_
 
 
+def set_mlflow_tags(mlflow, exp, start_datetime, end_datetime, duration_time):
+    tags = {
+        "experiment_id": exp.experiment_id,
+        "experiment_name": exp.name,
+        "run_id": mlflow.active_run().info.run_id,
+        "run_name": mlflow.active_run().info.run_name,
+        "start_time": start_datetime,
+        "end_time": end_datetime,
+        "duration_time": duration_time,
+    }
+    mlflow.set_tags(tags)
+
+
 def main(config: Config) -> None:
 
     clusterID = str(config.clusterID)
@@ -354,7 +378,6 @@ def main(config: Config) -> None:
     test_ds = TensorDataset(x_test_, y_test_)
     train_dl = DataLoader(train_ds, batch_size=config.batch_size, shuffle=True)
     test_dl = DataLoader(test_ds, batch_size=config.batch_size, shuffle=False)
-
     # Initialize model
     model = LSTM(
         input_dim=config.input_dim,
@@ -369,30 +392,50 @@ def main(config: Config) -> None:
     scheduler = torch.optim.lr_scheduler.StepLR(
         optimizer, step_size=config.step_size, gamma=config.gamma)
 
-    # Train model
-    start_time = time.time()
-    best_model, hist = train(
-        model,
-        config.num_epochs,
-        config.patience,
-        train_dl,
-        test_dl,
-        device,
-        criterion,
-        optimizer,
-        scheduler,
-    )
-    training_time = time.time() - start_time
-    logging.info(f"Training time: {training_time}")
-    logging.info(
-        f"Training accuracy: {show_accuracy(best_model, train_dl):.4f}")
-    logging.info(f"Testing accuracy: {show_accuracy(best_model, test_dl):.4f}")
+    exp = mlflow.set_experiment(experiment_name="LSTM_model")
+    logging.info("Name: {}".format(exp.name))
+    logging.info("Experiment_id: {}".format(exp.experiment_id))
+    logging.info("Artifact Location: {}".format(exp.artifact_location))
+    logging.info("Tags: {}".format(exp.tags))
+    logging.info("Lifecycle_stage: {}".format(exp.lifecycle_stage))
+    logging.info("Creation timestamp: {}".format(exp.creation_time))
 
-    # Save model
-    save_model(best_model, model_save_path)
-    load_model(model_save_path, config.input_dim, config.hidden_dim,
-               config.num_layers, config.output_dim, config.lookback)
-    save_confusion_matrix(model, train_dl, test_dl, figure_save_path)
+    with mlflow.start_run(experiment_id=exp.experiment_id, run_name=f'LSTM layer {config.num_layers} hidden_dim {config.hidden_dim} input_dim {config.input_dim}'):
+        mlflow.log_params(config.dict())
+        # Train model
+        start_time = time.time()
+        best_model, hist = train(
+            model,
+            config.num_epochs,
+            config.patience,
+            train_dl,
+            test_dl,
+            device,
+            criterion,
+            optimizer,
+            scheduler,
+        )
+        end_time = time.time()
+        end_datetime = datetime.now().isoformat()
+        duration_time = end_time - start_time
+        set_mlflow_tags(mlflow, exp, start_datetime,
+                        end_datetime, duration_time)
+        logging.info(f"Training time: {duration_time}")
+        logging.info(
+            f"Training accuracy: {show_accuracy(best_model, train_dl):.4f}")
+        logging.info(
+            f"Testing accuracy: {show_accuracy(best_model, test_dl):.4f}")
+
+        # Save model
+        save_model(best_model, model_save_path)
+        load_model(model_save_path, config.input_dim, config.hidden_dim,
+                   config.num_layers, config.output_dim, config.lookback)
+        save_confusion_matrix(model, train_dl, test_dl, figure_save_path)
+        mlflow.pytorch.log_model(model, "model")
+        mlflow.log_artifacts("../Data/")
+
+        artifacts_uri = mlflow.get_artifact_uri()
+        print("The artifact path is", artifacts_uri)
 
 
 if __name__ == "__main__":
@@ -405,6 +448,7 @@ if __name__ == "__main__":
 
     # Get current time for log file name
     current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    start_datetime = datetime.now().isoformat()
     log_dir = "log"
     os.makedirs(log_dir, exist_ok=True)
     log_filename = os.path.join(
@@ -420,4 +464,6 @@ if __name__ == "__main__":
             logging.FileHandler(log_filename),  # Log to file]
         ],
     )
+    mlflow.set_tracking_uri("http://localhost:5000")  # 或者其他 MLflow 服务器的 URI
+    print("The set tracking uri is ", mlflow.get_tracking_uri())
     main(config)

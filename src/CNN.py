@@ -374,9 +374,10 @@ def main(config: Config) -> None:
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=config.lr)
     scheduler = torch.optim.lr_scheduler.StepLR(
-        optimizer, step_size=20, gamma=0.8)
+        optimizer, step_size=config.step_size, gamma=config.gamma)
 
-    with mlflow.start_run() as run:
+    exp = mlflow.set_experiment(experiment_name="CNN_model")
+    with mlflow.start_run(experiment_id=exp.experiment_id) as run:
         # 记录超参数
         mlflow.log_params(config.dict())
         # Train model
@@ -441,4 +442,5 @@ if __name__ == "__main__":
     )
     # 设置 MLflow 跟踪 URI
     mlflow.set_tracking_uri("http://localhost:5000")  # 或者其他 MLflow 服务器的 URI
+    print("The set tracking uri is ", mlflow.get_tracking_uri())
     main(config)
