@@ -8,8 +8,8 @@ import datetime
 db_config = {
     'user': 'root',
     'password': 'P@ssw0rd',
-    #'host': '192.168.32.176', # MySQL
-    'host': 'Localhost', # MySQL本地
+    'host': '192.168.32.176', # MySQL
+    #'host': 'Localhost', # MySQL本地
     #'host': 'StockDB', # Docker MySQL
     'database': 'stock',
 }
@@ -86,8 +86,10 @@ def init_route(app):
         cursor.close()
         connection.close()
 
-        prediction_dl_texts = [value_to_text(value) for value in prediction_dl_values]
-        prediction_ml_texts = [value_to_text(value) for value in prediction_ml_values]
+        #prediction_dl_texts = [value_to_text(value) for value in prediction_dl_values]
+        #prediction_ml_texts = [value_to_text(value) for value in prediction_ml_values]
+        prediction_dl_texts = ['大跌', '小跌', '持平', '小漲', '大漲']
+        prediction_ml_texts = ['大跌', '小跌', '持平', '小漲', '大漲']
         
         return render_template('prediction.html', 
                             sectors=sectors, 

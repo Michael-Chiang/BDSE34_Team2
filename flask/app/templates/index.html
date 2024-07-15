@@ -7,8 +7,10 @@
 <section id="banner">
 	<div class="inner">
 		<div class="logo"><span class="icon fa-gem"></span></div>
-		<h2>This is Solid State</h2>
-		<p>Another free + fully responsive site template by <a href="http://html5up.net">HTML5 UP</a></p>
+		<h2>BDSE 34期 第二組期末專題
+		</h2>
+		<p>美股股票 AI 預測
+		</p>
 	</div>
 </section>
 {% endblock %}
@@ -23,9 +25,8 @@
 			<a href="#" class="image"><img src="images/pic01.jpg" alt="" /></a>
 			<div class="content">
 				<h2 class="major">專案簡介</h2>
-				<p>Lorem ipsum dolor sit amet, etiam lorem adipiscing elit. Cras turpis ante, nullam sit amet
-					turpis non, sollicitudin posuere urna. Mauris id tellus arcu. Nunc vehicula id nulla
-					dignissim dapibus. Nullam ultrices, neque et faucibus viverra, ex nulla cursus.</p>
+				<p>透過美股數據、相關技術與總體經濟指標，建構機器學習與深度學習模型，以預測未來短期股價漲跌趨勢。
+				</p>
 				<a href="#" class="special">團隊介紹</a>
 			</div>
 		</div>
@@ -37,10 +38,9 @@
 			<a href="#" class="image"><img src="images/pic02.jpg" alt="" /></a>
 			<div class="content">
 				<h2 class="major">美股篩選器</h2>
-				<p>Lorem ipsum dolor sit amet, etiam lorem adipiscing elit. Cras turpis ante, nullam sit amet
-					turpis non, sollicitudin posuere urna. Mauris id tellus arcu. Nunc vehicula id nulla
-					dignissim dapibus. Nullam ultrices, neque et faucibus viverra, ex nulla cursus.</p>
-				<a href="#" class="special">more</a>
+				<p>使用者可以透過篩選產業、子產業方式，來瀏覽特定股票標的的歷史數據。
+				</p>
+				<a href="{{ url_for('filter')}}" class="special">more</a>
 			</div>
 		</div>
 	</section>
@@ -51,10 +51,10 @@
 			<a href="#" class="image"><img src="images/pic03.jpg" alt="" /></a>
 			<div class="content">
 				<h2 class="major">AI預測金融/科技股</h2>
-				<p>Lorem ipsum dolor sit amet, etiam lorem adipiscing elit. Cras turpis ante, nullam sit amet
-					turpis non, sollicitudin posuere urna. Mauris id tellus arcu. Nunc vehicula id nulla
-					dignissim dapibus. Nullam ultrices, neque et faucibus viverra, ex nulla cursus.</p>
-				<a href="#" class="special">more</a>
+				<p>針對特定標的，使用者將能得到2種預測結果。
+					分別是藉由機器學習(堆疊RNN、SVM、MLP等模型)與深度學習(1D-CNN、LSTM、GRU)等方法的預測結果。
+				</p>
+				<a href="{{ url_for('prediction')}}" class="special">more</a>
 			</div>
 		</div>
 	</section>
