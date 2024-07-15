@@ -32,7 +32,8 @@ class Config(BaseModel):
     lr: float = Field(0.0001, description="Learning rate")
     patience: int = Field(30, description="Early stopping patience")
     step_size: int = Field(20, description="Learning rate scheduler step size")
-    gamma: float = Field(0.8, description="Learning rate scheduler weight decay")
+    gamma: float = Field(
+        0.8, description="Learning rate scheduler weight decay")
 
     sector: Literal["Finance", "Technology"] = Field(
         description="The name must be 'Finance' or 'Technology'"
@@ -61,7 +62,8 @@ class Config(BaseModel):
 
 # Set device
 use_cuda = 1
-device = torch.device("cuda" if (torch.cuda.is_available() & use_cuda) else "cpu")
+device = torch.device("cuda" if (
+    torch.cuda.is_available() & use_cuda) else "cpu")
 logging.info(f"Device: {device}")
 
 
@@ -73,7 +75,8 @@ def show_accuracy(model, dl):
         for batch_x, batch_y in dl:
             pred_y = model(batch_x)
             correct += (
-                (torch.argmax(pred_y, dim=1) == batch_y).type(torch.float).sum().item()
+                (torch.argmax(pred_y, dim=1) == batch_y).type(
+                    torch.float).sum().item()
             )
     return correct / size
 
@@ -95,7 +98,8 @@ def save_confusion_matrix(model, train_dl, test_dl, path):
                     .item()
                 )
                 all_batch_y.append(batch_y.cpu().numpy())
-                all_batch_y_pred.append(torch.argmax(pred_y, dim=1).cpu().numpy())
+                all_batch_y_pred.append(
+                    torch.argmax(pred_y, dim=1).cpu().numpy())
 
             if dl == train_dl:
                 y_train = np.concatenate(all_batch_y)
@@ -151,14 +155,14 @@ def main(config: Config) -> None:
     figure_save_path = (
         f"figure/confusion_matrix_best_gru_{config.sector}_{clusterID}.jpg"
     )
-    output_path = f"output/"
+    output_path = f"output/{config.sector}/{clusterID}/"
 
     os.makedirs(model_path, exist_ok=True)
     os.makedirs(figure_path, exist_ok=True)
     os.makedirs(output_path, exist_ok=True)
 
     # Prepare data
-    x_train_ = prepare_prediction_data(
+    file_names, x_train_ = prepare_prediction_data(
         file_paths,
         config.lookback,
         config.input_dim,
@@ -173,12 +177,17 @@ def main(config: Config) -> None:
         config.output_dim,
     )
     logging.info(summary(model, (config.lookback, config.input_dim)))
-    
+
     model.eval()
     with torch.no_grad():
         pred_y = model(x_train_)
         pred_y = torch.argmax(pred_y, dim=1).cpu().numpy()
-    output = 
+    output = np.vstack((file_names, pred_y)).T
+    # 将二维数组转换为 DataFrame
+    df = pd.DataFrame(output, columns=['stockID', 'Prediction'])
+
+    # 写入 CSV 文件
+    df.to_csv(os.path.join(output_path, 'prediction.csv'), index=False)
 
 
 if __name__ == "__main__":
