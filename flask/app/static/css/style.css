@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .selected {
     background-color: #4c5c96;
     box-shadow: none;
@@ -261,4 +265,12 @@ table td:nth-child(7) {
 ul.actions.fit.prediction li {
     flex: 1 1 calc(20% - 0.7em);
 
+}
+
+article h3 {
+    text-align: center;
+}
+
+article p {
+    font-size: 16px;
 }

@@ -27,7 +27,7 @@
 				<h2 class="major">專案簡介</h2>
 				<p>透過美股數據、相關技術與總體經濟指標，建構機器學習與深度學習模型，以預測未來短期股價漲跌趨勢。
 				</p>
-				<a href="#" class="special">團隊介紹</a>
+				<a href="#four" class="special">團隊介紹</a>
 			</div>
 		</div>
 	</section>
@@ -38,7 +38,7 @@
 			<a href="#" class="image"><img src="images/pic02.jpg" alt="" /></a>
 			<div class="content">
 				<h2 class="major">美股篩選器</h2>
-				<p>使用者可以透過篩選產業、子產業方式，來瀏覽特定股票標的的歷史數據。
+				<p>使用者可以透過篩選股價區間、產業、子產業方式，來瀏覽特定股票標的的歷史數據。
 				</p>
 				<a href="{{ url_for('filter')}}" class="special">more</a>
 			</div>
@@ -62,43 +62,61 @@
 	<!-- Four -->
 	<section id="four" class="wrapper alt style1">
 		<div class="inner">
-			<h2 class="major">Vitae phasellus</h2>
-			<p>Cras mattis ante fermentum, malesuada neque vitae, eleifend erat. Phasellus non pulvinar erat.
+			<h2 class="major">團隊介紹</h2>
+			<!-- <p>Cras mattis ante fermentum, malesuada neque vitae, eleifend erat. Phasellus non pulvinar erat.
 				Fusce tincidunt, nisl eget mattis egestas, purus ipsum consequat orci, sit amet lobortis lorem
-				lacus in tellus. Sed ac elementum arcu. Quisque placerat auctor laoreet.</p>
+				lacus in tellus. Sed ac elementum arcu. Quisque placerat auctor laoreet.</p> -->
 			<section class="features">
 				<article>
-					<a href="#" class="image"><img src="images/pic04.jpg" alt="" /></a>
-					<h3 class="major">Sed feugiat lorem</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
-						ultrices.</p>
-					<a href="#" class="special">Learn more</a>
+					<a href="#" class="image"><img src="{{ url_for('static', filename='images/pic06.jpg') }}"
+							alt="" /></a>
+					<h3 class="major">曾奐嘉</h3>
+					<p> 專案管理<br>資料分析
+					</p>
+
 				</article>
 				<article>
-					<a href="#" class="image"><img src="images/pic05.jpg" alt="" /></a>
-					<h3 class="major">Nisl placerat</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
-						ultrices.</p>
-					<a href="#" class="special">Learn more</a>
+					<a href="#" class="image"><img src="{{ url_for('static', filename='images/pic06.jpg') }}"
+							alt="" /></a>
+					<h3 class="major">謝尚霖</h3>
+					<p> 資料搜集<br>資料清整<br>資料分析<br>模型建置
+					</p>
+
 				</article>
 				<article>
-					<a href="#" class="image"><img src="images/pic06.jpg" alt="" /></a>
-					<h3 class="major">Ante fermentum</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
-						ultrices.</p>
-					<a href="#" class="special">Learn more</a>
+					<a href="#" class="image"><img src="{{ url_for('static', filename='images/BDSE34_08.jpg') }}"
+							alt="" /></a>
+					<h3 class="major">游承軒</h3>
+					<p> 資料清整<br>資料分析<br>模型建置
+					</p>
+
 				</article>
 				<article>
-					<a href="#" class="image"><img src="images/pic07.jpg" alt="" /></a>
-					<h3 class="major">Fusce consequat</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
-						ultrices.</p>
-					<a href="#" class="special">Learn more</a>
+					<a href="#" class="image"><img src="{{ url_for('static', filename='images/BDSE34_05.jpg') }}"
+							alt="" /></a>
+					<h3 class="major">姜重德</h3>
+					<p> 資料搜集<br>資料清整<br>資料分析
+					</p>
+
+				</article>
+				<article>
+					<a href="#" class="image"><img src="{{ url_for('static', filename='images/BDSE34_23.jpg') }}"
+							alt="" /></a>
+					<h3 class="major">黃瀞瑤</h3>
+					<p> 雲端部署<br>網頁建置<br>視覺化
+					</p>
+
+				</article>
+				<article>
+					<a href="#" class="image"><img src="{{ url_for('static', filename='images/pic06.jpg') }}"
+							alt="" /></a>
+					<h3 class="major">周耘愷</h3>
+					<p> 雲端部署<br>系統建置<br>視覺化
+					</p>
+
 				</article>
 			</section>
-			<ul class="actions">
-				<li><a href="#" class="button">Browse All</a></li>
-			</ul>
+
 		</div>
 	</section>
 
