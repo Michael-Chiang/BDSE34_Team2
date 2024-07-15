@@ -1,6 +1,7 @@
+import logging
+
 import numpy as np
 import pandas as pd
-import logging
 import torch
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -18,7 +19,7 @@ def split_data(stock, lookback, interval, y, input_dim):
     n_time = len(data_raw)
     data, targets = [], []
     for index in range(0, n_time - lookback, interval):
-        data.append(data_raw[index: index + lookback, :input_dim])
+        data.append(data_raw[index : index + lookback, :input_dim])
         targets.append(y.iloc[index + lookback])
 
     data = np.array(data)
@@ -76,3 +77,21 @@ def prepare_data(file_paths, lookback, interval, period, input_dim, device):
     logging.info(f"x_test_.shape = {x_test_.shape}")
     logging.info(f"y_test_.shape = {y_test_.shape}")
     return x_train_, y_train_, x_test_, y_test_
+
+
+def prepare_prediction_data(file_paths, lookback, input_dim, device):
+    for file_path in file_paths:
+        data = pd.read_csv(file_path)
+        scaler = MinMaxScaler()
+        data_ = scaler.fit_transform(data.iloc[:, 1:].values)
+
+        data_raw = np.array(data_)
+        n_time = len(data_raw)
+        data_x = []
+        data_x.append(data_raw[n_time - lookback : n_time, :input_dim])
+
+        data_x = np.array(data_x)
+    x_train_ = transform_type(data_x, device)
+
+    logging.info(f"x_train_.shape = {x_train_.shape}")
+    return x_train_

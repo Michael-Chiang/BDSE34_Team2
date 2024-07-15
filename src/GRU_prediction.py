@@ -16,7 +16,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 from torch.utils.data import DataLoader, TensorDataset
 from torchsummary import summary
 
-from my_utils.data_processing import prepare_data
+from my_utils.data_processing import prepare_prediction_data
 from my_utils.models import GRU
 
 
@@ -151,42 +151,34 @@ def main(config: Config) -> None:
     figure_save_path = (
         f"figure/confusion_matrix_best_gru_{config.sector}_{clusterID}.jpg"
     )
+    output_path = f"output/"
 
     os.makedirs(model_path, exist_ok=True)
     os.makedirs(figure_path, exist_ok=True)
+    os.makedirs(output_path, exist_ok=True)
 
     # Prepare data
-    x_train_, y_train_, x_test_, y_test_ = prepare_data(
+    x_train_ = prepare_prediction_data(
         file_paths,
         config.lookback,
-        config.interval,
-        config.period,
         config.input_dim,
         device,
     )
 
-    # Data loaders
-    train_ds = TensorDataset(x_train_, y_train_)
-    test_ds = TensorDataset(x_test_, y_test_)
-    train_dl = DataLoader(train_ds, batch_size=config.batch_size, shuffle=True)
-    test_dl = DataLoader(test_ds, batch_size=config.batch_size, shuffle=False)
-    # Initialize model
-    model = GRU(
-        input_dim=config.input_dim,
-        hidden_dim=config.hidden_dim,
-        output_dim=config.output_dim,
-        num_layers=config.num_layers,
-    ).to(device)
-    logging.info(summary(model, (config.lookback, config.input_dim)))
-
-    load_model(
+    model = load_model(
         model_save_path,
         config.input_dim,
         config.hidden_dim,
         config.num_layers,
         config.output_dim,
     )
-    save_confusion_matrix(model, train_dl, test_dl, figure_save_path)
+    logging.info(summary(model, (config.lookback, config.input_dim)))
+    
+    model.eval()
+    with torch.no_grad():
+        pred_y = model(x_train_)
+        pred_y = torch.argmax(pred_y, dim=1).cpu().numpy()
+    output = 
 
 
 if __name__ == "__main__":
