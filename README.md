@@ -1,2 +1,1 @@
-### 目前進度：Finance, Technology所有股票切分固定時長資料做分群
-預計分5群，每群分別建立模型，時長不足的股票另成一群
+### 實作方法：1D CNN, LSTM, GRU, GRU-Attention 
