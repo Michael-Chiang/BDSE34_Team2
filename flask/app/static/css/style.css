@@ -250,12 +250,12 @@ section .results {
     border-radius: 3px !important;
 }
 
-/* table th:nth-child(6),
-table td:nth-child(6),
-table th:nth-child(7),
-table td:nth-child(7) {
+div .filter table th:nth-child(6),
+div .filter table td:nth-child(6),
+div .filter table th:nth-child(7),
+div .filter table td:nth-child(7) {
     display: none;
-} */
+}
 
 /* .prediction-ml-button,
 .prediction-dl-button {

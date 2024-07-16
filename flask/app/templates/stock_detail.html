@@ -31,55 +31,22 @@
     <div class="wrapper">
         <div class="inner">
             <section>
-                <h3 class="major">{{ symbol }}的 Grafana 儀表板</h3>
+                <h3 class="major">{{ symbol }}的儀表板</h3>
                 {% if grafana_dashboard_url %}
                 <iframe src="{{ grafana_dashboard_url }}" width="100%" height="2100" frameborder="0">
                 </iframe>
                 {% else %}
-                <p>无法加载 Grafana 儀表板。</p>
+                <p>無法加載 Grafana 儀表板。</p>
                 {% endif %}
                 <br>
                 <hr>
 
-                <!-- <h3 class="major">Details</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            {% for column in columns %}
-                            <th>{{ column }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for row in results %}
-                        <tr>
-                            {% for column in columns %}
-                            <td>{{ row[column] }}</td>
-                            {% endfor %}
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <hr> -->
 
 
             </section>
 
             <section class="features">
-                <article>
-                    <a href="#" class="image"><img src="images/pic04.jpg" alt="" /></a>
-                    <h3 class="major">Sed feugiat lorem</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
-                        ultrices.</p>
-                    <a href="#" class="special">Learn more</a>
-                </article>
-                <article>
-                    <a href="#" class="image"><img src="images/pic05.jpg" alt="" /></a>
-                    <h3 class="major">Nisl placerat</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
-                        ultrices.</p>
-                    <a href="#" class="special">Learn more</a>
-                </article>
+
             </section>
 
         </div>

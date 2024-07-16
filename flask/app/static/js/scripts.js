@@ -75,11 +75,37 @@ $(document).ready(function () {
     // 显示结果
     function displayResults() {
         const { results, columns } = resultsData;
+
+        // 定义一个映射函数
+        function mapPrediction(value) {
+            const mapping = {
+                0: '大跌',
+                1: '小跌',
+                2: '持平',
+                3: '小漲',
+                4: '大漲',
+                null: '-'
+            };
+            return mapping[value] !== undefined ? mapping[value] : value;
+        }
         let table = `<table border="1"><thead><tr>${columns.map(col => `<th>${col}</th>`).join('')}</tr></thead><tbody>`;
         let pageResults = results.slice((currentPage - 1) * 20, currentPage * 20);
+
+        // pageResults.forEach(result => {
+        //     table += '<tr>' + columns.map(col => `<td>${col === 'Symbol' ? `<a href="/stock/${result[col]}">${result[col]}</a>` : result[col]}</td>`).join('') + '</tr>';
+        // });
+
         pageResults.forEach(result => {
-            table += '<tr>' + columns.map(col => `<td>${col === 'Symbol' ? `<a href="/stock/${result[col]}">${result[col]}</a>` : result[col]}</td>`).join('') + '</tr>';
+            table += '<tr>' + columns.map(col => {
+                let cellValue = result[col];
+                if (col === 'ML Prediction' || col === 'DL Prediction') {
+                    cellValue = mapPrediction(cellValue);
+                }
+                return `<td>${col === 'Symbol' ? `<a href="/stock/${result[col]}">${cellValue}</a>` : cellValue}</td>`;
+            }).join('') + '</tr>';
         });
+
+
         table += '</tbody></table>';
         $('#results').html(table);
     }
