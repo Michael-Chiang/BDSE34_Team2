@@ -9,13 +9,14 @@ db_config = {
     'user': 'root',
     'password': 'P@ssw0rd',
     #'host': '192.168.32.176', # MySQL
-    'host': 'Localhost', # MySQL本地
-    #'host': 'StockDB', # Docker MySQL
+    #'host': 'Localhost', # MySQL本地
+    'host': 'StockDB', # Docker MySQL
     'database': 'stock',
 }
 
 # Grafana 配置
-grafana_url = "http://192.168.32.176:3000"
+#grafana_url = "http://192.168.32.176:3000"
+grafana_url = "https://bdse34.online:3000"
 grafana_api_key = "glsa_cNzq1IPXgKS1RqTl1vNPrpcvPAnoOXlt_e278fd0c"
 
 def init_route(app):
