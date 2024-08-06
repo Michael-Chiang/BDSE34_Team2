@@ -34,8 +34,11 @@ def calculate_financial_metrics(stock_id):
                     net_profit_margin = np.nan  # Assign np.nan if total_revenue is zero
                 else:
                     net_profit_margin = net_income / total_revenue
-
-                gross_profit_margin = gross_profit / total_revenue
+                if total_revenue == 0:
+                    gross_profit_margin = np.nan  # Assign np.nan if total_revenue is zero
+                else:
+                    gross_profit_margin = gross_profit / total_revenue
+                    
                 roe = net_income / stockholders_equity
                 roa = net_income / total_assets
                 eps = fs.loc[year, "Basic EPS"]
